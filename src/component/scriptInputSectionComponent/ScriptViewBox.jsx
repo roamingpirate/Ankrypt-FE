@@ -33,7 +33,7 @@ const SelectBtn = ({val,sceneInd,scriptInd}) => {
 }
 
 
-const DialogBox = ({sceneInd,scriptInd,script,setScript}) => {
+const DialogBox = ({sceneInd,scriptInd,script,setScript,setSave}) => {
     return (
       <Grid container sx={{ padding: '5px', border:'1px solid grey', borderRadius:'5px',margin:'10px'}}>
              {/* Head */}
@@ -70,7 +70,7 @@ const DialogBox = ({sceneInd,scriptInd,script,setScript}) => {
                         },
                        }}
                        multiline
-                       onChange={(event) => changeScripData(event,scriptInd,sceneInd,script,setScript)}
+                       onChange={(event) => changeScripData(event,scriptInd,sceneInd,script,setScript,setSave)}
                        />
       </Grid>
     )
@@ -78,7 +78,7 @@ const DialogBox = ({sceneInd,scriptInd,script,setScript}) => {
 
 const ScriptViewComp = () => {
 
-    const {script,setScript,isLoading} = useProjectInfo(); 
+    const {script,setScript,isLoading,setSave} = useProjectInfo(); 
 
     if(isLoading)
     {
@@ -93,7 +93,7 @@ const ScriptViewComp = () => {
                      {sceneScript.sceneName}
                   </Typography>
                 {(sceneScript.script).map((obj, scriptInd) => (
-                    <DialogBox sceneInd={sceneInd} scriptInd={scriptInd} script={script} setScript={setScript} />
+                    <DialogBox sceneInd={sceneInd} scriptInd={scriptInd} script={script} setScript={setScript} setSave={setSave}/>
                 ))}
               </Grid>
            ))
@@ -103,12 +103,13 @@ const ScriptViewComp = () => {
 }
 
 
-const changeScripData = (event,scriptInd,sceneInd,script,setScript) => {
+const changeScripData = (event,scriptInd,sceneInd,script,setScript,setSave) => {
     const updatedSceneScriptData = [...(script[sceneInd].script)];
     updatedSceneScriptData[scriptInd].Speech = event.target.value;
     const scriptData = [...script];
     scriptData[sceneInd].script = updatedSceneScriptData;
     setScript(scriptData); 
+    setSave(true);
 }
 
 

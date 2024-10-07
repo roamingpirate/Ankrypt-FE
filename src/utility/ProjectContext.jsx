@@ -1,6 +1,7 @@
 import React, {useState, useContext, createContext, useEffect} from "react";
-import { fetchGeneratedScript, fetchScript, fetchAnimationScript } from "../api/projectApi";
-import scriptData from "../data/scriptData";
+import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript } from "../api/projectApi";
+//import scriptData from "../data/scriptData";
+import AudioData from "../data/audioData.json";
 
 const ProjectContext = createContext();
 
@@ -14,18 +15,33 @@ export const ProjectInfoProvider = ({children}) => {
 
     var projectId = 1;
     const [currentStage, setCurrentStage] = useState(1);
+    const [scriptData, setScriptData] = useState();
     const [script,setScript] = useState([]);
     const [animationScript,setAnimationScript] = useState([]);
+    const [audioData,setAudioData] = useState([]);
     const [isLoading,setIsLoading] = useState(false);
+    const [canavsLoading,setCanvasLoading] = useState(false);
+    const [save, setSave] = useState(false);
+    const [alert,setAlert] = useState(true);
+    const [alertMessage,setAlertMessage] = useState(true);
 
     const getScript = async () => {
-        console.log(scriptData.scenes);
-        setScript(scriptData.scenes);
+        //console.log(scriptData.scenes);
+        const scriptDa = await fetchScript("1");
+        //console.log(scriptDa);
+        setScriptData(scriptDa);
+        setScript(scriptDa.scenes);
      }
 
-    const getAnimationScript = async () => {
+    const getAnimationScript = async (projectId) => {
+        setIsLoading(true);
         const animationScriptData = await fetchAnimationScript("1");
         setAnimationScript(animationScriptData);
+        setIsLoading(false);
+     }
+
+     const getAudio = async (projectId) => {
+           setAudioData(AudioData);
      }
 
      const generateScript = async (prompt) => {
@@ -35,6 +51,54 @@ export const ProjectInfoProvider = ({children}) => {
             setIsLoading(false);
      }
 
+     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+     const getAnimationData = async () => {
+         setCanvasLoading(true);
+         console.log("pelo pelo");
+         Promise.all([getAnimationScript(),getAudio(), delay(4000)]).then(
+            () => {
+                console.log("bale bale");
+                setCanvasLoading(false);
+            }
+         )
+     }
+
+     const saveContentToServer = async () => {
+            if(currentStage == 1)
+            {
+                const copySD = {...scriptData, scenes : script}
+                try{
+                    await updateScript("1",copySD);
+                    setAlert(true);
+                    setAlertMessage("Script Successfully Saved!");
+                    setSave(false);
+                }
+                catch(err){
+
+                }
+            }
+     }
+
+     const resetContent = async () => {
+        if(currentStage == 1)
+        {
+            await getScript();
+            setAlert(true);
+            setAlertMessage("The script has been reset successfully!");
+            setSave(false);
+        }
+     }
+
+     const handleNext = async (v) => {
+         if(save){
+            setAlert(true);
+            setAlertMessage("Please save or reset your changes to proceed!");
+            return;
+         }
+         setCurrentStage(v);
+     }
+
     
     useEffect(() => {
         if(currentStage == 1){
@@ -42,7 +106,7 @@ export const ProjectInfoProvider = ({children}) => {
             return;
         }
         if(currentStage == 2){
-            getAnimationScript();
+            getAnimationData();
             return;
         }
        //setScript(getScript());
@@ -56,6 +120,14 @@ export const ProjectInfoProvider = ({children}) => {
         animationScript,
         setAnimationScript,
         generateScript,
+        save,
+        setSave,
+        saveContentToServer,
+        resetContent,
+        alert,
+        setAlert,
+        alertMessage,
+        handleNext,
         isLoading}}>
             {children}
         </ProjectContext.Provider>
