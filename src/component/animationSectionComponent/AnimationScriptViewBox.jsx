@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Grid2 as Grid,Typography,TextField,MenuItem, IconButton, Button, Divider,Tooltip} from '@mui/material';
+import { Grid2 as Grid,Typography,TextField,MenuItem, IconButton, Button, Divider,Tooltip,CircularProgress} from '@mui/material';
 import animationScriptData from '../../data/animationScriptData';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
@@ -54,13 +54,16 @@ const ExpandedDialogBox = ({obj,sind,sceneInd,scriptInd,isSelected,setIsSelected
 
     const animationsList =["Talking_1", "Talking_2", "Introducing","Explaining"]
     const FaceExpressions=["Smile","Neutral", "Happy","Curious","Surprised","Laughing"]
+    const {setSave} = useProjectInfo();
 
     const updateAnimationSpeechObject = (event,label) => {
         const updatedSceneAnimationScript = [...animationScript[sceneInd].Script];
         updatedSceneAnimationScript[scriptInd].Speech[sind][label]=event.target.value;
         const updatedAnimationScript = [...animationScript];
-       updatedAnimationScript[sceneInd].Script=updatedSceneAnimationScript;
+        updatedAnimationScript[sceneInd].Script=updatedSceneAnimationScript;
         setAnimationScript(updatedAnimationScript);
+        console.log(updatedAnimationScript);
+        setSave(true);
     }
 
     return (
@@ -175,8 +178,14 @@ const AnimationSpeechBox = ({sceneInd,scriptInd,animationScript,setAnimationScri
 
 const AnimationScriptViewBox = () => {
 
-    const {animationScript, setAnimationScript} = useProjectInfo(); 
+    const {animationScript, setAnimationScript,isLoading} = useProjectInfo(); 
     console.log(animationScript);
+
+    if(isLoading)
+    {
+        return <div style={{display:'flex',height:'100%',alignItems:'center',justifyContent:'center'}}><CircularProgress /></div>;
+    }
+
     return (
         <div style={{ marginTop: '15px',overflow: 'auto'}}>
             {

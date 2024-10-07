@@ -1,5 +1,5 @@
 import React, {useState, useContext, createContext, useEffect} from "react";
-import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript } from "../api/projectApi";
+import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript } from "../api/projectApi";
 //import scriptData from "../data/scriptData";
 import AudioData from "../data/audioData.json";
 
@@ -36,6 +36,7 @@ export const ProjectInfoProvider = ({children}) => {
     const getAnimationScript = async (projectId) => {
         setIsLoading(true);
         const animationScriptData = await fetchAnimationScript("1");
+        console.log(animationScriptData);
         setAnimationScript(animationScriptData);
         setIsLoading(false);
      }
@@ -65,19 +66,30 @@ export const ProjectInfoProvider = ({children}) => {
      }
 
      const saveContentToServer = async () => {
+        try{
             if(currentStage == 1)
             {
                 const copySD = {...scriptData, scenes : script}
-                try{
-                    await updateScript("1",copySD);
-                    setAlert(true);
-                    setAlertMessage("Script Successfully Saved!");
-                    setSave(false);
-                }
-                catch(err){
-
-                }
+                await updateScript("1",copySD);
+                setAlert(true);
+                setAlertMessage("Script Successfully Saved!");
+                setSave(false);
+                return;
             }
+
+            if(currentStage == 2)
+            {
+                console.log(animationScript);
+                await updateAnimationScript("1",animationScript);
+                setAlert(true);
+                setAlertMessage("Animation Script Successfully Saved!");
+                setSave(false); 
+            }
+        }
+        catch(err){
+
+        }
+
      }
 
      const resetContent = async () => {
@@ -86,6 +98,13 @@ export const ProjectInfoProvider = ({children}) => {
             await getScript();
             setAlert(true);
             setAlertMessage("The script has been reset successfully!");
+            setSave(false);
+        }
+        if(currentStage == 2)
+        {
+            await getAnimationScript();
+            setAlert(true);
+            setAlertMessage("The Animation Script has been reset successfully!");
             setSave(false);
         }
      }

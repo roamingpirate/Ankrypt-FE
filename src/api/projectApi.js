@@ -28,10 +28,22 @@ export const fetchGeneratedScript = async (projectId, prompt) => {
 }
 //http://localhost:3000/animationScript
 
+
 export const fetchAnimationScript = async (projectId) => {
     const response = await axios.get(`${url}/animationScript`);
     console.log(response.data);
     return response.data;
 }
 
+export const updateAnimationScript = async (projectId,animationScript) => {
+    try{
+        console.log("opop");
+        console.log(animationScript);
+        const response = await axios.post(`${url}/animationScript/update`,animationScript);
+    }
+    catch(err)
+    {
+        console.log("error");
+    }
+}
 

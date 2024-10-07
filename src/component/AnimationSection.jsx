@@ -11,6 +11,7 @@ import Header from './Header';
 import StoryInputComp from './scriptInputSectionComponent/ScriptInputBox';
 import ScriptViewComp from './scriptInputSectionComponent/ScriptViewBox';
 import AnimationScriptViewBox from './animationSectionComponent/AnimationScriptViewBox';
+import CanvasViewBox from './animationSectionComponent/CanvasViewBox';
 
 {/* <Box sx={{height:'100vh',display: 'flex',flexDirection: 'column'}}>
 <h1 style={{backgroundColor: FCCorrespondingColors['Smile']}}>Hello</h1>
@@ -28,6 +29,7 @@ const AnimationSection = () => {
   return (
     <Box sx={{display: 'flex', flexDirection:'row',overflow:'auto'}}>
          <Box sx={{width: '40%', borderRight:1}}>
+          <CanvasViewBox/>
           </Box>
           <Box sx={{width: '60%',overflow:'auto'}}>
             <AnimationScriptViewBox/>
