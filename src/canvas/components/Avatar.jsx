@@ -65,6 +65,7 @@ export function Avatar(props) {
   const avatarLookPosition = useRef([0,0,1.5]);
 
   useGSAP(() => {
+    console.log("telo");
     const requiredLookPosition = (characterLook == "Character")?charCoord:[0,0,1.5];
 
     gsap.to(avatarLookPosition.current, {
@@ -115,7 +116,7 @@ export function Avatar(props) {
 
     const faceExpressionConfiguration = faceExpressions[currentFaceExpression];
     morphTargetList.forEach((morphTarget) => {
-      if(faceExpressionConfiguration[morphTarget])
+      if(faceExpressionConfiguration && faceExpressionConfiguration[morphTarget])
       {
          moveMorphTarget(morphTarget, faceExpressionConfiguration[morphTarget],0.1)
       }
@@ -255,10 +256,10 @@ export function Avatar(props) {
 
     }
 
-    const animationToPlay = animationState.currentDialogs[animationState.currentDialogIndex].animation;
+    const animationToPlay = animationState.currentDialogs[animationState.currentDialogIndex].Animation;
     var nextAnimationToPlay = 'Idle';
     if(animationState.currentDialogsLength > (animationState.currentDialogIndex + 1)){
-       nextAnimationToPlay = animationState.currentDialogs[animationState.currentDialogIndex + 1].animation;
+       nextAnimationToPlay = animationState.currentDialogs[animationState.currentDialogIndex + 1].Animation;
     }
 
     // console.log('Speaker Script Animation ' + avatarName);
@@ -273,7 +274,7 @@ export function Avatar(props) {
     setCurrentAnimation(animationToPlay);
     setNextAnimation(nextAnimationToPlay);
     setAnimationNumber(animationNumber + 1);
-    avatarFaceExpression.current = animationState.currentDialogs[animationState.currentDialogIndex].faceExpression;
+    avatarFaceExpression.current = animationState.currentDialogs[animationState.currentDialogIndex].FaceExpression;
     audio.current = new Audio("data:audio/mp3;base64," + currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
     if(videoState === "Playing"){
     setCurrentFaceExpression(avatarFaceExpression.current);

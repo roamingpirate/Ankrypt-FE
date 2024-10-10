@@ -110,10 +110,10 @@ export const Podcast1 = () => {
         castShadow 
       />
       <group>
-         <Avatar avatarType={"femaleAvatar"} charCoord={[0.5,-0.3,0.6]} isSitting={false} avatarName = 'Alice' position={[-0.4,-1.5,0.1]} rotation={[0,0.4,0.0]}/> 
+         <Avatar avatarType={"femaleAvatar"} charCoord={[0.5,-0.3,0.6]} isSitting={false} avatarName = 'Jordan' position={[-0.4,-1.5,0.1]} rotation={[0,0.4,0.0]}/> 
          {/* <Avatar avatarType={"femaleAvatar"} targetPosition={(characterLook == "Listener")?[0,0,2]:[0,0,0.3]} isSitting={false} avatarName = 'Anshika' position={[-0.5,-1.5,0]} rotation={[0,0.4,0.0]}/>  */}
         {/* <FemaleAvatar position={[-0.5,-1.5,0]} rotation={[0,0.4,0.0]}/> */}
-        <Avatar avatarType={"avatar"}  charCoord={[-0.5,-0.3,0.6]} isSitting={false} avatarName = 'Kieth'  position={[0.4,-1.5,0.1]} rotation={[0,-0.4,0.0]}/>
+        <Avatar avatarType={"avatar"}  charCoord={[-0.5,-0.3,0.6]} isSitting={false} avatarName = 'Michael'  position={[0.4,-1.5,0.1]} rotation={[0,-0.4,0.0]}/>
       </group>
 
       

@@ -5,35 +5,39 @@ import script from "../data/script.js";
 import { twoSpeakersPodcastProject, oneSpeakerProject } from "../data/projectData.js";
 import storyAudioData from '../data/japanAudioData';
 import podcastAudioData from '../data/storyAudioData'
+import { useProjectInfo } from "../../utility/ProjectContext.jsx";
+import animationScriptData from "../../data/animationScriptData.jsx";
 
 const PlayerContext = createContext();
 
 export const PlayerController = ({ children }) => {
 
-  const [isLoaded, setIsLoaded] = useState(true);
-  const [animationScript,setAnimationScript] = useState();
+ // const [isLoaded, setIsLoaded] = useState(true);
+ const {animationScript : AnimationScriptData,AudioData: currentAudioData,canavsLoaded: isLoaded} = useProjectInfo();
+ // const [animationScript,setAnimationScript] = useState();
   const [animationType,setAnimationType] = useState(null);
   const [currentSceneIndex, setCurrentSceneIndex] = useState(null);
   const [currentSceneScript, setCurrentSceneScript] = useState([]);
   const [characterLook, setCharacterLook] = useState("Listener");
-  const [currentAudioData, setCurrentAudioData] = useState();
+ // const [currentAudioData, setCurrentAudioData] = useState();
   const [backgroundImage, setBackgroundImage] = useState("back1");
   const [previousBackgroundImage, setPreviousBackgroundImage] = useState("back2");
   const [animationState, setAnimationState] = useState();
   const [videoState, setVideoState] = useState("Paused");
   const [avatarVisibility, setAvatarVisibility] = useState(true);
-  const [reset, setReset] = useState(false);
+ //const [reset, setReset] = useState(false);
 
   useEffect(() => {
 
     if(isLoaded){
         setAnimationType("story")
         setCurrentSceneIndex(0);
-        setCurrentAudioData(storyAudioData);
+        console.log(AnimationScriptData);
+        //setCurrentAudioData(storyAudioData);
         if(animationType === "story")
           {
             // setPreviousBackgroundImage(backgroundImage);
-             setBackgroundImage(AnimationScriptData[currentSceneIndex].backgroud);
+              setBackgroundImage(`back1`);
           }
     }
 
@@ -53,13 +57,13 @@ export const PlayerController = ({ children }) => {
           return;
       }
 
-      setCurrentSceneScript(AnimationScriptData[currentSceneIndex].script);
+      setCurrentSceneScript(AnimationScriptData[currentSceneIndex].Script);
       updateAnimationState(currentSceneIndex,0,0);
 
       if(animationType === "story")
       {
          setPreviousBackgroundImage(backgroundImage);
-         setBackgroundImage(AnimationScriptData[currentSceneIndex].backgroud);
+         setBackgroundImage(`back1`);
       }
 
   },[currentSceneIndex]);
@@ -67,15 +71,17 @@ export const PlayerController = ({ children }) => {
 
   const updateAnimationState = (currentSceneIndex,currentSpeechIndex,currentDialogIndex) => {
 
-    let currentSceneScriptData = AnimationScriptData[currentSceneIndex].script;
+    let currentSceneScriptData = AnimationScriptData[currentSceneIndex].Script;
+    console.log("babaji");
+    console.log(currentSceneScriptData);
 
     const animationStateObj = {
       currentSpeechIndex: currentSpeechIndex,
       speechLength: currentSceneScriptData.length,
       currentDialogIndex: currentDialogIndex,
-      currentDialogsLength: currentSceneScriptData[currentSpeechIndex].speech.length,
-      currentDialogs: currentSceneScriptData[currentSpeechIndex].speech,
-      currentSpeakers: currentSceneScriptData[currentSpeechIndex].speaker,
+      currentDialogsLength: currentSceneScriptData[currentSpeechIndex].Speech.length,
+      currentDialogs: currentSceneScriptData[currentSpeechIndex].Speech,
+      currentSpeakers: currentSceneScriptData[currentSpeechIndex].Speaker,
       currentView: "fullView",
     }
 
@@ -86,7 +92,8 @@ export const PlayerController = ({ children }) => {
     console.log("Popopop")
     setAvatarVisibility(false);
     setPreviousBackgroundImage(backgroundImage);
-    setBackgroundImage(AnimationScriptData[(currentSceneIndex+1)%AnimationScriptData.length].backgroud);
+    //modified
+    setBackgroundImage(`back${((currentSceneIndex+1)%animationScriptData.length) + 1}`);
     setTimeout(() => {
       setAvatarVisibility(true);
       setCurrentSceneIndex(currentSceneIndex+1);
@@ -120,12 +127,14 @@ export const PlayerController = ({ children }) => {
            //setCurrentSceneIndex(currentSceneIndex + 1);
            return;
         }
-        nextDialogs = currentSceneScript[nextSpeechIndex].speech;
+        nextDialogs = currentSceneScript[nextSpeechIndex].Speech;
         nextDialogLength= nextDialogs.length;
-        nextSpeaker= currentSceneScript[nextSpeechIndex].speaker;
+        nextSpeaker= currentSceneScript[nextSpeechIndex].Speaker;
         nextDialogIndex=0;
-        nextCurrentView= currentSceneScript[nextSpeechIndex].viewType;
-        setCharacterLook(currentSceneScript[nextSpeechIndex].look);
+        nextCurrentView= currentSceneScript[nextSpeechIndex].View;
+        console.log("meowwww!")
+        console.log(currentSceneScript[nextSpeechIndex].Look)
+        setCharacterLook(currentSceneScript[nextSpeechIndex].Look);
 
     }
     else{

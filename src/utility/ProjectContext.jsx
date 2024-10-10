@@ -20,7 +20,7 @@ export const ProjectInfoProvider = ({children}) => {
     const [animationScript,setAnimationScript] = useState([]);
     const [audioData,setAudioData] = useState([]);
     const [isLoading,setIsLoading] = useState(false);
-    const [canavsLoading,setCanvasLoading] = useState(false);
+    const [canavsLoaded,setCanvasLoaded] = useState(false);
     const [save, setSave] = useState(false);
     const [alert,setAlert] = useState(true);
     const [alertMessage,setAlertMessage] = useState(true);
@@ -55,12 +55,12 @@ export const ProjectInfoProvider = ({children}) => {
      const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
      const getAnimationData = async () => {
-         setCanvasLoading(true);
+         setCanvasLoaded(false);
          console.log("pelo pelo");
          Promise.all([getAnimationScript(),getAudio(), delay(4000)]).then(
             () => {
                 console.log("bale bale");
-                setCanvasLoading(false);
+                setCanvasLoaded(true);
             }
          )
      }
@@ -138,7 +138,9 @@ export const ProjectInfoProvider = ({children}) => {
         setScript,
         animationScript,
         setAnimationScript,
+        AudioData,
         generateScript,
+        canavsLoaded,
         save,
         setSave,
         saveContentToServer,

@@ -4,6 +4,7 @@ import animationScriptData from '../../data/animationScriptData';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { useProjectInfo } from '../../utility/ProjectContext';
+import { updateAnimationScript } from '../../api/projectApi';
 
 
 const FCCorrespondingColors = {
@@ -21,7 +22,7 @@ const SelectBtn = ({val,data,updateValue,label}) => {
     return (
         <TextField
         select
-        defaultValue={val}
+        value={val}
           InputProps={{
             style: {
               height: '22px',
@@ -65,6 +66,8 @@ const ExpandedDialogBox = ({obj,sind,sceneInd,scriptInd,isSelected,setIsSelected
         console.log(updatedAnimationScript);
         setSave(true);
     }
+
+
 
     return (
         <Grid container sx={styles.ExpandedDialogBoxStyle}>
@@ -140,6 +143,16 @@ const DynamicDialogBox = ({obj,sind,sceneInd,scriptInd,animationScript,setAnimat
 const AnimationSpeechBox = ({sceneInd,scriptInd,animationScript,setAnimationScript}) => {
 
     const viewType = ["Listener", "Character"]
+    const {setSave} = useProjectInfo();
+    const updateAnimationScriptObj = (event,label) => {
+        const updatedSceneAnimationScript = [...animationScript[sceneInd].Script];
+        updatedSceneAnimationScript[scriptInd][label]=event.target.value;
+        const updatedAnimationScript = [...animationScript];
+        updatedAnimationScript[sceneInd].Script=updatedSceneAnimationScript;
+        setAnimationScript(updatedAnimationScript);
+        console.log(updatedAnimationScript);
+        setSave(true);
+    }
 
     return (
       <Grid container sx={styles.AnimationSpeechBoxStyle}>
@@ -152,7 +165,7 @@ const AnimationSpeechBox = ({sceneInd,scriptInd,animationScript,setAnimationScri
                      <Typography style={{height: '25px', fontFamily:'karma', fontSize:'14px',padding:'2px' }}>{animationScript[sceneInd].Script[scriptInd].Speaker}</Typography>
                     </Grid>
                     <Grid item>
-                        <SelectBtn val={animationScript[sceneInd].Script[scriptInd].Look} data={viewType}/>
+                        <SelectBtn val={animationScript[sceneInd].Script[scriptInd].Look} data={viewType} label={"Look"} updateValue={updateAnimationScriptObj}/>
                     </Grid>
                 </Grid>
                 </Grid>
