@@ -36,8 +36,8 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
    return(
        <Grid2 container spacing={2} sx={styles.scriptTypeBox}>
        {
-          ["podcast","story"].map((val) => (
-            <Grid2 size={5} 
+          ["podcast","story"].map((val,ind) => (
+            <Grid2 key={ind} size={5} 
               onClick={() => setScriptType(val)}
               sx={{...styles.scriptTypeSubBox, 
                   backgroundColor:(scriptType === val)? '#3F3A39': 'white',

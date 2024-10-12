@@ -39,7 +39,7 @@ const AnkryptCreatorPage = () => {
         onClose={() => {setAlert(false)}}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} // Position at bottom-center
       >
-       <Typography variant="contained" sx={{backgroundColor:'#3F3A39',color:'white',padding:'10px',borderRadius:'7px'}}>{alertMessage}</Typography>
+       <Typography sx={{backgroundColor:'#3F3A39',color:'white',padding:'10px',borderRadius:'7px'}}>{alertMessage}</Typography>
       </Snackbar>
        </Box>
   )

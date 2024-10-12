@@ -192,7 +192,7 @@ const AnimationSpeechBox = ({sceneInd,scriptInd,animationScript,setAnimationScri
 const AnimationScriptViewBox = () => {
 
     const {animationScript, setAnimationScript,isLoading} = useProjectInfo(); 
-    console.log(animationScript);
+   // console.log(animationScript);
 
     if(isLoading)
     {

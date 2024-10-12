@@ -1,8 +1,8 @@
 import React, {useState, useContext, createContext, useEffect} from "react";
-import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript } from "../api/projectApi";
+import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus } from "../api/projectApi";
 //import scriptData from "../data/scriptData";
 import AudioData from "../data/audioData.json";
-
+//import animationScriptData from "../data/animationScriptData";
 const ProjectContext = createContext();
 
 export const useProjectInfo= () => {
@@ -21,9 +21,11 @@ export const ProjectInfoProvider = ({children}) => {
     const [audioData,setAudioData] = useState([]);
     const [isLoading,setIsLoading] = useState(false);
     const [canavsLoaded,setCanvasLoaded] = useState(false);
+    const [canavsLoadingMessage, setCanvasLoadingMessage] = useState("Creating Your Video :)")
     const [save, setSave] = useState(false);
     const [alert,setAlert] = useState(true);
     const [alertMessage,setAlertMessage] = useState(true);
+
 
     const getScript = async () => {
         //console.log(scriptData.scenes);
@@ -42,7 +44,50 @@ export const ProjectInfoProvider = ({children}) => {
      }
 
      const getAudio = async (projectId) => {
-           setAudioData(AudioData);
+           try{
+                const audioResponse = await fetchAudioData(projectId);
+                 if(audioResponse.status == -1){ /*retry*/ return;};
+                if(audioResponse.status == 1){
+                    console.log("Audio Data Already Present! setting it!");
+                    setAudioData(audioResponse.data);
+                    return;
+                }
+                if(audioResponse.status == 0)
+                {
+                    console.log("Audio Data Not Present! Creating Audio!");
+                    const audioCreationRequestResponse = await createAudioRequest(projectId);
+                    if(audioCreationRequestResponse == 0){ /*retry*/ return; };
+                    if(audioCreationRequestResponse)
+                    {
+                        // fetch Status periodically
+                        const fetchInterval = setInterval(async () => {
+                            const statusResponse = await getAudioCreationStatus(projectId);
+                            if(statusResponse.status == 0){ /*retry*/ 
+                                clearInterval(fetchInterval); 
+                                return}
+                            if(statusResponse.status == 2)
+                            {
+                                const audioResponse = await fetchAudioData(projectId);
+                                console.log("Audio Created Successfully!");
+                                setAudioData(audioResponse.data);
+                                clearInterval(fetchInterval);
+                                return;
+                            }
+                            if(statusResponse.status == 1)
+                            {
+                                console.log("Audio Status : "+ statusResponse.status);
+                                setCanvasLoadingMessage(statusResponse.message);
+                            }
+                        }, 5000)
+                       
+                    }
+                }
+           }
+           catch(err)
+           {
+                console.log("error");
+                return;
+           }
      }
 
      const generateScript = async (prompt) => {
@@ -57,10 +102,10 @@ export const ProjectInfoProvider = ({children}) => {
      const getAnimationData = async () => {
          setCanvasLoaded(false);
          console.log("pelo pelo");
-         Promise.all([getAnimationScript(),getAudio(), delay(4000)]).then(
+         Promise.all([getAnimationScript(),getAudio(1), delay(1)]).then(
             () => {
                 console.log("bale bale");
-                setCanvasLoaded(true);
+                //setCanvasLoaded(true);
             }
          )
      }
@@ -141,6 +186,7 @@ export const ProjectInfoProvider = ({children}) => {
         AudioData,
         generateScript,
         canavsLoaded,
+        canavsLoadingMessage,
         save,
         setSave,
         saveContentToServer,

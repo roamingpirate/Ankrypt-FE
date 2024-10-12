@@ -47,3 +47,39 @@ export const updateAnimationScript = async (projectId,animationScript) => {
     }
 }
 
+
+export const createAudioRequest = async (projectId) => {
+    try{
+        console.log("sending request to create audio for AS");
+        const response = await axios.get(`${url}/audio/create/${projectId}`);
+        return 1;
+    }
+    catch(err){
+        return 0;
+    }
+}
+
+
+export const getAudioCreationStatus = async (projectId) => {
+    try{
+        console.log("Getting Status");
+        const response = await axios.get(`${url}/audio/status/${projectId}`);
+        return response.data;
+    }
+    catch(err)
+    {
+        return {status : 0};
+    }
+}
+
+export const fetchAudioData = async (projectId) => {
+    try{
+        console.log("Trying to get Audio Data");
+        const response = await axios.get(`${url}/audio/${projectId}`);
+        return response.data;
+    }
+    catch(err)
+    {
+        return {status : -1};
+    }
+}
