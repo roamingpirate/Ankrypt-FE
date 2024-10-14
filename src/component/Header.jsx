@@ -20,21 +20,21 @@ const ProgressBox = ({currentStage,handleNext}) => {
 
   return(
     <Grid container spacing={2} >
-        <Box sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 1)?'#9EF5EB':'white'}}
+        <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 1)?'#9EF5EB':'white'}}
              onClick={()=>{(currentStage>=1) && handleNext(1)}}>
           <EditNoteOutlinedIcon sx={{ fontSize: 25 }} />
-        </Box>
+        </Paper>
         <Grid size={4}>
-          <Box sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 2)?'#9EF5EB':'white'}}
+          <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 2)?'#9EF5EB':'white'}}
                onClick={()=>{(currentStage>=2) && handleNext(2)}}>
             <PlayArrowOutlinedIcon sx={{fontSize:25}}/>
-          </Box>
+          </Paper>
         </Grid>
         <Grid size={4}>
-          <Box sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 3)?'#9EF5EB':'white'}}
+          <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 3)?'#9EF5EB':'white'}}
                onClick={()=>{(currentStage>=3) && handleNext(3)}}>
            <DownloadOutlinedIcon sx={{fontSize:25}}/>
-          </Box>
+          </Paper>
         </Grid>
     </Grid>
   )
@@ -80,7 +80,7 @@ export default Header;
 const style = {
   ProgressIcon: {
     borderRadius: 1,
-    border: 1,
+   // border: 1,
     height: '35px',
     width: '35px',
     display: 'flex',

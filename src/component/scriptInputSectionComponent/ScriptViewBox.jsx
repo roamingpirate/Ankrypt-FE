@@ -34,6 +34,7 @@ const SelectBtn = ({val,sceneInd,scriptInd}) => {
 
 
 const DialogBox = ({sceneInd,scriptInd,script,setScript,setSave}) => {
+  const {changesList, setChangesList} = useProjectInfo();
     return (
       <Grid container sx={{ padding: '5px', border:'1px solid grey', borderRadius:'5px',margin:'10px'}}>
              {/* Head */}
@@ -70,7 +71,7 @@ const DialogBox = ({sceneInd,scriptInd,script,setScript,setSave}) => {
                         },
                        }}
                        multiline
-                       onChange={(event) => changeScripData(event,scriptInd,sceneInd,script,setScript,setSave)}
+                       onChange={(event) => changeScripData(event,scriptInd,sceneInd,script,setScript,setSave,changesList,setChangesList)}
                        />
       </Grid>
     )
@@ -103,12 +104,20 @@ const ScriptViewComp = () => {
 }
 
 
-const changeScripData = (event,scriptInd,sceneInd,script,setScript,setSave) => {
+const changeScripData = (event,scriptInd,sceneInd,script,setScript,setSave,changesList,setChangesList) => {
+
     const updatedSceneScriptData = [...(script[sceneInd].script)];
     updatedSceneScriptData[scriptInd].Speech = event.target.value;
     const scriptData = [...script];
     scriptData[sceneInd].script = updatedSceneScriptData;
     setScript(scriptData); 
+    const changesListCopy = [...changesList];
+    if (!changesListCopy.includes(`${sceneInd}${scriptInd}`)) {
+      changesListCopy.push(`${sceneInd}${scriptInd}`);
+    }
+    console.log("Change Happened!");
+    console.log(changesList);
+    setChangesList(changesListCopy);
     setSave(true);
 }
 

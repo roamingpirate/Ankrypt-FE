@@ -21,6 +21,15 @@ export const updateScript = async (projectId,script) => {
     }
 }
 
+export const fetchChangesList = async (projectId) => {
+    const response = await axios.get(`${url}/script/changes/${projectId}`);
+    return response.data;
+}
+
+export const updateChangesList = async (projectId,changesList) => {
+    const response = await axios.post(`${url}/script/changes/${projectId}`,{changesList: changesList});
+}
+
 export const fetchGeneratedScript = async (projectId, prompt) => {
     const response = await axios.post(`${url}/script`,prompt);
     console.log(response.data);
@@ -52,6 +61,17 @@ export const createAudioRequest = async (projectId) => {
     try{
         console.log("sending request to create audio for AS");
         const response = await axios.get(`${url}/audio/create/${projectId}`);
+        return 1;
+    }
+    catch(err){
+        return 0;
+    }
+}
+
+export const updateAudioRequest = async (projectId) => {
+    try{
+        console.log("sending request to update audio for AS");
+        const response = await axios.get(`${url}/audio/update/${projectId}`);
         return 1;
     }
     catch(err){

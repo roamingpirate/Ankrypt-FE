@@ -8,6 +8,7 @@ import faceExpressions from '../data/FaceExpressionConfig'
 import { usePlayer } from '../hooks/usePlayer'
 import gsap from "gsap";
 import {useGSAP} from "@gsap/react";
+import axios from 'axios'
 //import audioData from '../data/storyAudioData';
 
 const corresponding = {
@@ -27,18 +28,21 @@ export function Avatar(props) {
 
   const { camera } = useThree();
   
-  const {avatarName, isSitting, targetPosition,avatarType,charCoord, ...prop} = props;
+  const {avatarName, isSitting, targetPosition,avatarType,charCoord,avatarId,avatarGender, ...prop} = props;
 
-  
+  const avatarUrl = `https://models.readyplayer.me/${avatarId}.glb?morphTargets=ARKit,Oculus%20Visemes`
+  const [avatarBodyType,setAvatarBodyType] = useState("male");
 
-  const { scene } = useGLTF(`models/${avatarType}.glb`);
+
+ // const { scene } = useGLTF(`models/${avatarType}.glb`);
+  const { scene } = useGLTF(avatarUrl);
   const clone = React.useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const { nodes, materials } = useGraph(clone);
 
   const avatarRef = useRef();
   const animationType = isSitting ? 'SittingAnimation' : 'Animation'
-  const {animations : avatarAnimation} = useGLTF(isSitting?`animations/${avatarType}SittingAnimation.glb`:`animations/${avatarType}Animation.glb`);
-  const {animations : avatarPose} = useGLTF(`animations/${avatarType}Pose.glb`);
+  const {animations : avatarAnimation} = useGLTF(isSitting?`animations/${avatarGender}AvatarSittingAnimation.glb`:`animations/${avatarGender}AvatarAnimation.glb`);
+  const {animations : avatarPose} = useGLTF(`animations/${avatarGender}AvatarPose.glb`);
 
   const [blink,setBlink] = useState(false);
 
@@ -285,11 +289,14 @@ export function Avatar(props) {
   },[animationState]);
 
 
+
+
   useEffect(() => {
 
     avatarRef.current.castShadow = true;
     avatarRef.current.receiveShadow = true;
     mixer.timeScale = 0.8;
+
 
     //pose logic 
     if(isSitting){
@@ -317,17 +324,7 @@ export function Avatar(props) {
   return (
     <group {...prop} visible={avatarVisibility} scale={0.8} dispose={null}  ref={avatarRef}>
       <group rotation-x={0}>
-      <primitive object={nodes.Hips} />
-      <skinnedMesh geometry={nodes.Wolf3D_Hair.geometry} material={materials.Wolf3D_Hair} skeleton={nodes.Wolf3D_Hair.skeleton} />
-      <skinnedMesh geometry={nodes.Wolf3D_Outfit_Top.geometry} material={materials.Wolf3D_Outfit_Top} skeleton={nodes.Wolf3D_Outfit_Top.skeleton} />
-      <skinnedMesh geometry={nodes.Wolf3D_Outfit_Bottom.geometry} material={materials.Wolf3D_Outfit_Bottom} skeleton={nodes.Wolf3D_Outfit_Bottom.skeleton} />
-      <skinnedMesh geometry={nodes.Wolf3D_Outfit_Footwear.geometry} material={materials.Wolf3D_Outfit_Footwear} skeleton={nodes.Wolf3D_Outfit_Footwear.skeleton} />
-      <skinnedMesh geometry={nodes.Wolf3D_Body.geometry} material={materials.Wolf3D_Body} skeleton={nodes.Wolf3D_Body.skeleton} />
-      <skinnedMesh name="EyeLeft" geometry={nodes.EyeLeft.geometry} material={materials.Wolf3D_Eye} skeleton={nodes.EyeLeft.skeleton} morphTargetDictionary={nodes.EyeLeft.morphTargetDictionary} morphTargetInfluences={nodes.EyeLeft.morphTargetInfluences} />
-      <skinnedMesh name="EyeRight" geometry={nodes.EyeRight.geometry} material={materials.Wolf3D_Eye} skeleton={nodes.EyeRight.skeleton} morphTargetDictionary={nodes.EyeRight.morphTargetDictionary} morphTargetInfluences={nodes.EyeRight.morphTargetInfluences} />
-      <skinnedMesh name="Wolf3D_Head" geometry={nodes.Wolf3D_Head.geometry} material={materials.Wolf3D_Skin} skeleton={nodes.Wolf3D_Head.skeleton} morphTargetDictionary={nodes.Wolf3D_Head.morphTargetDictionary} morphTargetInfluences={nodes.Wolf3D_Head.morphTargetInfluences} />
-      <skinnedMesh name="Wolf3D_Teeth" geometry={nodes.Wolf3D_Teeth.geometry} material={materials.Wolf3D_Teeth} skeleton={nodes.Wolf3D_Teeth.skeleton} morphTargetDictionary={nodes.Wolf3D_Teeth.morphTargetDictionary} morphTargetInfluences={nodes.Wolf3D_Teeth.morphTargetInfluences} />
-    </group>
+     <primitive object={clone}/>    </group>
     </group>
   )
 }

@@ -12,6 +12,7 @@ import StoryInputComp from './scriptInputSectionComponent/ScriptInputBox';
 import ScriptViewComp from './scriptInputSectionComponent/ScriptViewBox';
 import AnimationScriptViewBox from './animationSectionComponent/AnimationScriptViewBox';
 import CanvasViewBox from './animationSectionComponent/CanvasViewBox';
+import { Height } from '@mui/icons-material';
 
 {/* <Box sx={{height:'100vh',display: 'flex',flexDirection: 'column'}}>
 <h1 style={{backgroundColor: FCCorrespondingColors['Smile']}}>Hello</h1>
@@ -27,7 +28,7 @@ import CanvasViewBox from './animationSectionComponent/CanvasViewBox';
 
 const AnimationSection = () => {
   return (
-    <Box sx={{display: 'flex', flexDirection:'row',overflow:'auto'}}>
+    <Box sx={{display: 'flex', flexDirection:'row',overflow:'auto',height:'100%'}}>
          <Box sx={{width: '40%', borderRight:1}}>
           <CanvasViewBox/>
           </Box>

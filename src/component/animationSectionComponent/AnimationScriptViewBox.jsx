@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Grid2 as Grid,Typography,TextField,MenuItem, IconButton, Button, Divider,Tooltip,CircularProgress} from '@mui/material';
+import { Grid2 as Grid,Typography,TextField,MenuItem, IconButton, Button, Divider,Tooltip,CircularProgress,Paper} from '@mui/material';
 import animationScriptData from '../../data/animationScriptData';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
@@ -44,11 +44,11 @@ const SelectBtn = ({val,data,updateValue,label}) => {
 
 const DialogBox = ({obj}) => {
     return (
-            <div style={{...styles.DialogBoxStyle,backgroundColor:FCCorrespondingColors[obj.FaceExpression]}}> 
+            <Paper elevation={1} style={{...styles.DialogBoxStyle,backgroundColor:FCCorrespondingColors[obj.FaceExpression]}}> 
             <Typography>
                 {obj.Text}
             </Typography>
-            </div>
+            </Paper>
     )
 }
 const ExpandedDialogBox = ({obj,sind,sceneInd,scriptInd,isSelected,setIsSelected,animationScript,setAnimationScript}) => {
@@ -74,11 +74,11 @@ const ExpandedDialogBox = ({obj,sind,sceneInd,scriptInd,isSelected,setIsSelected
 
                 {/* Dialog */}
 
-                <Grid container style={{...styles.DialogBoxStyle,backgroundColor:FCCorrespondingColors[obj.FaceExpression],width:'70%'}}>
+                <Paper style={{...styles.DialogBoxStyle,backgroundColor:FCCorrespondingColors[obj.FaceExpression],width:'70%'}}>
                     <Typography>
                         {obj.Text}
                     </Typography>
-                </Grid>
+                </Paper>
 
                 {/* Animation and FaceExpression Select */}
 
@@ -155,14 +155,14 @@ const AnimationSpeechBox = ({sceneInd,scriptInd,animationScript,setAnimationScri
     }
 
     return (
-      <Grid container sx={styles.AnimationSpeechBoxStyle}>
+      <Paper elevation={2} sx={styles.AnimationSpeechBoxStyle}>
 
              {/* Head */}
             <Grid container sx={{ display: 'flex', alignItems: 'center',width:'100%' }}>
                 <Grid item sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>
                     <Grid item>
-                     <Typography style={{height: '25px', fontFamily:'karma', fontSize:'14px',padding:'2px' }}>{animationScript[sceneInd].Script[scriptInd].Speaker}</Typography>
+                     <Typography style={{height: '25px', fontFamily:'karma', fontSize:'14px',padding:'2px',fontWeight:'600' }}>{animationScript[sceneInd].Script[scriptInd].Speaker}</Typography>
                     </Grid>
                     <Grid item>
                         <SelectBtn val={animationScript[sceneInd].Script[scriptInd].Look} data={viewType} label={"Look"} updateValue={updateAnimationScriptObj}/>
@@ -185,7 +185,7 @@ const AnimationSpeechBox = ({sceneInd,scriptInd,animationScript,setAnimationScri
                 }
             </Grid>
 
-      </Grid>
+      </Paper>
     )
 }
 
@@ -247,7 +247,7 @@ const styles = {
       marginTop:'5px',
     },
     DialogBoxStyle : {
-        border:'1px solid grey',
+      //  border:'1px solid grey',
         cursor: 'pointer',
         borderRadius:'5px',
         margin:'5px',
@@ -264,9 +264,10 @@ const styles = {
     AnimationSpeechBoxStyle: { 
             padding: '8px', 
             paddingLeft:'10px', 
-            border:'1px solid grey', 
+           // border:'1px solid grey', 
             borderRadius:'5px',
-            margin:'10px'
+            margin:'10px',
+            marginBottom:'15px'
     }
   
   }

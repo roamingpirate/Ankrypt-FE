@@ -1,6 +1,7 @@
-import { Typography, CircularProgress } from "@mui/material";
+import { Typography, CircularProgress, Grid2, Paper } from "@mui/material";
 import Experience  from "../../canvas/Experience"
 import { useProjectInfo } from "../../utility/ProjectContext";
+import { BorderRight } from "@mui/icons-material";
 
 
 
@@ -21,7 +22,9 @@ const CanvasViewBox = () => {
     }
 
     return(
+        <Paper elevation={3} style={{display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',padding:'10px',margin:'10px', borderRadius:'10px'}}>
         <Experience/>
+        </Paper>
     )
 }
 

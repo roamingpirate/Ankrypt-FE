@@ -1,5 +1,5 @@
 import React, {useState, useContext, createContext, useEffect} from "react";
-import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus } from "../api/projectApi";
+import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest } from "../api/projectApi";
 //import scriptData from "../data/scriptData";
 import AudioData from "../data/audioData.json";
 //import animationScriptData from "../data/animationScriptData";
@@ -9,6 +9,27 @@ export const useProjectInfo= () => {
     return useContext(ProjectContext);
 }
 
+const speakersListD = [
+    {
+      avatarName: "Jordan",
+      avatar: "av",
+      avatarUrl: "https://models.readyplayer.me/670be6ab9e494b4895c729bd.glb?morphTargets=ARKit,Oculus%20Visemes",
+      avatarId: "670ce9d48b2330afb3d7eaf9",
+      gender: "female"
+    },
+    {
+      avatarName: "Michael",
+      avatar: "av",
+      avatarUrl: "https://models.readyplayer.me/670be6ab9e494b4895c729bd.glb?morphTargets=ARKit,Oculus%20Visemes",
+      avatarId: "670ce9d48b2330afb3d7eaf9",
+      gender:"female",
+    },
+    // {
+    //   avatarName: "Don",
+    //   avatar: "av",
+    //   avatarUrl: "https://models.readyplayer.me/670be6ab9e494b4895c729bd.glb?morphTargets=ARKit,Oculus%20Visemes&quality=high"
+    // }
+  ]
 
 
 export const ProjectInfoProvider = ({children}) => {
@@ -17,7 +38,9 @@ export const ProjectInfoProvider = ({children}) => {
     const [currentStage, setCurrentStage] = useState(1);
     const [scriptData, setScriptData] = useState();
     const [script,setScript] = useState([]);
+    const [changesList, setChangesList] = useState([]);
     const [animationScript,setAnimationScript] = useState([]);
+    const [speakerList, setSpeakerList] = useState(speakersListD);
     const [audioData,setAudioData] = useState([]);
     const [isLoading,setIsLoading] = useState(false);
     const [canavsLoaded,setCanvasLoaded] = useState(false);
@@ -30,8 +53,10 @@ export const ProjectInfoProvider = ({children}) => {
     const getScript = async () => {
         //console.log(scriptData.scenes);
         const scriptDa = await fetchScript("1");
+        const changesListDa = await fetchChangesList("1");
         //console.log(scriptDa);
         setScriptData(scriptDa);
+        setChangesList(changesListDa);
         setScript(scriptDa.scenes);
      }
 
@@ -44,6 +69,7 @@ export const ProjectInfoProvider = ({children}) => {
      }
 
      const getAudio = async (projectId) => {
+        console.log("Fetching audio..")
            try{
                 const audioResponse = await fetchAudioData(projectId);
                  if(audioResponse.status == -1){ /*retry*/ return;};
@@ -52,10 +78,10 @@ export const ProjectInfoProvider = ({children}) => {
                     setAudioData(audioResponse.data);
                     return;
                 }
-                if(audioResponse.status == 0)
+                if(audioResponse.status == 0 || audioResponse.status == 2)
                 {
                     console.log("Audio Data Not Present! Creating Audio!");
-                    const audioCreationRequestResponse = await createAudioRequest(projectId);
+                    const audioCreationRequestResponse = (audioResponse.status == 2)?await updateAudioRequest(projectId):await createAudioRequest(projectId);
                     if(audioCreationRequestResponse == 0){ /*retry*/ return; };
                     if(audioCreationRequestResponse)
                     {
@@ -71,6 +97,7 @@ export const ProjectInfoProvider = ({children}) => {
                                 console.log("Audio Created Successfully!");
                                 setAudioData(audioResponse.data);
                                 clearInterval(fetchInterval);
+                                setCanvasLoaded(true);
                                 return;
                             }
                             if(statusResponse.status == 1)
@@ -93,7 +120,9 @@ export const ProjectInfoProvider = ({children}) => {
      const generateScript = async (prompt) => {
             setIsLoading(true);
             const scriptData = await fetchGeneratedScript("1",prompt);
+            await updateChangesList("1", []);
             setScript(scriptData.scenes);
+            setChangesList([]);
             setIsLoading(false);
      }
 
@@ -105,7 +134,7 @@ export const ProjectInfoProvider = ({children}) => {
          Promise.all([getAnimationScript(),getAudio(1), delay(1)]).then(
             () => {
                 console.log("bale bale");
-                //setCanvasLoaded(true);
+                
             }
          )
      }
@@ -116,6 +145,7 @@ export const ProjectInfoProvider = ({children}) => {
             {
                 const copySD = {...scriptData, scenes : script}
                 await updateScript("1",copySD);
+                await updateChangesList("1",changesList);
                 setAlert(true);
                 setAlertMessage("Script Successfully Saved!");
                 setSave(false);
@@ -183,6 +213,8 @@ export const ProjectInfoProvider = ({children}) => {
         setScript,
         animationScript,
         setAnimationScript,
+        speakerList,
+        setSpeakerList,
         AudioData,
         generateScript,
         canavsLoaded,
@@ -195,7 +227,9 @@ export const ProjectInfoProvider = ({children}) => {
         setAlert,
         alertMessage,
         handleNext,
-        isLoading}}>
+        isLoading,
+        changesList,
+        setChangesList}}>
             {children}
         </ProjectContext.Provider>
     )

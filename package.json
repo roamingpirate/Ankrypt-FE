@@ -18,14 +18,15 @@
     "@mui/material": "^6.0.2",
     "@react-three/drei": "^9.114.2",
     "@react-three/fiber": "^8.17.9",
+    "@readyplayerme/react-avatar-creator": "^0.5.0",
+    "@types/three": "0.152.1",
     "axios": "^1.7.7",
     "gsap": "^3.12.5",
     "leva": "^0.9.35",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
-    "three": "0.153.0",
-    "@types/three": "0.152.1"
+    "three": "0.153.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

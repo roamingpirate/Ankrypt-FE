@@ -12,23 +12,29 @@ import {
          MenuItem,
          ButtonGroup,
          Avatar,
+         Modal,
 } from '@mui/material';
 import { useProjectInfo } from '../../utility/ProjectContext';
+import AvatarSelector from '../AvatarSelector';
+import zIndex from '@mui/material/styles/zIndex';
 
 
 const toneD = ['funny', 'informative', 'narative']
 const speakersListD = [
   {
     name: "Jordan",
-    avatar: "av"
+    avatar: "av",
+    avatarUrl: ""
   },
   {
     name: "Michael",
-    avatar: "av"
+    avatar: "av",
+    avatarUrl: ""
   },
   {
     name: "Don",
-    avatar: "av" 
+    avatar: "av",
+    avatarUrl: ""
   }
 ]
 
@@ -74,12 +80,16 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
 
 
  const SpeakerListBox = ({speakerCount,speakersList,setSpeakerList}) => {
+
+      const [open,setOpen] = useState(false);
+
       return(
+        <>
         <Grid2 sx={{border:"1px solid grey",borderRadius:'5px',marginTop:'10px'}}>
           {/* Heading and Edit Button*/}
           <Grid2 sx={{display:'flex', justifyContent:'space-between',padding:'10px'}}>
           <Typography sx={{color:'grey',fontSize:'14px',fontWeight:'80',paddingBottom:'3px'}}>Speakers</Typography>
-          <IconButton sx={{padding:'0px'}}>
+          <IconButton sx={{padding:'0px'}} onClick={() => setOpen(true)}>
           <EditIcon sx={{color:'grey',width:'20px',height:'20px'}}/>
           </IconButton>
           </Grid2>
@@ -103,7 +113,7 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
                       <Avatar sx={{width:'22px',height:'22px', blackgroundColor:'white'}}>
                         A
                       </Avatar>
-                      <Typography sx={{color:'white',fontSize:'14px',fontWeight:'80',paddingBottom:'3px'}}>{obj.name}</Typography>
+                      <Typography sx={{color:'white',fontSize:'14px',fontWeight:'80',paddingBottom:'3px'}}>{obj.avatarName}</Typography>
                     </Grid2>
                   )
                 }
@@ -112,6 +122,19 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
             }
           </Grid2>  
         </Grid2>
+        {/* Modal for Avatar Selection */}
+        <Modal  open={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+          BackdropProps={{
+            style: { backgroundColor: 'rgba(0, 0, 0, 0.05)' }, 
+          }}>
+            <Grid2 style={styles.AvatarSelectorModal}>
+                <AvatarSelector/>
+            </Grid2>
+        </Modal>
+        </>
       )
  }
 
@@ -120,7 +143,8 @@ const ScriptInputBox = () => {
 
    const [scriptType, setScriptType] = useState('podcast')
    const [speakerCount,setSpeakerCount] = useState(null);
-   const [speakersList, setSpeakerList] = useState(speakersListD);
+  // const [speakersList, setSpeakerList] = useState(speakersListD);
+   const {speakerList,setSpeakerList} = useProjectInfo();
    const [inputPrompt,setInputPrompt] = useState('');
    const [tone,setTone] = useState('Funny');
    const {generateScript} = useProjectInfo();
@@ -132,7 +156,7 @@ const ScriptInputBox = () => {
   const createScript = async () => {
      const promptData = {
         prompt : inputPrompt,
-        speakers : speakersList.filter((obj,ind) => ind < speakerCount).map((speaker) => speaker.name),
+        speakers : speakerList.filter((obj,ind) => ind < speakerCount).map((speaker) => speaker.avatarName),
         tone : tone
      }
      console.log(promptData);
@@ -176,7 +200,7 @@ const ScriptInputBox = () => {
       </div>
 
      <SpeakerListBox speakerCount={speakerCount} 
-                     speakersList={speakersList} 
+                     speakersList={speakerList} 
                      setSpeakerList={setSpeakerList}/>
 
      <div style={{...styles.row,justifyContent:'space-between', marginTop:'20px',}}>
@@ -229,6 +253,22 @@ const styles = {
     flexDirection: 'row',
     gap:'20px',
     marginTop:'5px',
+  },
+  AvatarSelectorModal: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    backgroundColor:'white',
+    borderRadius:'15px',
+    //border: '0.5px solid grey',
+    zIndex: 5,
+    boxShadow: 24,
+    pt: 2,
+    px: 4,
+    pb: 3,
+    width: '50%',
+    height:'80%',
   }
 
 }
