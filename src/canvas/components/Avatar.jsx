@@ -177,6 +177,7 @@ export function Avatar(props) {
       mixer.timeScale=1;
       if(audio.current === null || audio.current === undefined)
         {
+          console.log("opps");
            return;
         }
 
@@ -278,6 +279,8 @@ export function Avatar(props) {
     setCurrentAnimation(animationToPlay);
     setNextAnimation(nextAnimationToPlay);
     setAnimationNumber(animationNumber + 1);
+    //console.log("aaeyoo");
+    //console.log(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].lipsync);
     avatarFaceExpression.current = animationState.currentDialogs[animationState.currentDialogIndex].FaceExpression;
     audio.current = new Audio("data:audio/mp3;base64," + currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
     if(videoState === "Playing"){

@@ -1,7 +1,7 @@
 import React, {useState, useContext, createContext, useEffect} from "react";
 import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest } from "../api/projectApi";
 //import scriptData from "../data/scriptData";
-import AudioData from "../data/audioData.json";
+//import AudioData from "../data/audioData.json";
 //import animationScriptData from "../data/animationScriptData";
 const ProjectContext = createContext();
 
@@ -75,7 +75,8 @@ export const ProjectInfoProvider = ({children}) => {
                  if(audioResponse.status == -1){ /*retry*/ return;};
                 if(audioResponse.status == 1){
                     console.log("Audio Data Already Present! setting it!");
-                    setAudioData(audioResponse.data);
+                     setAudioData(audioResponse.data);
+                     setCanvasLoaded(true);
                     return;
                 }
                 if(audioResponse.status == 0 || audioResponse.status == 2)
@@ -215,7 +216,7 @@ export const ProjectInfoProvider = ({children}) => {
         setAnimationScript,
         speakerList,
         setSpeakerList,
-        AudioData,
+        audioData,
         generateScript,
         canavsLoaded,
         canavsLoadingMessage,

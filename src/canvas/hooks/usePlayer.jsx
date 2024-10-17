@@ -13,7 +13,7 @@ const PlayerContext = createContext();
 export const PlayerController = ({ children }) => {
 
  // const [isLoaded, setIsLoaded] = useState(true);
- const {animationScript : AnimationScriptData,AudioData: currentAudioData,canavsLoaded: isLoaded} = useProjectInfo();
+ const {animationScript : AnimationScriptData,audioData: currentAudioData,canavsLoaded: isLoaded} = useProjectInfo();
  // const [animationScript,setAnimationScript] = useState();
   const [animationType,setAnimationType] = useState(null);
   const [currentSceneIndex, setCurrentSceneIndex] = useState(null);
