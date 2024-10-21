@@ -14,13 +14,24 @@ const config= {
 
 };
 
+
+
+
+const fetchAvatarBodyType = async (avatarId) => {
+    const response = await axios.get(`https://models.readyplayer.me/${avatarId}.json`);
+    console.log("avatarodyRes");
+    console.log(response);
+    const isMale = (response.data.outfitGender == 'feminine')? false: true;
+    return isMale ? "male" : "female";
+}
+
 const style = { width: '100%', height: '80vh', borderRadius: '10px' };
 
 
 
-  const LoadingCircle = () => {
+const LoadingCircle = () => {
     return <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:'300px'}}><CircularProgress /></div>
-  }
+}
 
 
 const AvatarBox = ({index, speakerList, setSpeakerList, startAvatarCreation}) => {
@@ -31,19 +42,19 @@ const AvatarBox = ({index, speakerList, setSpeakerList, startAvatarCreation}) =>
     const changeAvatarName = (avatarName) => {
         const speakerListCopy = [...speakerList];
         speakerListCopy[index].avatarName = avatarName;
-        setAvatarUrl(speakerListCopy[index].avatarUrl);
-        setAvatarGender(speakerListCopy[index].gender);
         setSpeakerList(speakerListCopy);
     }
 
     useEffect(() => {
         setAvatarName(speakerList[index].avatarName);
+        setAvatarUrl(speakerList[index].avatarUrl);
+        setAvatarGender(speakerList[index].gender);
     }, [speakerList]);
 
     return (
-        <Grid2 style={{border:'1px solid grey', borderRadius: '10px', margin: '10px',padding:'20px',width:'300px',height:'480px'}}>
+        <Grid2 style={{border:'1px solid grey', borderRadius: '10px', margin: '10px',padding:'20px',display:'flex',flex:'1',flexDirection:'column',height:'480px'}}>
             <Suspense fallback={<LoadingCircle/>}>
-            <AvatarDisplay avatarUrl={avatarUrl} avatarGender={avatarGender}/>
+            <AvatarDisplay avatarUrl={avatarUrl} avatarGender={avatarGender} speakerList={speakerList}/>
             </Suspense>
             <TextField variant='outlined' 
                   label="Avatar Name" 
@@ -66,25 +77,16 @@ const AvatarBox = ({index, speakerList, setSpeakerList, startAvatarCreation}) =>
                 </div>
             </Grid2>
         </Grid2>
-        // <AvatarCreator subdomain="ankrypt" config={config} style={style} onAvatarExported={handleOnAvatarExported} />
     )
 }
 
-const fetchAvatarBodyType = async (avatarId) => {
-    const response = await axios.get(`https://models.readyplayer.me/${avatarId}.json`);
-    console.log("avatarodyRes");
-    console.log(response);
-    const isMale = (response.data.outfitGender == 'feminine')? false: true;
-    //setAvatarBodyType(isMale?"male":"female");
-    return isMale ? "male" : "female";
-}
 
-const AvatarSelector = () => {
-    const {speakerList, setSpeakerList} = useProjectInfo();
+
+const AvatarSelector = ({speakerList,setSpeakerList}) => {
+    //const {speakerList, setSpeakerList} = useProjectInfo();
+   // const [speakerList, setSpeakerList] = useState(speakersListD)
     const [creatorMode, setCreatorMode] = useState(false);
     const [avatarCreateIndex, setAvatarCreateIndex] = useState(0);
-
-    //console.log(speakerList);
 
     const startAvatarCreation = (index) => {
         setCreatorMode(true);
@@ -121,10 +123,8 @@ const AvatarSelector = () => {
             {
             speakerList.map((speaker,index) => (
                <AvatarBox key={index} index={index} speakerList={speakerList} setSpeakerList={setSpeakerList} startAvatarCreation={startAvatarCreation}/>
-               //<Typography>Hello</Typography>
-            ))
+             ))
             }
-          {/* <AvatarBox key={0} index={0} speakerList={speakerList} setSpeakerList={setSpeakerList} startAvatarCreation={startAvatarCreation}/> */}
         </Grid2>
         </Grid2>
     )

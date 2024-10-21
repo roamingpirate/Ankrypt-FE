@@ -21,6 +21,22 @@ export const updateScript = async (projectId,script) => {
     }
 }
 
+export const fetchSpeakerList = async (projectId) => {
+    const response = await axios.get(`${url}/speaker/${projectId}`);
+    return response.data;
+}
+
+export const updateSpeakerList = async (projectId,speakerList) => {
+    try{
+        //console.log(JSON.stringify(script));
+        const response = await axios.post(`${url}/speaker/update/${projectId}`, {speakerList: speakerList});
+    }
+    catch(err)
+    {
+        console.log("error");
+    }
+}
+
 export const fetchChangesList = async (projectId) => {
     const response = await axios.get(`${url}/script/changes/${projectId}`);
     return response.data;
@@ -102,4 +118,30 @@ export const fetchAudioData = async (projectId) => {
     {
         return {status : -1};
     }
+}
+
+export const getBackgroundImageStatus = async (projectId) => {
+    try{
+        console.log("Trying to get Image Data");
+        const response = await axios.post(`${url}/background/${projectId}`);
+        return response.data;
+    }
+    catch(err)
+    {
+        //return {status : -1};
+        throw err;
+    }   
+};
+
+export const getBackgroundImageUrls = async (projectId) => {
+    try{
+        console.log("Trying to get Image Urls");
+        const response = await axios.get(`${url}/background/${projectId}`);
+        return response.data;
+    }
+    catch(err)
+    {
+        //return {status : -1};
+        throw err;
+    }   
 }

@@ -6,26 +6,78 @@ import { twoSpeakersPodcastProject, oneSpeakerProject } from "../data/projectDat
 import storyAudioData from '../data/japanAudioData';
 import podcastAudioData from '../data/storyAudioData'
 import { useProjectInfo } from "../../utility/ProjectContext.jsx";
-import animationScriptData from "../../data/animationScriptData.jsx";
+//import animationScriptData from "../../data/animationScriptData.jsx";
+import { getBackgroundImageUrls } from "../../api/projectApi.js";
+import { TextureLoader } from "three";
 
 const PlayerContext = createContext();
 
 export const PlayerController = ({ children }) => {
 
  // const [isLoaded, setIsLoaded] = useState(true);
- const {animationScript : AnimationScriptData,audioData: currentAudioData,canavsLoaded: isLoaded} = useProjectInfo();
+ const {animationScript : AnimationScriptData,audioData: currentAudioData,canavsLoaded: isLoaded,backgroundTextureArray} = useProjectInfo();
  // const [animationScript,setAnimationScript] = useState();
   const [animationType,setAnimationType] = useState(null);
   const [currentSceneIndex, setCurrentSceneIndex] = useState(null);
   const [currentSceneScript, setCurrentSceneScript] = useState([]);
   const [characterLook, setCharacterLook] = useState("Listener");
  // const [currentAudioData, setCurrentAudioData] = useState();
-  const [backgroundImage, setBackgroundImage] = useState("back1");
-  const [previousBackgroundImage, setPreviousBackgroundImage] = useState("back2");
+  const [backgroundImage, setBackgroundImage] = useState(null);
+  const [previousBackgroundImage, setPreviousBackgroundImage] = useState(null);
   const [animationState, setAnimationState] = useState();
   const [videoState, setVideoState] = useState("Paused");
   const [avatarVisibility, setAvatarVisibility] = useState(true);
+  const [backgroundImageUrls,setBackgroundImageUrls] = useState(undefined);
  //const [reset, setReset] = useState(false);
+
+ useEffect(() => {
+  console.log(backgroundImage);
+  console.log('Previous Background:', previousBackgroundImage);
+}, [isLoaded]);
+
+
+async function loadTextures(urls) {
+  const loader = new TextureLoader();
+
+  const loadTexture = (url) => {
+    return new Promise((resolve, reject) => {
+      loader.load(
+        url,
+        (texture) => resolve(texture),  // On success
+        undefined,  // On progress
+        (err) => reject(err)  // On error
+      );
+    });
+  };
+
+  // Use Promise.all to load all textures asynchronously
+  const textures = await Promise.all(urls.map(url => loadTexture(url)));
+  
+  return textures;  // Returns an array of textures
+}
+
+
+   const updateBU = async () => {
+    const response = await getBackgroundImageUrls(1);
+    const textureArray = await loadTextures(response);
+    setBackgroundImageUrls(textureArray);  
+    // const imagesPromiseList = []
+    // for (const i of response) {
+    //   imagesPromiseList.push(preloadImage(i))
+    // }
+    // await Promise.all(imagesPromiseList)
+     console.log(response);
+     
+   }
+
+   useEffect(() =>{
+    if(backgroundImageUrls != undefined){
+        console.log(backgroundImageUrls);
+        console.log(backgroundImageUrls[0]);
+        setPreviousBackgroundImage(backgroundImageUrls[0]);
+        setBackgroundImage(backgroundImageUrls[0]);
+    }
+    },[backgroundImageUrls]);
 
   useEffect(() => {
 
@@ -36,8 +88,13 @@ export const PlayerController = ({ children }) => {
         //setCurrentAudioData(storyAudioData);
         if(animationType === "story")
           {
-            // setPreviousBackgroundImage(backgroundImage);
-              setBackgroundImage(`back1`);
+            // setPreviousBackgroundImage(backgroundImage);  
+              
+              
+          }
+          //updateBU();
+          if(backgroundTextureArray != []){
+            setBackgroundImageUrls(backgroundTextureArray);
           }
     }
 
@@ -60,11 +117,11 @@ export const PlayerController = ({ children }) => {
       setCurrentSceneScript(AnimationScriptData[currentSceneIndex].Script);
       updateAnimationState(currentSceneIndex,0,0);
 
-      if(animationType === "story")
-      {
-         setPreviousBackgroundImage(backgroundImage);
-         setBackgroundImage(`back1`);
-      }
+      // if(animationType === "story")
+      // {
+      //    setPreviousBackgroundImage(backgroundImage);
+      //    setBackgroundImage(`back1`);
+      // }
 
   },[currentSceneIndex]);
 
@@ -93,7 +150,7 @@ export const PlayerController = ({ children }) => {
     setAvatarVisibility(false);
     setPreviousBackgroundImage(backgroundImage);
     //modified
-    setBackgroundImage(`back${((currentSceneIndex+1)%animationScriptData.length) + 1}`);
+    setBackgroundImage(backgroundImageUrls[((currentSceneIndex+1)%AnimationScriptData.length)]);
     setTimeout(() => {
       setAvatarVisibility(true);
       setCurrentSceneIndex(currentSceneIndex+1);

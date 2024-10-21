@@ -1,35 +1,14 @@
 import React, {useState, useContext, createContext, useEffect} from "react";
-import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest } from "../api/projectApi";
+import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest, getBackgroundImageStatus, fetchSpeakerList, getBackgroundImageUrls } from "../api/projectApi";
 //import scriptData from "../data/scriptData";
 //import AudioData from "../data/audioData.json";
 //import animationScriptData from "../data/animationScriptData";
+import { TextureLoader } from "three";
 const ProjectContext = createContext();
 
 export const useProjectInfo= () => {
     return useContext(ProjectContext);
 }
-
-const speakersListD = [
-    {
-      avatarName: "Jordan",
-      avatar: "av",
-      avatarUrl: "https://models.readyplayer.me/670be6ab9e494b4895c729bd.glb?morphTargets=ARKit,Oculus%20Visemes",
-      avatarId: "670ce9d48b2330afb3d7eaf9",
-      gender: "female"
-    },
-    {
-      avatarName: "Michael",
-      avatar: "av",
-      avatarUrl: "https://models.readyplayer.me/670be6ab9e494b4895c729bd.glb?morphTargets=ARKit,Oculus%20Visemes",
-      avatarId: "670ce9d48b2330afb3d7eaf9",
-      gender:"female",
-    },
-    // {
-    //   avatarName: "Don",
-    //   avatar: "av",
-    //   avatarUrl: "https://models.readyplayer.me/670be6ab9e494b4895c729bd.glb?morphTargets=ARKit,Oculus%20Visemes&quality=high"
-    // }
-  ]
 
 
 export const ProjectInfoProvider = ({children}) => {
@@ -40,7 +19,7 @@ export const ProjectInfoProvider = ({children}) => {
     const [script,setScript] = useState([]);
     const [changesList, setChangesList] = useState([]);
     const [animationScript,setAnimationScript] = useState([]);
-    const [speakerList, setSpeakerList] = useState(speakersListD);
+    const [speakerList, setSpeakerList] = useState([]);
     const [audioData,setAudioData] = useState([]);
     const [isLoading,setIsLoading] = useState(false);
     const [canavsLoaded,setCanvasLoaded] = useState(false);
@@ -48,6 +27,8 @@ export const ProjectInfoProvider = ({children}) => {
     const [save, setSave] = useState(false);
     const [alert,setAlert] = useState(true);
     const [alertMessage,setAlertMessage] = useState(true);
+    const [backgroundTextureArray,setBackgroundTextureArray] = useState([]);
+
 
 
     const getScript = async () => {
@@ -60,6 +41,12 @@ export const ProjectInfoProvider = ({children}) => {
         setScript(scriptDa.scenes);
      }
 
+     const getSpeakerList = async () => {
+        const sl = await fetchSpeakerList(1);
+        console.log("Sl",sl);
+        setSpeakerList(sl);
+     }
+
     const getAnimationScript = async (projectId) => {
         setIsLoading(true);
         const animationScriptData = await fetchAnimationScript("1");
@@ -70,20 +57,22 @@ export const ProjectInfoProvider = ({children}) => {
 
      const getAudio = async (projectId) => {
         console.log("Fetching audio..")
+        return new Promise(async (resolve, reject) => {
            try{
                 const audioResponse = await fetchAudioData(projectId);
-                 if(audioResponse.status == -1){ /*retry*/ return;};
+                 if(audioResponse.status == -1){ /*retry*/ resolve(); return;};
                 if(audioResponse.status == 1){
                     console.log("Audio Data Already Present! setting it!");
                      setAudioData(audioResponse.data);
-                     setCanvasLoaded(true);
+                     //setCanvasLoaded(true);
+                     resolve();
                     return;
                 }
                 if(audioResponse.status == 0 || audioResponse.status == 2)
                 {
                     console.log("Audio Data Not Present! Creating Audio!");
                     const audioCreationRequestResponse = (audioResponse.status == 2)?await updateAudioRequest(projectId):await createAudioRequest(projectId);
-                    if(audioCreationRequestResponse == 0){ /*retry*/ return; };
+                    if(audioCreationRequestResponse == 0){ /*retry*/ resolve(); return; };
                     if(audioCreationRequestResponse)
                     {
                         // fetch Status periodically
@@ -91,6 +80,7 @@ export const ProjectInfoProvider = ({children}) => {
                             const statusResponse = await getAudioCreationStatus(projectId);
                             if(statusResponse.status == 0){ /*retry*/ 
                                 clearInterval(fetchInterval); 
+                                resolve();
                                 return}
                             if(statusResponse.status == 2)
                             {
@@ -98,7 +88,8 @@ export const ProjectInfoProvider = ({children}) => {
                                 console.log("Audio Created Successfully!");
                                 setAudioData(audioResponse.data);
                                 clearInterval(fetchInterval);
-                                setCanvasLoaded(true);
+                                //setCanvasLoaded(true);
+                                resolve();
                                 return;
                             }
                             if(statusResponse.status == 1)
@@ -114,8 +105,57 @@ export const ProjectInfoProvider = ({children}) => {
            catch(err)
            {
                 console.log("error");
+                reject(err);
                 return;
            }
+        });
+     }
+
+     const getBackgroundImage = async (projectId) => {
+
+        async function loadTextures(urls) {
+            const loader = new TextureLoader();
+            
+            const loadTexture = (url) => {
+                return new Promise((resolve, reject) => {
+                loader.load(
+                    url,
+                    (texture) => resolve(texture),  // On success
+                    undefined,  // On progress
+                    (err) => reject(err)  // On error
+                );
+                });
+            };
+            
+            // Use Promise.all to load all textures asynchronously
+            const textures = await Promise.all(urls.map(url => loadTexture(url)));
+            
+            return textures;  // Returns an array of textures
+            }
+
+        console.log("creating background image");
+        return new Promise((resolve, reject) => {
+            try {
+                const fetchStatus = setInterval(async () => {
+                    const response = await getBackgroundImageStatus(projectId);
+                    const status = response.status;
+    
+                    console.log("background image status:" + status);
+                    
+                    if (status === 1) {
+                        const urls = await getBackgroundImageUrls(1);
+                        const textureArray = await loadTextures(urls);
+                        setBackgroundTextureArray(textureArray);
+                        clearInterval(fetchStatus);  
+                        resolve(); 
+                    }
+                }, 5000);
+            } catch (err) {
+                console.log("error");
+                clearInterval(fetchStatus);  
+                reject(err); 
+            }
+        });
      }
 
      const generateScript = async (prompt) => {
@@ -132,10 +172,10 @@ export const ProjectInfoProvider = ({children}) => {
      const getAnimationData = async () => {
          setCanvasLoaded(false);
          console.log("pelo pelo");
-         Promise.all([getAnimationScript(),getAudio(1), delay(1)]).then(
+         Promise.all([getAnimationScript(),getAudio(1), getBackgroundImage(1),delay(1)]).then(
             () => {
                 console.log("bale bale");
-                
+                setCanvasLoaded(true);
             }
          )
      }
@@ -198,6 +238,7 @@ export const ProjectInfoProvider = ({children}) => {
     useEffect(() => {
         if(currentStage == 1){
             getScript();
+            getSpeakerList();
             return;
         }
         if(currentStage == 2){
@@ -219,6 +260,7 @@ export const ProjectInfoProvider = ({children}) => {
         audioData,
         generateScript,
         canavsLoaded,
+        setCanvasLoaded,
         canavsLoadingMessage,
         save,
         setSave,
@@ -230,7 +272,8 @@ export const ProjectInfoProvider = ({children}) => {
         handleNext,
         isLoading,
         changesList,
-        setChangesList}}>
+        setChangesList,
+        backgroundTextureArray}}>
             {children}
         </ProjectContext.Provider>
     )

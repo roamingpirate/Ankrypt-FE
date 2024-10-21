@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -17,25 +17,25 @@ import {
 import { useProjectInfo } from '../../utility/ProjectContext';
 import AvatarSelector from '../AvatarSelector';
 import zIndex from '@mui/material/styles/zIndex';
+import { updateSpeakerList } from '../../api/projectApi';
 
 
 const toneD = ['funny', 'informative', 'narative']
 const speakersListD = [
   {
-    name: "Jordan",
+    avatarName: "Jordan",
     avatar: "av",
-    avatarUrl: ""
+    avatarUrl: "https://models.readyplayer.me/670be6ab9e494b4895c729bd.glb?morphTargets=ARKit,Oculus%20Visemes",
+    avatarId: "670ce9d48b2330afb3d7eaf9",
+    gender: "female"
   },
   {
-    name: "Michael",
+    avatarName: "Michael",
     avatar: "av",
-    avatarUrl: ""
+    avatarUrl: "https://models.readyplayer.me/670be6ab9e494b4895c729bd.glb?morphTargets=ARKit,Oculus%20Visemes",
+    avatarId: "670ce9d48b2330afb3d7eaf9",
+    gender:"female",
   },
-  {
-    name: "Don",
-    avatar: "av",
-    avatarUrl: ""
-  }
 ]
 
 const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
@@ -79,7 +79,7 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
  }
 
 
- const SpeakerListBox = ({speakerCount,speakersList,setSpeakerList}) => {
+ const SpeakerListBox = ({speakerCount,speakerList,setSpeakerList}) => {
 
       const [open,setOpen] = useState(false);
 
@@ -96,7 +96,7 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
           {/* Speakers List */}
           <Grid2 sx={{display:'flex', flexWrap:'wrap',padding:'10px', gap:'10px'}}>
             {
-              speakersList.map((obj,ind) => {
+              speakerList.map((obj,ind) => {
                 if(ind < speakerCount)
                 {
                   return(
@@ -131,7 +131,7 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
             style: { backgroundColor: 'rgba(0, 0, 0, 0.05)' }, 
           }}>
             <Grid2 style={styles.AvatarSelectorModal}>
-                <AvatarSelector/>
+                <AvatarSelector speakerList={speakerList} setSpeakerList={setSpeakerList}/>
             </Grid2>
         </Modal>
         </>
@@ -144,10 +144,10 @@ const ScriptInputBox = () => {
    const [scriptType, setScriptType] = useState('podcast')
    const [speakerCount,setSpeakerCount] = useState(null);
   // const [speakersList, setSpeakerList] = useState(speakersListD);
-   const {speakerList,setSpeakerList} = useProjectInfo();
+   const [speakerList, setSpeakerList] = useState(speakersListD)
    const [inputPrompt,setInputPrompt] = useState('');
    const [tone,setTone] = useState('Funny');
-   const {generateScript} = useProjectInfo();
+   const {generateScript, setSpeakerList : setProjectSpeakerList, speakerList: projectSpeakerList} = useProjectInfo();
 
    const handleChange = (event) => {
     setScriptType(event.value);
@@ -161,6 +161,8 @@ const ScriptInputBox = () => {
      }
      console.log(promptData);
      generateScript(promptData);
+     setProjectSpeakerList(speakerList);
+     await updateSpeakerList(speakerList);
   }
 
   return (
@@ -200,7 +202,7 @@ const ScriptInputBox = () => {
       </div>
 
      <SpeakerListBox speakerCount={speakerCount} 
-                     speakersList={speakerList} 
+                     speakerList={speakerList} 
                      setSpeakerList={setSpeakerList}/>
 
      <div style={{...styles.row,justifyContent:'space-between', marginTop:'20px',}}>

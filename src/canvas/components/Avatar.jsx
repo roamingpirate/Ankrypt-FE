@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState,useMemo } from 'react'
 import { useGraph, useFrame,useThree} from '@react-three/fiber'
 import { useAnimations, useGLTF , useFBX} from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
@@ -40,8 +40,7 @@ export function Avatar(props) {
   const { nodes, materials } = useGraph(clone);
 
   const avatarRef = useRef();
-  const animationType = isSitting ? 'SittingAnimation' : 'Animation'
-  const {animations : avatarAnimation} = useGLTF(isSitting?`animations/${avatarGender}AvatarSittingAnimation.glb`:`animations/${avatarGender}AvatarAnimation.glb`);
+  const {animations : avatarAnimation} = useMemo(() => useGLTF(`animations/${avatarGender}AvatarAnimation.glb`),[avatarGender]);
   const {animations : avatarPose} = useGLTF(`animations/${avatarGender}AvatarPose.glb`);
 
   const [blink,setBlink] = useState(false);
@@ -60,7 +59,7 @@ export function Avatar(props) {
 
   const {script, animationState,setAnimationState, next, videoState, setVideoState,currentAudioData,setCurrentSceneIndex,currentSceneIndex,setCurrentSceneScript,characterLook,updateAnimationState,avatarVisibility} = usePlayer();
 
-  const {actions, mixer,names} = useAnimations(avatarAnimation,avatarRef)
+  const {actions, mixer,names} =useAnimations(avatarAnimation,avatarRef);
   const {actions : pose, mixer : poseSetup} = useAnimations(avatarPose, avatarRef);
 
 
@@ -111,11 +110,11 @@ export function Avatar(props) {
     // }
 
     if(videoState === "Paused"){
-        mixer.timeScale = 0;
+       // mixer.timeScale = 0;
         setBlink(false);
     }
     if(avatarLookPosition.current != undefined){
-    avatarRef.current.getObjectByName('Head').lookAt(...avatarLookPosition.current)
+       avatarRef.current.getObjectByName('Head').lookAt(...avatarLookPosition.current)
     }
 
     const faceExpressionConfiguration = faceExpressions[currentFaceExpression];
@@ -188,14 +187,14 @@ export function Avatar(props) {
     if(videoState == "Reset")
     {
       mixer.stopAllAction();
-      if(audio.current === null || audio.current === undefined)
-        {
-           return;
-        }
-
-
-      audio.current.pause();
       setVideoState("Paused");
+      setCurrentAnimation(undefined);
+      if(audio.current === null || audio.current === undefined)
+      {
+          return;
+      }
+        audio.current.pause();
+      
     }
 
   },[videoState])
@@ -209,16 +208,20 @@ export function Avatar(props) {
     }
 
     poseSetup.stopAllAction();
+    console.log("ummm");
+    console.log(actions);
+    console.log(mixer.timeScale);
     const action = actions[currentAnimation];
     if(action === undefined) return;
 
 
     console.log("speaker " + avatarName + " AN " + animationNumber)
-    console.log("previous Animation: " + previousAnimation);
+    console.log("previous Animaytion: " + previousAnimation);
     console.log("Current Animation: " + currentAnimation);
     console.log("Next Animation: " + nextAnimation);
     
     if(currentAnimation != previousAnimation){
+     // console.log("play")
       action.reset().fadeIn(0.5).play();
       }
 
@@ -234,6 +237,9 @@ export function Avatar(props) {
 
    useEffect(()=> {
 
+
+    console.log(animationState);
+    console.log('animationStatee');
 
     if(animationState === undefined)
     {
@@ -252,7 +258,7 @@ export function Avatar(props) {
       setAnimationNumber(animationNumber+1);
       setLipsync(undefined);
       audio.current = undefined;
-      setCurrentFaceExpression('Neutral');
+      setCurrentFaceExpression('Happy');
       return;
     }
 
@@ -283,12 +289,18 @@ export function Avatar(props) {
     //console.log(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].lipsync);
     avatarFaceExpression.current = animationState.currentDialogs[animationState.currentDialogIndex].FaceExpression;
     audio.current = new Audio("data:audio/mp3;base64," + currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
-    if(videoState === "Playing"){
     setCurrentFaceExpression(avatarFaceExpression.current);
+    if(videoState === "Playing"){
+    
     audio.current.play();
     }
     audio.current.onended = next;
     setLipsync(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].lipsync);
+
+    // return () => {
+    //   setCurrentAnimation(undefined);
+    //   setPreviousAnimation(undefined);
+    // }
   },[animationState]);
 
 
@@ -298,16 +310,13 @@ export function Avatar(props) {
 
     avatarRef.current.castShadow = true;
     avatarRef.current.receiveShadow = true;
-    mixer.timeScale = 0.8;
-
-
     //pose logic 
-    if(isSitting){
-      pose['Sitting'].play();
-    }
-    else{
-      pose['Idle'].play();
-    }
+    // if(isSitting){
+    //   pose['Sitting'].play();
+    // }
+    // else{
+    //   pose['Idle'].play();
+    // }
 
     let blinkTimeout;
     const nextBlink = () => {
@@ -320,7 +329,10 @@ export function Avatar(props) {
       }, THREE.MathUtils.randInt(1000, 5000));
     };
     nextBlink();
-    return () => clearTimeout(blinkTimeout);
+    return  () => {
+      clearTimeout(blinkTimeout);
+      setCurrentAnimation(undefined);
+    };
   }, []);
 
 
@@ -332,4 +344,4 @@ export function Avatar(props) {
   )
 }
 
-useGLTF.preload('models/avatar.glb')
+

@@ -1,33 +1,19 @@
-import { Canvas, useThree} from "@react-three/fiber";
-import React, { useEffect, useRef, useState, useMemo } from 'react'
-import {PerspectiveCamera,ContactShadows,OrbitControls } from "@react-three/drei";
-import { Leva } from "leva";
-import { AnimationEditor } from "./components/AnimationEditor";
-import { Podcast2 } from "./components/Scenes/PodcastScene2";
-import { Podcast1 } from "./components/Scenes/PodcastScene1";
-import { ScriptEditPage } from "./pages/ScriptEditPage";
-import { PodcastTransition } from "./components/Scenes/PodcastTransition";
-import { PlayerController } from './hooks/usePlayer'
-import { useGraph, useFrame} from '@react-three/fiber'
-import { useAnimations, useGLTF , useFBX} from '@react-three/drei'
+import { Canvas} from "@react-three/fiber";
+import React, { useEffect, useRef, useMemo } from 'react'
+import {PerspectiveCamera,OrbitControls } from "@react-three/drei";
+import { useAnimations, useGLTF} from '@react-three/drei'
 import { SkeletonUtils } from 'three-stdlib'
-import * as THREE from 'three'
-import { AlignVerticalBottomRounded } from "@mui/icons-material";
 import { useProjectInfo } from "../utility/ProjectContext";
 
-const Avatar = ({avatarUrl,avatarGender}) => {
-    const { scene } = useMemo(() => useGLTF(avatarUrl));
+const Avatar = ({avatarUrl,avatarGender,speakerList}) => {
+    const { scene } = useMemo(() => useGLTF(avatarUrl), [avatarUrl]);
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
-    const { nodes } = useGraph(clone);
     const avatarRef = useRef();
-    const {speakerList} = useProjectInfo();
-    const {animations : avatarAnimation} = useGLTF(`animations/${avatarGender}AvatarAnimation.glb`);
-    const {actions, mixer,names} = useAnimations(avatarAnimation,avatarRef);
+    const {animations : avatarAnimation} = useGLTF(`animations/${avatarGender}AvatarAnimation.glb`,[avatarGender]);
+    const {actions} = useAnimations(avatarAnimation,avatarRef);
+
     useEffect(() => {
         actions['Idle'].stop().play();
-
-        return () => {
-        }
     },[speakerList]);
 
     return (
@@ -43,7 +29,7 @@ const Avatar = ({avatarUrl,avatarGender}) => {
 }
 
 
-const AvatarDisplay = ({avatarUrl,avatarGender}) => {
+const AvatarDisplay = ({avatarUrl,avatarGender,speakerList}) => {
   const cameraRef = useRef();
   return (
     <>
@@ -60,7 +46,6 @@ const AvatarDisplay = ({avatarUrl,avatarGender}) => {
         color={0xffffff} 
         intensity={0.5} 
         position={[0,1,1]}
-        // position={[-1.5, 15.9, -3.7]} 
         castShadow 
       />
     <PerspectiveCamera
@@ -71,7 +56,7 @@ const AvatarDisplay = ({avatarUrl,avatarGender}) => {
         far={1000}
         ref={cameraRef}
       />
-      <Avatar avatarUrl={avatarUrl} avatarGender={avatarGender}/>
+      <Avatar avatarUrl={avatarUrl} avatarGender={avatarGender} speakerList={speakerList}/>
     </Canvas>
     </div>
     </>
