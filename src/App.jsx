@@ -3,7 +3,8 @@ import ScriptInputPage from './component/ScriptInputSection';
 import AnimationPage from './component/AnimationSection';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AnkryptCreatorPage from './pages/AnkryptCreatorPage';
-import  CanvasRecorder  from './pages/canvasRecordPage';
+import  { CanvasRecorder }  from './pages/CanvasRecordPage';
+import { PlayerController } from './canvas/hooks/usePlayer';
  
 
 const App = () => {
@@ -12,7 +13,7 @@ const App = () => {
        <BrowserRouter>
        <Routes>
         {/* <Route index element = {<AnkryptCreatorPage/>}/> */}
-        <Route index element = {<CanvasRecorder/>}/>
+        <Route index element = { <PlayerController><CanvasRecorder/></PlayerController>}/>
        </Routes>
        </BrowserRouter>
        </>

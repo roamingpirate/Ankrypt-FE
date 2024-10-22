@@ -3,6 +3,11 @@ import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, 
 //import scriptData from "../data/scriptData";
 //import AudioData from "../data/audioData.json";
 //import animationScriptData from "../data/animationScriptData";
+
+import SampleAudioData from "../DevSampleData/audio.json";
+import SampleSpeakerData from "../DevSampleData/speaker.json"
+import SampleAnimationScript from "../DevSampleData/animationScript.json"
+
 import { TextureLoader } from "three";
 const ProjectContext = createContext();
 
@@ -14,7 +19,9 @@ export const useProjectInfo= () => {
 export const ProjectInfoProvider = ({children}) => {
 
     var projectId = 1;
-    const [currentStage, setCurrentStage] = useState(1);
+    // download test
+    const [currentStage, setCurrentStage] = useState(-1);
+    //
     const [scriptData, setScriptData] = useState();
     const [script,setScript] = useState([]);
     const [changesList, setChangesList] = useState([]);
@@ -144,6 +151,7 @@ export const ProjectInfoProvider = ({children}) => {
                     
                     if (status === 1) {
                         const urls = await getBackgroundImageUrls(1);
+                        console.log(urls);
                         const textureArray = await loadTextures(urls);
                         setBackgroundTextureArray(textureArray);
                         clearInterval(fetchStatus);  
@@ -172,12 +180,20 @@ export const ProjectInfoProvider = ({children}) => {
      const getAnimationData = async () => {
          setCanvasLoaded(false);
          console.log("pelo pelo");
-         Promise.all([getAnimationScript(),getAudio(1), getBackgroundImage(1),delay(1)]).then(
-            () => {
-                console.log("bale bale");
-                setCanvasLoaded(true);
-            }
-         )
+         //download test
+        //  Promise.all([getAnimationScript(),getAudio(1), getBackgroundImage(1),delay(1)]).then(
+        //     () => {
+        //         console.log("bale bale");
+        //         setCanvasLoaded(true);
+        //     }
+        //  )
+        //
+        setAudioData(SampleAudioData);
+        setAnimationScript(SampleAnimationScript);
+        console.log(SampleAnimationScript);
+        setSpeakerList(SampleSpeakerData.speakerList);
+        await getBackgroundImage(1);
+        setCanvasLoaded(true);
      }
 
      const saveContentToServer = async () => {
@@ -244,6 +260,10 @@ export const ProjectInfoProvider = ({children}) => {
         if(currentStage == 2){
             getAnimationData();
             return;
+        }
+        if(currentStage == -1)
+        {
+            getAnimationData();
         }
        //setScript(getScript());
     },[currentStage])
