@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AnkryptCreatorPage from './pages/AnkryptCreatorPage';
 import  { CanvasRecorder }  from './pages/CanvasRecordPage';
 import { PlayerController } from './canvas/hooks/usePlayer';
+import LandingPage from './pages/LandingPage';
  
 
 const App = () => {
@@ -13,7 +14,8 @@ const App = () => {
        <BrowserRouter>
        <Routes>
         {/* <Route index element = {<AnkryptCreatorPage/>}/> */}
-        <Route index element = { <PlayerController><CanvasRecorder/></PlayerController>}/>
+        {/* <Route index element = { <PlayerController><CanvasRecorder/></PlayerController>}/> */}
+        <Route index element = {<LandingPage/>}/>
        </Routes>
        </BrowserRouter>
        </>
