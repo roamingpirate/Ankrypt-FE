@@ -6,11 +6,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useProjectInfo } from "../utility/ProjectContext";
 import axios from "axios";
 const config= {
-  //clearCache: true,
-  id: '670cec5b5190e3ede476057f',
-//   bodyType: 'fullbody',
-//   quickStart: true,
-//   language: 'en',
+  clearCache: true,
+  bodyType: 'fullbody',
+  quickStart: true,
+  language: 'en',
 
 };
 

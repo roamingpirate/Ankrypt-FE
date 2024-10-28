@@ -246,7 +246,7 @@ export function Avatar(props) {
        return;
     }
 
-    if(!(animationState.currentSpeakers === avatarName))
+    if(!((animationState.currentSpeakers).toLowerCase() == avatarName.toLowerCase()))
     {
       console.log("returning for "+avatarName);
       if(currentAnimation == 'Idle')
@@ -286,7 +286,7 @@ export function Avatar(props) {
     setNextAnimation(nextAnimationToPlay);
     setAnimationNumber(animationNumber + 1);
     //console.log("aaeyoo");
-    //console.log(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].lipsync);
+    console.log(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].lipsync);
     avatarFaceExpression.current = animationState.currentDialogs[animationState.currentDialogIndex].FaceExpression;
     audio.current = new Audio("data:audio/mp3;base64," + currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
     setCurrentFaceExpression(avatarFaceExpression.current);

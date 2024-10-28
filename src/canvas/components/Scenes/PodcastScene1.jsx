@@ -76,16 +76,17 @@ export const Podcast1 = () => {
 
     const {scene : livingRoomScene } = useGLTF('models/PodcastScene_2.glb');
     const directionalLightRef = useRef();
+    console.log(speakerList);
 
   return (
     <>
       <Background/>
       <OrbitControls />
-      <ambientLight intensity={0.7}/>
+      <ambientLight intensity={1.5}/>
       <directionalLight 
         color={0xffffff} 
         ref={directionalLightRef}
-        intensity={0.5} 
+        intensity={0.8} 
         position={[0,1,1]}
         castShadow 
       />

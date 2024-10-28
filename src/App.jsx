@@ -6,6 +6,7 @@ import AnkryptCreatorPage from './pages/AnkryptCreatorPage';
 import  { CanvasRecorder }  from './pages/CanvasRecordPage';
 import { PlayerController } from './canvas/hooks/usePlayer';
 import LandingPage from './pages/LandingPage';
+import { ProjectInfoProvider } from './utility/ProjectContext';
  
 
 const App = () => {
@@ -13,7 +14,7 @@ const App = () => {
        <>
        <BrowserRouter>
        <Routes>
-        {/* <Route index element = {<AnkryptCreatorPage/>}/> */}
+        <Route path="/app" element = {<ProjectInfoProvider><AnkryptCreatorPage/></ProjectInfoProvider>}/>
         {/* <Route index element = { <PlayerController><CanvasRecorder/></PlayerController>}/> */}
         <Route index element = {<LandingPage/>}/>
        </Routes>

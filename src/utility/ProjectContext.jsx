@@ -20,7 +20,8 @@ export const ProjectInfoProvider = ({children}) => {
 
     var projectId = 1;
     // download test
-    const [currentStage, setCurrentStage] = useState(-1);
+    const test=0;
+    const [currentStage, setCurrentStage] = useState(1);
     //
     const [scriptData, setScriptData] = useState();
     const [script,setScript] = useState([]);
@@ -140,7 +141,25 @@ export const ProjectInfoProvider = ({children}) => {
             return textures;  // Returns an array of textures
             }
 
+            //download sample
+
+            if(test){
+
+            const urls = [
+                "https://ankript-web-app-storage.s3.us-east-1.amazonaws.com/1/back0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQ7X4LCX37B4KPIW6%2F20241022%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241022T151919Z&X-Amz-Expires=36000&X-Amz-Signature=699cd7c1af69b75a70c6db5a2815108387e4cf7858d64db3fe29190184238062&X-Amz-SignedHeaders=host&x-id=GetObject",
+                "https://ankript-web-app-storage.s3.us-east-1.amazonaws.com/1/back1.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQ7X4LCX37B4KPIW6%2F20241022%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241022T151919Z&X-Amz-Expires=36000&X-Amz-Signature=8e4c099f8a7ddd630428c4a94c80a06f85a057babcd5d793a2bdaada0fa4d93c&X-Amz-SignedHeaders=host&x-id=GetObject",
+                "https://ankript-web-app-storage.s3.us-east-1.amazonaws.com/1/back2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQ7X4LCX37B4KPIW6%2F20241022%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241022T151919Z&X-Amz-Expires=36000&X-Amz-Signature=231c1a1d882c29606ed1c899c093b175c6b66a101639d098ae05e733ed63e4c4&X-Amz-SignedHeaders=host&x-id=GetObject",
+                "https://ankript-web-app-storage.s3.us-east-1.amazonaws.com/1/back3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQ7X4LCX37B4KPIW6%2F20241022%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241022T151919Z&X-Amz-Expires=36000&X-Amz-Signature=6e205060a5812c341af6c3b2577da7bd48728381a16c4b7ebd1c460f6c6f4232&X-Amz-SignedHeaders=host&x-id=GetObject",
+                "https://ankript-web-app-storage.s3.us-east-1.amazonaws.com/1/back4.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQ7X4LCX37B4KPIW6%2F20241022%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241022T151919Z&X-Amz-Expires=36000&X-Amz-Signature=8c085a4b372f6373110d02d61afd70f542d050b35ceedd4f78923c1b60271b51&X-Amz-SignedHeaders=host&x-id=GetObject",
+                "https://ankript-web-app-storage.s3.us-east-1.amazonaws.com/1/back5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQ7X4LCX37B4KPIW6%2F20241022%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241022T151919Z&X-Amz-Expires=36000&X-Amz-Signature=ceb881c92bff7af559c75b782c67bb3b39c739194123011082c151ff7ad0dc0e&X-Amz-SignedHeaders=host&x-id=GetObject"
+            ]
+                        console.log(urls);
+                        const textureArray = await loadTextures(urls);
+                        setBackgroundTextureArray(textureArray);
+
         console.log("creating background image");
+            }
+            else{
         return new Promise((resolve, reject) => {
             try {
                 const fetchStatus = setInterval(async () => {
@@ -164,6 +183,7 @@ export const ProjectInfoProvider = ({children}) => {
                 reject(err); 
             }
         });
+        }
      }
 
      const generateScript = async (prompt) => {
@@ -181,19 +201,22 @@ export const ProjectInfoProvider = ({children}) => {
          setCanvasLoaded(false);
          console.log("pelo pelo");
          //download test
-        //  Promise.all([getAnimationScript(),getAudio(1), getBackgroundImage(1),delay(1)]).then(
-        //     () => {
-        //         console.log("bale bale");
-        //         setCanvasLoaded(true);
-        //     }
-        //  )
-        //
+         if(!test){
+         Promise.all([getAnimationScript(),getAudio(1), getBackgroundImage(1),delay(1)]).then(
+            () => {
+                console.log("bale bale");
+                setCanvasLoaded(true);
+            }
+         )
+         }
+         else{
         setAudioData(SampleAudioData);
         setAnimationScript(SampleAnimationScript);
         console.log(SampleAnimationScript);
         setSpeakerList(SampleSpeakerData.speakerList);
         await getBackgroundImage(1);
         setCanvasLoaded(true);
+         }
      }
 
      const saveContentToServer = async () => {

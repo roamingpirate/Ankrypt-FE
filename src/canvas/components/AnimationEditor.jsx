@@ -23,7 +23,7 @@ export const AnimationEditor = () => {
     return (
         <>
         <button onClick={() => {
-            if(videoState != "playing"){
+            if(videoState != "Playing"){
               setVideoState("Playing")
             }
         }}>Play</button>

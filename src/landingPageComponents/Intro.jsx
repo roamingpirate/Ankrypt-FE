@@ -2,7 +2,7 @@
 
 const Intro = () => {
     return (
-        <div className="container mx-auto h-screen flex flex-col justify-center items-center py-16 px-4">
+        <div className="container mx-auto h-screen flex flex-col justify-center items-center py-16 px-4" >
           <h1 className="text-4xl font-karma font-bold text-center mb-6">
             Welcome to Ancript
           </h1>

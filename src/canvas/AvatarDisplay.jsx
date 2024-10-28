@@ -41,10 +41,10 @@ const AvatarDisplay = ({avatarUrl,avatarGender,speakerList}) => {
         maxDistance={1.6}
         minPolarAngle={Math.PI / 2}
         maxPolarAngle={Math.PI / 2}/>
-    <ambientLight intensity={0.7}/>
+    <ambientLight intensity={2}/>
       <directionalLight 
         color={0xffffff} 
-        intensity={0.5} 
+        intensity={0.8} 
         position={[0,1,1]}
         castShadow 
       />

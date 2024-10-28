@@ -1,90 +1,130 @@
-import { useState, useEffect } from 'react';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import React, {useEffect,useState} from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
+import { Navigation, EffectCoverflow } from 'swiper/modules';
 
-const VideoBoxes = () => {
-    const [currentVideo, setCurrentVideo] = useState(0); 
-    const [isSingleVideo, setIsSingleVideo] = useState(false);
+const  exampleData = [
+    {
+      "heading": "Share Your Travel Experiences",
+      "subheading": "Share your stories about your travel experiences to any destination, and watch as 3D avatars bring your adventures to life in captivating dialogues, all set against stunning AI-generated backgrounds!"
+    },
+    {
+      "heading": "Transform Business Concepts into Visuals",
+      "subheading": "Turn your business ideas into engaging presentations! Just provide a text prompt, and let our 3D avatars explain and discuss your insights in contextually rich environments."
+    },
+    {
+      "heading": "Effortless Explainer Videos",
+      "subheading": "Simplify complex topics with a single prompt! Our 3D avatars will create interactive dialogues, complemented by AI-generated backgrounds, making learning engaging and fun."
+    },
+    {
+      "heading": "Create Social Media Content",
+      "subheading": "Generate eye-catching social media videos in seconds! Provide a text prompt, and 3D avatars will create dynamic interactions, perfectly suited for your audience."
+    },
+    {
+      "heading": "Engaging Storytelling Experiences",
+      "subheading": "Bring your stories to life with just a text prompt! Our 3D avatars will engage in conversations, creating a vivid narrative enhanced by beautiful AI-generated scenes."
+    }
+  ]
+  
 
-    const handleNext = () => {
-        if (currentVideo < 1) setCurrentBox(currentVideo + 1);
-    };
 
-    const handleBack = () => {
-        if (currentVideo > 0) setCurrentBox(currentVideo - 1);
-    };
-
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth < 640) { // Example breakpoint for smaller screens
-                setIsSingleVideo(true);
-            } else {
-                setIsSingleVideo(false);
-            }
-        };
-        window.addEventListener('resize', handleResize);
-        handleResize();
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
+const ExampleCard = ({ heading, subheading, videoSrc}) => {
     return (
-        <div className="flex justify-center items-center h-screen">
-            <div className="relative w-[90%] flex justify-center items-center bg-gray-200 rounded-lg shadow-lg overflow-hidden">
-                
-                {/* Video Container */}
-                <div className={`flex ${isSingleVideo ? 'w-full' : 'w-auto'} transition-all duration-300`}>
-                    <div className={`bg-blue-500 h-[200px] w-[300px] rounded-md flex-shrink-0 flex justify-center items-center mx-2 ${isSingleVideo && currentVideo !== 0 ? 'hidden' : ''}`}>
-                        <p className="text-white text-lg font-bold">Box 1</p>
-                    </div>
-                    <div className={`bg-green-500 h-[200px] w-[300px] rounded-md flex-shrink-0 flex justify-center items-center mx-2 ${isSingleVideo && currentVideo !== 1 ? 'hidden' : ''}`}>
-                        <p className="text-white text-lg font-bold">Box 2</p>
-                    </div>
-                </div>
-
-                {/* Back Button */}
-                {isSingleVideo && (
-                    <button onClick={handleBack} className="absolute left-0 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full">
-                        <ArrowBackIcon />
-                    </button>
-                )}
-
-                {/* Next Button */}
-                {isSingleVideo && (
-                    <button onClick={handleNext} className="absolute right-0 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-gray-800 text-white rounded-full">
-                        <ArrowForwardIcon />
-                    </button>
-                )}
+      <div className="flex p-4 w-[800px] h-[650px] flex-wrap">
+        <div className="flex-1 flex flex-col items-center justify-center pr-4">
+          <h2 className="text-4xl font-bold text-white">{heading}</h2>
+          <p className="text-white mt-4">{subheading}</p>
+        </div>
+        <div className="flex-1 flex justify-center items-center min-w-[300px] p-2">
+            <div className="overflow-hidden rounded-lg">
+            <video className="rounded-lg" controls>
+                <source src={videoSrc} type="video/mp4" />
+                Your browser does not support the video tag.
+            </video>
             </div>
         </div>
+      </div>
+    );
+  };
+
+const Carousel = () => {
+    const slides = [
+        {
+            image: '/background/back1.jpg',
+            title: 'Customer Story 1',
+            description: 'Description for Customer Story 1',
+            logo: 'path/to/logo1.png',
+        },
+        {
+            image: '/background/back1.jpg',
+            title: 'Customer Story 2',
+            description: 'Description for Customer Story 2',
+            logo: 'path/to/logo2.png',
+        },
+        {
+            image: '/background/back1.jpg',
+            title: 'Customer Story 3',
+            description: 'Description for Customer Story 3',
+            logo: 'path/to/logo3.png',
+        },
+        {
+            image: '/background/back1.jpg',
+            title: 'Customer Story 4',
+            description: 'Description for Customer Story 4',
+            logo: 'path/to/logo4.png',
+        },
+        // Add more slides as needed
+    ];
+
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    return (
+        <Swiper
+            modules={[Navigation, EffectCoverflow]}
+            spaceBetween={170}
+            slidesPerView={1.5}
+            centeredSlides={true}
+            navigation
+            loop={true}
+            effect="coverflow"
+            coverflowEffect={{
+                rotate: 0,
+                stretch: 0,
+                depth: 100,
+                modifier: 1,
+                slideShadows: true,
+            }}
+            onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+            className="mySwiper w-full"
+        >
+            {exampleData.map((example, index) => (
+                <SwiperSlide
+                    key={index}
+                    className={`shadow-lg transition-opacity duration-300 ease-in-out ${
+                        index === activeIndex ? 'opacity-100 scale-100' : 'opacity-60 scale-95'
+                    }`}
+                >
+                     <div className="flex rounded-lg justify-center items-center w-full h-full" style={{ background: 'linear-gradient(to right, #83a4d4, #b6fbff)' }}>
+                            <ExampleCard
+                                heading={example.heading}
+                                subheading={example.subheading}
+                                videoSrc="/JapanTrip.mp4"
+                            />
+                    </div>
+                </SwiperSlide>
+            ))}
+        </Swiper>
     );
 };
 
 
+
+
 const Examples = () => {
     const Topics = ["Education Explainer","Business Insights","Travel Vlogs","Personal Development","Technology Reviews"]
+
     return (
-        <div className="flex flex-col flex-grow items-center">
-            <p className="text-center font-ks text-lg font-medium m-4">See What You Can Create</p>
-            <div className="grid grid-cols-8 mx-4 rounded-lg w-[95%] px-3 bg-gradient-to-r from-[#0f2027] via-[#203a43] to-[#2c5364]">
-                {/* Topics */}
-                <div className="h-[600px] col-span-2 text-center flex flex-col items-center justify-center gap-3">
-                    {Topics.map((topic) => {
-                        return (
-                            <div className="bg-white hover:bg-gray-800 mb-3 text-black font-bold py-2 px-2 w-[90%] rounded-xl">
-                                <p className="font-karma text-sm font-medium text-center">{topic}</p>
-                            </div>
-                        )
-                    })}
-                </div>
-
-                {/* Videos */}
-                <div className="col-span-6">
-                     <VideoBoxes/>
-                </div>
-                
-
-            </div>
-        </div>
+        <><Carousel/><br/></>
     )
 }
 

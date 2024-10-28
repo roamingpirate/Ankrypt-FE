@@ -61,6 +61,8 @@ export const CanvasRecorder = () => {
   const ffmpegRef = useRef(new FFmpeg())
   const [loaded, setLoaded] = useState(false);
 
+  
+
   const load = async () => {
     console.log("Started Loading");
     const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm'
@@ -152,8 +154,9 @@ export const CanvasRecorder = () => {
 
     // Generate a video from the frames
     await ffmpeg.exec(
-      ['-framerate', '60',
+      ['-framerate', '30',
       '-i', 'frame_%d.png',
+      '-s', '500x600',
       '-pix_fmt', 'yuv420p',
       'output.mp4']
     );
@@ -172,9 +175,13 @@ export const CanvasRecorder = () => {
     <>
       <button onClick={() => {
           handleCaptureToggle();     
-          if(videoState != "playing"){
+          if(videoState != "Playing"){
             setVideoState("Playing")
-          }}}>
+          }
+          else{
+            setVideoState("Paused")
+          }
+          }}>
         {capturing ? 'Stop Capture' : 'Start Capture'}
       </button>
 
@@ -188,8 +195,8 @@ export const CanvasRecorder = () => {
           </video>
         )}
          
-              <Paper elevation={5} style={{display:'grid', width:'800px', height:'1000px', margin:'7px',backgroundColor:'white', borderRadius:'10px'}}>
-              <Canvas gl={{ preserveDrawingBuffer: true }} style={{borderRadius:'10px'}} shadows>
+              <Paper elevation={5} style={{display:'grid', width:'500px', height:'600px', margin:'7px',backgroundColor:'white', borderRadius:'10px'}}>
+              <Canvas gl={{ preserveDrawingBuffer: true }} style={{borderRadius:'10px',width:'500px', height:'600px'}} shadows>
               <PerspectiveCamera
                   makeDefault
                   position={[0, 0, 2]}
