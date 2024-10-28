@@ -15,6 +15,11 @@ export default defineConfig({
         secure: true,
         rewrite: (path) => path.replace(/^\/proxy/, ''),
       },
+      '/api': {
+        target: 'http://192.168.152.238:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
     },
     // headers: {
     //   "Cross-Origin-Opener-Policy": "same-origin",
