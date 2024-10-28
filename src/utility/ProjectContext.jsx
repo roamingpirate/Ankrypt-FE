@@ -202,7 +202,7 @@ export const ProjectInfoProvider = ({children}) => {
          console.log("pelo pelo");
          //download test
          if(!test){
-         Promise.all([getAnimationScript(),getAudio(1), getBackgroundImage(1),delay(1)]).then(
+         Promise.all([getAnimationScript(),getAudio(1), getBackgroundImage(1)]).then(
             () => {
                 console.log("bale bale");
                 setCanvasLoaded(true);
