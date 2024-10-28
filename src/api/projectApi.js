@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 
-const url = "http://192.168.152.238:3000";
+//const url = "http://192.168.152.238:3000";
+const url = "";
 
 
 export const fetchScript = async (projectId) => {
