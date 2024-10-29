@@ -29,10 +29,10 @@ import { Height } from '@mui/icons-material';
 const AnimationSection = () => {
   return (
     <Box sx={{display: 'flex', flexDirection:'row',overflow:'auto',height:'100%'}}>
-         <Box sx={{width: '40%', borderRight:1}}>
+         <Box className="w-[40%] border-t-2 border-t-gray-200" >
           <CanvasViewBox/>
           </Box>
-          <Box sx={{width: '60%',overflow:'auto'}}>
+          <Box className="border-t-2 border-t-gray-200 border-l-2 border-l-gray-200" sx={{width: '65%',overflow:'auto'}}>
             <AnimationScriptViewBox/>
           </Box>
        </Box>

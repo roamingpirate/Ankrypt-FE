@@ -6,16 +6,20 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Grid2 as Grid, Paper, Container, Snackbar } from '@mui/material';
+import { Grid2 as Grid, Paper, Container, Snackbar, CircularProgress } from '@mui/material';
 import Header from '../component/Header';
 import ScriptInputSection from '../component/ScriptInputSection';
 import AnimationSection from '../component/AnimationSection';
 import { useProjectInfo } from '../utility/ProjectContext';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 
  
 
 const AnkryptCreatorPage = () => {
-  const {currentStage,alert,setAlert,alertMessage} = useProjectInfo();
+  const {currentStage,alert,setAlert,alertMessage, isPageLoading, error} = useProjectInfo();
+  const {isAuthenticated, loginWithPopup} = useAuth0();
+  const navigate = useNavigate();
 
   const renderSection = () => {
         switch(currentStage)
@@ -27,6 +31,36 @@ const AnkryptCreatorPage = () => {
           default:
             return <ScriptInputSection/>
         }
+  }
+
+  if(isPageLoading){
+    return (
+      <div className='flex justify-center items-center h-screen'>
+        <CircularProgress/>
+      </div>
+    )
+  }
+
+  if(error != ""){
+      return (
+        <div className='flex flex-col justify-center items-center h-screen'>
+            <p className='font-medium text-gray-800 font-karma text-lg'>{error}</p>
+            {!isAuthenticated  ?
+              <div 
+              onClick={() => loginWithPopup()}
+              className="bg-gray-800 text-white rounded-xl mt-4 p-3 hover:cursor-pointer" 
+              >
+                  <p>Log In</p>
+              </div>:
+              <div 
+              onClick={() => navigate('/')}
+              className="bg-gray-800 text-white rounded-xl mt-4 p-3 hover:cursor-pointer" 
+              >
+                  <p>Go to Home</p>
+              </div> 
+            }
+        </div>
+      )
   }
 
   return (

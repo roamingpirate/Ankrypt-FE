@@ -15,10 +15,10 @@ import ScriptInputBox from './scriptInputSectionComponent/ScriptInputBox';
 const ScriptInputSection = () => {
   return (
        <Box sx={{display: 'flex', flexDirection:'row',overflow:'auto',height:'100%'}}>
-          <Box sx={{width: '35%', borderRight:1}}>
+          <Box className="w-[35%] border-t-2 border-t-gray-200" >
             <ScriptInputBox/>
           </Box>
-          <Box sx={{width: '65%',overflow:'auto'}}>
+          <Box className='border-t-2 border-t-gray-200 border-l-2 border-l-gray-200' sx={{width: '65%',overflow:'auto'}}>
             <ScriptViewComp/>
           </Box>
        </Box>

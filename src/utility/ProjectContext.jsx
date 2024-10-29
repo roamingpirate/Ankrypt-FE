@@ -1,5 +1,5 @@
 import React, {useState, useContext, createContext, useEffect} from "react";
-import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest, getBackgroundImageStatus, fetchSpeakerList, getBackgroundImageUrls } from "../api/projectApi";
+import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest, getBackgroundImageStatus, fetchSpeakerList, getBackgroundImageUrls, getProjectDetail } from "../api/projectApi";
 //import scriptData from "../data/scriptData";
 //import AudioData from "../data/audioData.json";
 //import animationScriptData from "../data/animationScriptData";
@@ -7,8 +7,10 @@ import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, 
 import SampleAudioData from "../DevSampleData/audio.json";
 import SampleSpeakerData from "../DevSampleData/speaker.json"
 import SampleAnimationScript from "../DevSampleData/animationScript.json"
+import { useLocation,useParams } from "react-router-dom";
 
 import { TextureLoader } from "three";
+import { useAuth0 } from "@auth0/auth0-react";
 const ProjectContext = createContext();
 
 export const useProjectInfo= () => {
@@ -18,10 +20,11 @@ export const useProjectInfo= () => {
 
 export const ProjectInfoProvider = ({children}) => {
 
-    var projectId = 1;
+    //var projectId = 1;
     // download test
     const test=0;
     const [currentStage, setCurrentStage] = useState(1);
+    const { projectId } = useParams();
     //
     const [scriptData, setScriptData] = useState();
     const [script,setScript] = useState([]);
@@ -36,13 +39,17 @@ export const ProjectInfoProvider = ({children}) => {
     const [alert,setAlert] = useState(true);
     const [alertMessage,setAlertMessage] = useState(true);
     const [backgroundTextureArray,setBackgroundTextureArray] = useState([]);
+    const [error, setError] = useState("");
+    const [isPageLoading, setIsPageLoading] = useState(true);
+    const [projectName, setProjectName] = useState("");
+    const {user, isAuthenticated, loginWithPopup} = useAuth0();
 
 
 
     const getScript = async () => {
         //console.log(scriptData.scenes);
-        const scriptDa = await fetchScript("1");
-        const changesListDa = await fetchChangesList("1");
+        const scriptDa = await fetchScript();
+        const changesListDa = await fetchChangesList();
         //console.log(scriptDa);
         setScriptData(scriptDa);
         setChangesList(changesListDa);
@@ -291,6 +298,34 @@ export const ProjectInfoProvider = ({children}) => {
        //setScript(getScript());
     },[currentStage])
 
+    useEffect(() => {
+        console.log("pwpwpwp");
+       // console.log(projectId,projectName);
+       if(!isAuthenticated)
+       {
+          setError("You must be logged In");
+          loginWithPopup();
+          setIsPageLoading(false);
+       }
+       else{
+          const validate = async () => {
+             const res = await getProjectDetail(user.email, projectId);
+             if(res.status == 0)
+             {
+                setError(`Project with id ${projectId} not found!`);
+                setIsPageLoading(false);
+             }
+             else{
+                setProjectName(res.projectName);
+                setError("");
+                setIsPageLoading(false);
+             }
+          } 
+          validate();
+       }
+
+    },[isAuthenticated]);
+
     return (
         <ProjectContext.Provider value={{currentStage,
         setCurrentStage,
@@ -316,7 +351,10 @@ export const ProjectInfoProvider = ({children}) => {
         isLoading,
         changesList,
         setChangesList,
-        backgroundTextureArray}}>
+        backgroundTextureArray,
+        isPageLoading,
+        error,
+        projectName}}>
             {children}
         </ProjectContext.Provider>
     )

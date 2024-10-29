@@ -42,12 +42,12 @@ const ProgressBox = ({currentStage,handleNext}) => {
  
 
 const Header = () => {
-  const {currentStage,setCurrentStage,save,saveContentToServer,resetContent,handleNext} = useProjectInfo();
-
+  const {currentStage,setCurrentStage,save,saveContentToServer,resetContent,handleNext, projectName} = useProjectInfo();
+  //const projectName = 'My Interesting Project';
 
 
   return (
-    <div style={{display: 'flex',flexDirection:'row',alignItems: 'center',borderBottom: '1px solid black',padding: 5, flexWrap: 'wrap'}}>
+    <div style={{display: 'flex',flexDirection:'row',alignItems: 'center',padding: 5, flexWrap: 'wrap'}}>
           <IconButton
             size="large"
             aria-label="menu"
@@ -55,8 +55,8 @@ const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography sx={{  fontFamily:"Kaushan Script",fontSize: 25,marginRight: '30%'}}>
-                Ankrypt
+          <Typography sx={{  fontFamily:"Oswald",fontSize: 25,marginRight: '30%'}}>
+                {projectName}
           </Typography>
           <ProgressBox currentStage={currentStage} handleNext={handleNext}/>
           <div style={{display:'flex', justifyContent:'flex-end',flexGrow:1,marginRight:'20px'}}>

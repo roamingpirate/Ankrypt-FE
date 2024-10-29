@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 
-//const url = "http://192.168.152.238:3000";
-const url = "/api";
+const url = "http://localhost:3000";
+//const url = "/api";
 
 
 export const fetchScript = async (projectId) => {
@@ -145,4 +145,49 @@ export const getBackgroundImageUrls = async (projectId) => {
         //return {status : -1};
         throw err;
     }   
+}
+
+export const addNewUser = async (userId) => {
+    try {
+        console.log("Trying to add new user");
+        const response = await axios.post(`${url}/user/add/${userId}`);
+        return response.data;
+    } catch (err) {
+        console.error("Error adding new user:", err);
+        throw err;
+    }
+};
+
+export const addProjectToUser = async (userId, projectName) => {
+    try {
+        console.log("Trying to add project to user");
+        const response = await axios.post(`${url}/user/${userId}/add/${projectName}`);
+        return response.data;
+    } catch (err) {
+        console.error("Error adding project to user:", err);
+        throw err;
+    }
+};
+
+export const getProjectList = async (userId) => {
+    try {
+        console.log("Trying to get project list");
+        const response = await axios.get(`${url}/user/${userId}/projects`);
+        return response.data.projectList;
+    } catch (err) {
+        console.error("Error fetching project list:", err);
+        throw err;
+    }
+};
+
+
+export const getProjectDetail = async (userId, projectId) => {
+    try {
+        console.log("Trying to get project Data");
+        const response = await axios.get(`${url}/project/${userId}/${projectId}`);
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching project list:", err);
+        throw err;
+    }
 }

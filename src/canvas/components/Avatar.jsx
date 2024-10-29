@@ -40,8 +40,8 @@ export function Avatar(props) {
   const { nodes, materials } = useGraph(clone);
 
   const avatarRef = useRef();
-  const {animations : avatarAnimation} = useMemo(() => useGLTF(`animations/${avatarGender}AvatarAnimation.glb`),[avatarGender]);
-  const {animations : avatarPose} = useGLTF(`animations/${avatarGender}AvatarPose.glb`);
+  const {animations : avatarAnimation} = useMemo(() => useGLTF(`/animations/${avatarGender}AvatarAnimation.glb`),[avatarGender]);
+  const {animations : avatarPose} = useGLTF(`/animations/${avatarGender}AvatarPose.glb`);
 
   const [blink,setBlink] = useState(false);
 

@@ -63,7 +63,7 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
         <Typography sx={{color:'grey',fontSize:'12px',fontWeight:'80',paddingBottom:'3px'}}> Number of Speakers </Typography>
       <ButtonGroup variant="outlined" size="large" color="grey">
         {
-          [1, 2, 3].map((num) => (
+          [1, 2].map((num) => (
             <Button
               key={num}
               style={speakerCount === num ? { backgroundColor: '#3F3A39', color: 'white', border: '1px solid black' } : {}}
@@ -169,9 +169,10 @@ const ScriptInputBox = () => {
     <Box sx={styles.root}>
       <Box display= 'flex' flexDirection='column' alignItems='center' justifyContent='center'>
 
-      <Typography sx={styles.genScriptTxt}>Generate Script Using AI</Typography>
+      <Typography className="font-semibold pt-5 pb-3" sx={styles.genScriptTxt}>Generate Script Using AI</Typography>
       <ScriptTypeSelectBox scriptType={scriptType} setScriptType={setScriptType}/>
-
+      </Box>
+      <div className="mx-[12px]">
       <TextField variant='outlined' 
                   label="Prompt" 
                   onChange={(e) => setInputPrompt(e.target.value)}
@@ -179,10 +180,7 @@ const ScriptInputBox = () => {
                   placeholder='Enter your prompt' 
                   fullWidth multiline 
                   maxRows={5} 
-                  height={'80px'}
                   margin='normal'/>
-      </Box>
-
       <div style={styles.row}>
           <TextField
             select
@@ -219,6 +217,7 @@ const ScriptInputBox = () => {
           <SendIcon sx={{color:'white',width:'25px',height:'25px'}}/>
       </IconButton>
       </div> 
+      </div>
 
     </Box>
   )
@@ -227,7 +226,7 @@ const ScriptInputBox = () => {
 
 const styles = {
   root : {display: 'flex',flexDirection:'column',margin: 2,flexGrow:1,flexWrap: 1},
-  genScriptTxt: {fontFamily:'karma',fontSize: 28,justifyContent:'space-between'},
+  genScriptTxt: {fontFamily:"Oswald",fontSize: 28,justifyContent:'space-between', fontWeight:'500',},
   scriptTypeBox: {
     minWidth: '70px',
     alignItems: 'center',

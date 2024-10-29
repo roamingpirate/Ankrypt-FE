@@ -74,7 +74,7 @@ export const Podcast1 = () => {
     const {animationState,backgroundImage,characterLook} = usePlayer();
     const {speakerList} = useProjectInfo();
 
-    const {scene : livingRoomScene } = useGLTF('models/PodcastScene_2.glb');
+   // const {scene : livingRoomScene } = useGLTF('models/PodcastScene_2.glb');
     const directionalLightRef = useRef();
     console.log(speakerList);
 

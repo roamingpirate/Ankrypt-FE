@@ -33,7 +33,7 @@ const Header = () => {
 
       <div
         className="rounded-lg hover:cursor-pointer bg-black text-center items-center px-3 py-2"
-        onClick={() => navigate("/app")}
+        onClick={() => navigate("/studio")}
       >
         <p className="font-karma text-white text-sm">Go To App</p>
       </div>
