@@ -81,7 +81,6 @@ export const Podcast1 = () => {
   return (
     <>
       <Background/>
-      <OrbitControls />
       <ambientLight intensity={1.5}/>
       <directionalLight 
         color={0xffffff} 
