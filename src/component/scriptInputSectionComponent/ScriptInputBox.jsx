@@ -25,16 +25,18 @@ const speakersListD = [
   {
     avatarName: "Jordan",
     avatar: "av",
-    avatarUrl: "https://models.readyplayer.me/670be6ab9e494b4895c729bd.glb?morphTargets=ARKit,Oculus%20Visemes",
-    avatarId: "670ce9d48b2330afb3d7eaf9",
-    gender: "female"
+    avatarUrl: "https://models.readyplayer.me/6720e609ec2fa8d5d540e75c.glb?morphTargets=ARKit,Oculus%20Visemes",
+    avatarId: "6720e609ec2fa8d5d540e75c",
+    gender: "male",
+    vgender: "male",
   },
   {
-    avatarName: "Michael",
+    avatarName: "Anaya",
     avatar: "av",
-    avatarUrl: "https://models.readyplayer.me/670be6ab9e494b4895c729bd.glb?morphTargets=ARKit,Oculus%20Visemes",
-    avatarId: "670ce9d48b2330afb3d7eaf9",
+    avatarUrl: "https://models.readyplayer.me/6720e89961ebe84488779c09.glb?morphTargets=ARKit,Oculus%20Visemes",
+    avatarId: "6720e89961ebe84488779c09",
     gender:"female",
+    vgender:"female",
   },
 ]
 
@@ -147,7 +149,7 @@ const ScriptInputBox = () => {
    const [speakerList, setSpeakerList] = useState(speakersListD)
    const [inputPrompt,setInputPrompt] = useState('');
    const [tone,setTone] = useState('Funny');
-   const {generateScript, setSpeakerList : setProjectSpeakerList, speakerList: projectSpeakerList} = useProjectInfo();
+   const {generateScript, setSpeakerList : setProjectSpeakerList, speakerList: projectSpeakerList,projectId} = useProjectInfo();
 
    const handleChange = (event) => {
     setScriptType(event.value);
@@ -162,7 +164,7 @@ const ScriptInputBox = () => {
      console.log(promptData);
      generateScript(promptData);
      setProjectSpeakerList(speakerList);
-     await updateSpeakerList(speakerList);
+     await updateSpeakerList(projectId,speakerList);
   }
 
   return (

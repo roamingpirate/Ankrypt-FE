@@ -239,7 +239,7 @@ export function Avatar(props) {
 
 
     console.log(animationState);
-    console.log('animationStatee');
+    console.log('animation Statee');
 
     if(animationState === undefined)
     {
@@ -286,16 +286,26 @@ export function Avatar(props) {
     setNextAnimation(nextAnimationToPlay);
     setAnimationNumber(animationNumber + 1);
     //console.log("aaeyoo");
-    console.log(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].lipsync);
-    avatarFaceExpression.current = animationState.currentDialogs[animationState.currentDialogIndex].FaceExpression;
-    audio.current = new Audio("data:audio/mp3;base64," + currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
-    setCurrentFaceExpression(avatarFaceExpression.current);
-    if(videoState === "Playing"){
+    const currentAudioDataItem = currentAudioData[currentSceneIndex]?.[animationState.currentSpeechIndex]?.[animationState.currentDialogIndex];
     
-    audio.current.play();
+    avatarFaceExpression.current = animationState.currentDialogs[animationState.currentDialogIndex].FaceExpression;
+    setCurrentFaceExpression(avatarFaceExpression.current);
+
+    if (currentAudioDataItem) {
+      console.log(currentAudioDataItem?.lipsync);
+      audio.current = new Audio("data:audio/mp3;base64," + currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
+      if(videoState === "Playing"){
+    
+        audio.current.play();
+        }
+        audio.current.onended = next;
+        setLipsync(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex]?.lipsync);
     }
-    audio.current.onended = next;
-    setLipsync(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].lipsync);
+    else{
+        next();
+    }
+
+
 
     // return () => {
     //   setCurrentAnimation(undefined);

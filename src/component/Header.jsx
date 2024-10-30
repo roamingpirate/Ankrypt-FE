@@ -12,7 +12,37 @@ import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { Grid2 as Grid, Paper, Container, Icon} from '@mui/material';
 import { useProjectInfo } from '../utility/ProjectContext';
+import { useNavigate } from 'react-router-dom';
 
+const ProjectPath = ({ projectName, projectId }) => {
+  const navigate = useNavigate();
+
+  const handleAncriptClick = () => {
+      navigate('/');
+  };
+
+  const handleStudioClick = () => {
+      navigate('/studio');
+  };
+
+  const handleProjectNameClick = () => {
+      navigate(`/app/${projectId}`);
+  };
+
+  return (
+      <Typography sx={{ fontFamily: "Oswald", fontSize: 25, marginRight: '30%' }}>
+          <span onClick={handleAncriptClick} style={{ cursor: 'pointer', color: 'inherit' }}>
+              ancript
+          </span>/
+          <span onClick={handleStudioClick} style={{ cursor: 'pointer', color: 'inherit' }}>
+              studio
+          </span>/
+          <span onClick={handleProjectNameClick} style={{ cursor: 'pointer', color: 'inherit' }}>
+              {projectName}
+          </span>
+      </Typography>
+  );
+};
 
 
 
@@ -42,7 +72,7 @@ const ProgressBox = ({currentStage,handleNext}) => {
  
 
 const Header = () => {
-  const {currentStage,setCurrentStage,save,saveContentToServer,resetContent,handleNext, projectName} = useProjectInfo();
+  const {currentStage,setCurrentStage,save,saveContentToServer,resetContent,handleNext, projectName,projectId} = useProjectInfo();
   //const projectName = 'My Interesting Project';
 
 
@@ -55,9 +85,10 @@ const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography sx={{  fontFamily:"Oswald",fontSize: 25,marginRight: '30%'}}>
-                {projectName}
-          </Typography>
+          {/* <Typography sx={{  fontFamily:"Oswald",fontSize: 25,marginRight: '30%'}}>
+                ancript/studio/{projectName}
+          </Typography> */}
+          <ProjectPath projectName={projectName} projectId={projectId} />
           <ProgressBox currentStage={currentStage} handleNext={handleNext}/>
           <div style={{display:'flex', justifyContent:'flex-end',flexGrow:1,marginRight:'20px'}}>
             { save &&

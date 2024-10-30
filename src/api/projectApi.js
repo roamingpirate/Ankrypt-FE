@@ -1,12 +1,19 @@
-import axios from 'axios';
+import api from 'axios';
+
+const axios = api.create({
+    baseURL: "https://3606-2401-4900-1c35-8c50-98ff-25d1-147a-3469.ngrok-free.app",
+    headers: {
+        'ngrok-skip-browser-warning': 'true' // Skip ngrok's warning page by default
+    }
+});
 
 
-const url = "http://localhost:3000";
-//const url = "/api";
+//const url = "http://localhost:3000";
+const url = "https://3606-2401-4900-1c35-8c50-98ff-25d1-147a-3469.ngrok-free.app";
 
 
 export const fetchScript = async (projectId) => {
-    const response = await axios.get(`${url}/script`);
+    const response = await axios.get(`${url}/script/${projectId}`);
 
     return response.data;
 }
@@ -14,7 +21,7 @@ export const fetchScript = async (projectId) => {
 export const updateScript = async (projectId,script) => {
     try{
         //console.log(JSON.stringify(script));
-        const response = await axios.post(`${url}/script/update`, script);
+        const response = await axios.post(`${url}/script/update/${projectId}`, script);
     }
     catch(err)
     {
@@ -48,7 +55,7 @@ export const updateChangesList = async (projectId,changesList) => {
 }
 
 export const fetchGeneratedScript = async (projectId, prompt) => {
-    const response = await axios.post(`${url}/script`,prompt);
+    const response = await axios.post(`${url}/script/${projectId}`,prompt);
     console.log(response.data);
     return response.data;
 }
@@ -56,7 +63,7 @@ export const fetchGeneratedScript = async (projectId, prompt) => {
 
 
 export const fetchAnimationScript = async (projectId) => {
-    const response = await axios.get(`${url}/animationScript`);
+    const response = await axios.get(`${url}/animationScript/${projectId}`);
     console.log(response.data);
     return response.data;
 }
@@ -65,7 +72,7 @@ export const updateAnimationScript = async (projectId,animationScript) => {
     try{
         console.log("opop");
         console.log(animationScript);
-        const response = await axios.post(`${url}/animationScript/update`,animationScript);
+        const response = await axios.post(`${url}/animationScript/update/${projectId}`,animationScript);
     }
     catch(err)
     {

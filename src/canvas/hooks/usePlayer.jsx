@@ -58,7 +58,7 @@ async function loadTextures(urls) {
 
 
    const updateBU = async () => {
-    const response = await getBackgroundImageUrls(1);
+    const response = await getBackgroundImageUrls(pr);
     const textureArray = await loadTextures(response);
     setBackgroundImageUrls(textureArray);  
     // const imagesPromiseList = []

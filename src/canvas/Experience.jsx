@@ -1,7 +1,7 @@
 import { Canvas, useThree} from "@react-three/fiber";
 import {PerspectiveCamera,ContactShadows } from "@react-three/drei";
 import { Leva } from "leva";
-import { useEffect,useRef } from "react";
+import React, { useEffect,useRef } from "react";
 // import { AnimationEditor } from "./components/AnimationEditor";
 import { Podcast2 } from "./components/Scenes/PodcastScene2";
 import { Podcast1 } from "./components/Scenes/PodcastScene1";
@@ -44,11 +44,35 @@ const AnimationEditor = () => {
   )
 }
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Error Boundary Caught an Error", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children; 
+  }
+}
+
 
 const Experience = () => {
   const cameraRef = useRef();
   return (
     <>
+    <ErrorBoundary>
     <PlayerController>
     <Paper elevation={5} style={{display:'grid', width:'82%', aspectRatio: '4/5', margin:'7px',backgroundColor:'white', borderRadius:'10px'}}>
     <Canvas style={{borderRadius:'10px'}} shadows>
@@ -68,6 +92,7 @@ const Experience = () => {
     </Grid2>
     {/* <AnimationEditor/> */}
     </PlayerController>
+    </ErrorBoundary>
     </>
   );
 }

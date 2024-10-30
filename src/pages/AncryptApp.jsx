@@ -11,6 +11,7 @@ const AncryptApp = () => {
     useEffect(() => {
         if (!isAuthenticated) {
             loginWithPopup();
+            setIsDone(true);
         }
         else{
             const addUser = async () => {

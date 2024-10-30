@@ -48,8 +48,8 @@ export const ProjectInfoProvider = ({children}) => {
 
     const getScript = async () => {
         //console.log(scriptData.scenes);
-        const scriptDa = await fetchScript();
-        const changesListDa = await fetchChangesList();
+        const scriptDa = await fetchScript(projectId);
+        const changesListDa = await fetchChangesList(projectId);
         //console.log(scriptDa);
         setScriptData(scriptDa);
         setChangesList(changesListDa);
@@ -57,20 +57,20 @@ export const ProjectInfoProvider = ({children}) => {
      }
 
      const getSpeakerList = async () => {
-        const sl = await fetchSpeakerList(1);
+        const sl = await fetchSpeakerList(projectId);
         console.log("Sl",sl);
         setSpeakerList(sl);
      }
 
-    const getAnimationScript = async (projectId) => {
+    const getAnimationScript = async () => {
         setIsLoading(true);
-        const animationScriptData = await fetchAnimationScript("1");
+        const animationScriptData = await fetchAnimationScript(projectId);
         console.log(animationScriptData);
         setAnimationScript(animationScriptData);
         setIsLoading(false);
      }
 
-     const getAudio = async (projectId) => {
+     const getAudio = async () => {
         console.log("Fetching audio..")
         return new Promise(async (resolve, reject) => {
            try{
@@ -126,7 +126,7 @@ export const ProjectInfoProvider = ({children}) => {
         });
      }
 
-     const getBackgroundImage = async (projectId) => {
+     const getBackgroundImage = async () => {
 
         async function loadTextures(urls) {
             const loader = new TextureLoader();
@@ -176,7 +176,7 @@ export const ProjectInfoProvider = ({children}) => {
                     console.log("background image status:" + status);
                     
                     if (status === 1) {
-                        const urls = await getBackgroundImageUrls(1);
+                        const urls = await getBackgroundImageUrls(projectId);
                         console.log(urls);
                         const textureArray = await loadTextures(urls);
                         setBackgroundTextureArray(textureArray);
@@ -195,8 +195,8 @@ export const ProjectInfoProvider = ({children}) => {
 
      const generateScript = async (prompt) => {
             setIsLoading(true);
-            const scriptData = await fetchGeneratedScript("1",prompt);
-            await updateChangesList("1", []);
+            const scriptData = await fetchGeneratedScript(projectId,prompt);
+            await updateChangesList(projectId, []);
             setScript(scriptData.scenes);
             setChangesList([]);
             setIsLoading(false);
@@ -209,7 +209,7 @@ export const ProjectInfoProvider = ({children}) => {
          console.log("pelo pelo");
          //download test
          if(!test){
-         Promise.all([getAnimationScript(),getAudio(1), getBackgroundImage(1)]).then(
+         Promise.all([getAnimationScript(),getAudio(), getBackgroundImage()]).then(
             () => {
                 console.log("bale bale");
                 setCanvasLoaded(true);
@@ -231,8 +231,8 @@ export const ProjectInfoProvider = ({children}) => {
             if(currentStage == 1)
             {
                 const copySD = {...scriptData, scenes : script}
-                await updateScript("1",copySD);
-                await updateChangesList("1",changesList);
+                await updateScript(projectId,copySD);
+                await updateChangesList(projectId,changesList);
                 setAlert(true);
                 setAlertMessage("Script Successfully Saved!");
                 setSave(false);
@@ -242,7 +242,7 @@ export const ProjectInfoProvider = ({children}) => {
             if(currentStage == 2)
             {
                 console.log(animationScript);
-                await updateAnimationScript("1",animationScript);
+                await updateAnimationScript(projectId,animationScript);
                 setAlert(true);
                 setAlertMessage("Animation Script Successfully Saved!");
                 setSave(false); 
@@ -284,11 +284,11 @@ export const ProjectInfoProvider = ({children}) => {
     useEffect(() => {
         if(currentStage == 1){
             getScript();
-            getSpeakerList();
             return;
         }
         if(currentStage == 2){
             getAnimationData();
+            getSpeakerList();
             return;
         }
         if(currentStage == -1)
@@ -296,7 +296,7 @@ export const ProjectInfoProvider = ({children}) => {
             getAnimationData();
         }
        //setScript(getScript());
-    },[currentStage])
+    },[currentStage,projectId])
 
     useEffect(() => {
         console.log("pwpwpwp");
@@ -354,7 +354,8 @@ export const ProjectInfoProvider = ({children}) => {
         backgroundTextureArray,
         isPageLoading,
         error,
-        projectName}}>
+        projectName,
+        projectId}}>
             {children}
         </ProjectContext.Provider>
     )

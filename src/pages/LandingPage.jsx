@@ -4,6 +4,7 @@ import Intro from '../landingPageComponents/Intro';
 import Examples from '../landingPageComponents/Examples';
 import PromptInput from '../landingPageComponents/PromptInput';
 import {Features} from '../landingPageComponents/Features';
+import { fetchScript } from '../api/projectApi';
 
 const Footer = () => {
   return(
@@ -23,6 +24,17 @@ const Footer = () => {
 
 
 const LandingPage = () => {
+
+    useEffect( () => {
+      const fuc = async () => {
+        console.log("calling...");
+        const res = await fetchScript("1");
+        console.log(res);
+      }
+
+      fuc();
+      
+    },[])
     
     return(
       <div style={{ height:'100vh', width:'100%' }}>

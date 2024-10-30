@@ -9,7 +9,7 @@ const Avatar = ({avatarUrl,avatarGender,speakerList}) => {
     const { scene } = useMemo(() => useGLTF(avatarUrl), [avatarUrl]);
     const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
     const avatarRef = useRef();
-    const {animations : avatarAnimation} = useGLTF(`animations/${avatarGender}AvatarAnimation.glb`,[avatarGender]);
+    const {animations : avatarAnimation} = useGLTF(`/animations/${avatarGender}AvatarAnimation.glb`,[avatarGender]);
     const {actions} = useAnimations(avatarAnimation,avatarRef);
 
     useEffect(() => {

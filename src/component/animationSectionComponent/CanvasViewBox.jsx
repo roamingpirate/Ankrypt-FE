@@ -10,7 +10,7 @@ import { updateSpeakerList } from "../../api/projectApi";
 
 const CanvasViewBox = () => {
 
-    const {canavsLoaded,canavsLoadingMessage,speakerList, setSpeakerList,setCanvasLoaded} = useProjectInfo();
+    const {canavsLoaded,canavsLoadingMessage,speakerList, setSpeakerList,setCanvasLoaded,projectId} = useProjectInfo();
     const [open,setOpen] = useState(false);
     const [experienceLoaded, setExperienceLoaded] = useState(true);
 
@@ -58,14 +58,14 @@ const CanvasViewBox = () => {
         </Paper>
         
                 <Modal  open={open}
-                onClose={async () => {setOpen(false); updateSpeakerList(1,speakerList); setExperienceLoaded(true)  }}
+                onClose={async () => {setOpen(false); updateSpeakerList(projectId,speakerList); setExperienceLoaded(true)  }}
                 aria-labelledby="modal-title"
                 aria-describedby="modal-description"
                 BackdropProps={{
                   style: { backgroundColor: 'rgba(0, 0, 0, 0.05)' }, 
                 }}>
                   <Grid2 style={styles.AvatarSelectorModal}>
-                      <AvatarSelector speakerList={speakerList} setSpeakerList={setSpeakerList}/>
+                      <AvatarSelector speakerList={speakerList} setSpeakerList={setSpeakerList} disabled={true}/>
                   </Grid2>
               </Modal>
         </>
