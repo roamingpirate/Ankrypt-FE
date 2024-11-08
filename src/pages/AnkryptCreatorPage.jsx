@@ -33,11 +33,17 @@ const AnkryptCreatorPage = () => {
         }
   }
 
+  const WaitScreen = () => {
+    return (
+        <div className='flex flex-col justify-center items-center h-screen bg-[#16222A]'>
+            <div class="loader"></div>
+        </div>   
+    )
+  };
+
   if(isPageLoading){
     return (
-      <div className='flex justify-center items-center h-screen'>
-        <CircularProgress/>
-      </div>
+      <WaitScreen/>
     )
   }
 

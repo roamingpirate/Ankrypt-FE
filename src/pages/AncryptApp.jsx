@@ -24,9 +24,9 @@ const AncryptApp = () => {
 
     if (isLoading || error) {
         return(
-            <div className='flex flex-col justify-center items-center h-screen'>
-                <CircularProgress/>
-                <p className='font-semibold font-karma text-center p-3'>Complete Login in the popup to continue</p>
+            <div className='flex flex-col justify-center items-center h-screen bg-[#16222A]'>
+                <div class="loader"></div>
+                <p className='font-medium text-lg font-karma text-center p-3 text-white'>Complete Login in the popup to continue</p>
                 <div className='bg-gray-800 rounded-lg text-center p-3 hover:cursor-pointer' onClick={() => {loginWithPopup()}}>
                     <p className='font-medium font-karma text-white'>
                         Open Pop-Up
@@ -36,6 +36,14 @@ const AncryptApp = () => {
         );
     }
 
+    const WaitScreen = () => {
+        return (
+            <div className='flex flex-col justify-center items-center h-screen bg-[#16222A]'>
+                <div class="loader"></div>
+            </div>   
+        )
+    };
+
     return (
         <>
             {isDone ? (
@@ -43,7 +51,7 @@ const AncryptApp = () => {
                     <Dashboard/>
                 </>
             ) : (
-                <div>Please log in.</div>
+                <WaitScreen/>
             )}
         </>
     );

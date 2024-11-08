@@ -36,26 +36,28 @@ const SelectBtn = ({val,sceneInd,scriptInd}) => {
 const DialogBox = ({sceneInd,scriptInd,script,setScript,setSave}) => {
   const {changesList, setChangesList} = useProjectInfo();
     return (
-      <Grid container sx={{ padding: '5px', border:'1px solid grey', borderRadius:'5px',margin:'10px'}}>
+      <Grid container className=" p-[5px]  rounded-lg m-[10px] bg-gray-800">
              {/* Head */}
 
-            <Grid container sx={{ display: 'flex', alignItems: 'center',width:'100%' }}>
-                <Grid item sx={{ flexGrow: 1 }}>
-                <Grid container spacing={2}>
-                    <Grid item>
-                    <SelectBtn val={"Speaker"} sceneInd={sceneInd} scriptInd={scriptInd} />
-                    </Grid>
-                    <Grid item>
-                    <SelectBtn val={"Tone"} sceneInd={sceneInd} scriptInd={scriptInd} />
-                    </Grid>
-                </Grid>
-                </Grid>
-                <Grid item>
-                <IconButton>
-                    <DeleteOutlineOutlinedIcon sx={{ color: 'black', width: '18px', height: '18px' }} />
-                </IconButton>
-                </Grid>
-            </Grid>
+             <div className="flex items-center w-full">
+                <div className="flex-grow">
+                  <div className="flex space-x-2">
+                    <div>
+                      <SelectBtn val={"Speaker"} sceneInd={sceneInd} scriptInd={scriptInd} />
+                    </div>
+                    {/* TONE DROP DOWN IMPLEMENT */}
+                    {/* <div>
+                      <SelectBtn val={"Tone"} sceneInd={sceneInd} scriptInd={scriptInd} />
+                    </div> */}
+                  </div>
+                </div>
+                <div>
+                  <button className="p-1">
+                    <DeleteOutlineOutlinedIcon className="text-white w-[18px] h-[18px]" />
+                  </button>
+                </div>
+              </div>
+
 
              {/* Text */}
             <TextField
@@ -77,26 +79,35 @@ const DialogBox = ({sceneInd,scriptInd,script,setScript,setSave}) => {
     )
 }
 
+
+
 const ScriptViewComp = () => {
 
     const {script,setScript,isLoading,setSave} = useProjectInfo(); 
 
-    if(isLoading)
+    if(isLoading || script.length === 0)
     {
-      return <div style={{display:'flex',height:'100%',alignItems:'center',justifyContent:'center'}}><CircularProgress /></div>;
+      return (
+        <div className='flex flex-col justify-center items-center h-screen bg-[#181414]'>
+            <div class="loader"></div>
+        </div>   
+    )
     }
+
 
     return (
         <div style={{ marginTop: '20px',overflow: 'auto'}}>
            {script.map((sceneScript,sceneInd) => (
-              <Grid style={{border:'1px solid black', padding: '5px',margin:'20px'}}>
-                  <Typography style={{padding:'5px',fontWeight:'600',fontFamily:'Hubballi'}}>
+              <div class="p-[2px] rounded-xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] m-[20px]">
+              <div className="rounded-xl bg-[#1e1f20] p-[5px]">
+                  <Typography style={{padding:'5px',fontWeight:'600',fontFamily:'Hubballi', color:'white'}}>
                      {sceneScript.sceneName}
                   </Typography>
                 {(sceneScript.script).map((obj, scriptInd) => (
                     <DialogBox sceneInd={sceneInd} scriptInd={scriptInd} script={script} setScript={setScript} setSave={setSave}/>
                 ))}
-              </Grid>
+              </div>
+              </div>
            ))
           }
         </div>

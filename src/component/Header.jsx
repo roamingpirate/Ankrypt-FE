@@ -30,7 +30,7 @@ const ProjectPath = ({ projectName, projectId }) => {
   };
 
   return (
-      <Typography sx={{ fontFamily: "Oswald", fontSize: 25, marginRight: '30%' }}>
+      <Typography sx={{ fontFamily: "Oswald", fontSize: 25, marginRight: '30%', color: 'white'}}>
           <span onClick={handleAncriptClick} style={{ cursor: 'pointer', color: 'inherit' }}>
               ancript
           </span>/
@@ -50,20 +50,20 @@ const ProgressBox = ({currentStage,handleNext}) => {
 
   return(
     <Grid container spacing={2} >
-        <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 1)?'#9EF5EB':'white'}}
+        <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 1)?'#51c4b7':'white'}}
              onClick={()=>{(currentStage>=1) && handleNext(1)}}>
-          <EditNoteOutlinedIcon sx={{ fontSize: 25 }} />
+          <EditNoteOutlinedIcon sx={{ fontSize: 25, color:'black' }} />
         </Paper>
         <Grid size={4}>
-          <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 2)?'#9EF5EB':'white'}}
+          <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 2)?'#51c4b7':'white'}}
                onClick={()=>{(currentStage>=2) && handleNext(2)}}>
-            <PlayArrowOutlinedIcon sx={{fontSize:25}}/>
+            <PlayArrowOutlinedIcon sx={{fontSize:25, color:'black'}}/>
           </Paper>
         </Grid>
         <Grid size={4}>
-          <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 3)?'#9EF5EB':'white'}}
+          <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 3)?'#51c4b7':'white'}}
                onClick={()=>{(currentStage>=3) && handleNext(3)}}>
-           <DownloadOutlinedIcon sx={{fontSize:25}}/>
+           <DownloadOutlinedIcon sx={{fontSize:25, color:'black'}}/>
           </Paper>
         </Grid>
     </Grid>
@@ -77,11 +77,11 @@ const Header = () => {
 
 
   return (
-    <div style={{display: 'flex',flexDirection:'row',alignItems: 'center',padding: 5, flexWrap: 'wrap'}}>
+    <div className='border-b-[0.5px]' style={{display: 'flex',flexDirection:'row',alignItems: 'center',padding: 5, flexWrap: 'wrap', backgroundColor: '#1e1f20'}}>
           <IconButton
             size="large"
             aria-label="menu"
-            sx={{ mr: 1}}
+            sx={{ mr: 1, color: 'white' }}
           >
             <MenuIcon />
           </IconButton>
@@ -98,7 +98,14 @@ const Header = () => {
               </>
             }
            { (currentStage != 3) &&
-            <Button variant="contained" sx={{backgroundColor:'#3F3A39'}}  onClick={()=>handleNext(currentStage+1)}>Next</Button>
+            // <Button variant="contained" className="bg-gray-800" onClick={()=>handleNext(currentStage+1)}>Next</Button>
+                  <div onClick={()=>handleNext(currentStage+1)} class="p-[2px] rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] flex justify-center items-center">
+                  <div className="text-center">
+                    <button className="bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold m-[1px] py-2 px-4 rounded-3xl ">
+                      Next
+                    </button>
+                  </div>
+                  </div>
            }
           </div>
     </div>

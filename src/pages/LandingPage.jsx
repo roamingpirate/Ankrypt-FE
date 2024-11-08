@@ -8,7 +8,7 @@ import { fetchScript } from '../api/projectApi';
 
 const Footer = () => {
   return(
-    <footer class="bg-white text-black py-6">
+    <footer class=" text-white py-6">
     <div class="container mx-auto text-center">
         <p class="mb-4">&copy; 2024 Ancript. All rights reserved.</p>
         <ul class="flex justify-center space-x-4">
@@ -38,12 +38,14 @@ const LandingPage = () => {
     
     return(
       <div style={{ height:'100vh', width:'100%' }}>
+        <div className="bg-[#16222A]">
         <Header />
         <Intro/>
         <Examples/>
         <Features/>
         <PromptInput/>
         <Footer/>
+        </div>
       </div>
     )
 }

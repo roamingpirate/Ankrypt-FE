@@ -13,13 +13,13 @@ const PromptInput = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center mt-[120px] p-4 py-[150px]">
-      <h1 className="text-2xl font-semibold mb-4  font-karma">
+    <div className="flex flex-col justify-center items-center mt-[120px] p-4 md:py-[150px]">
+      <h1 className="text-2xl font-semibold mb-4 text-white  font-karma">
         Excited? Create your Own Video in minutes
       </h1>
-      <div className="rounded-lg shadow-lg p-8 w-[60%]" style={{ 'background': 'linear-gradient(to right, #0f2027, #203a43, #2c5364)'}}>
-        <p className="mb-2 text-center font-karma font-medium text-lg text-white">
-          Enter your prompt
+      <div className="rounded-lg shadow-lg p-8 md:w-[60%] bg-gradient-to-tl from-[#536976] to-[#292E49]" >
+        <p className="mb-2 text-center font-karma font-medium text-lg">
+          <span className="bg-gradient-to-r from-[#e6e9f0] to-[#eef1f5] bg-clip-text text-transparent"> Enter your prompt </span>
         </p>
         <textarea
           id="prompt"
@@ -29,12 +29,12 @@ const PromptInput = () => {
         />
         <div className="flex justify-center mt-4">
           <button
-            className="bg-white shadow-md hover:bg-gray-300 text-black font-semibold font-karma py-2 px-4 rounded-md mr-2"
+            className="bg-gray-800 shadow-md hover:bg-gray-300 text-white font-semibold font-karma py-2 px-4 rounded-md mr-2"
           >
             Browse Prompt
           </button>
           <button
-            className="bg-white shadow-md hover:bg-gray-300 text-black font-semibold font-karma py-2 px-4 rounded-md"
+            className="bg-gray-800 shadow-md hover:bg-gray-300 text-white font-semibold font-karma py-2 px-4 rounded-md"
             onClick={handleStart}
           >
             Start

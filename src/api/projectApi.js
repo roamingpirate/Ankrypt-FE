@@ -198,3 +198,14 @@ export const getProjectDetail = async (userId, projectId) => {
         throw err;
     }
 }
+
+export const getAvatarToken = async (userId) => {
+    try {
+        console.log("Trying to get Avatar Token Data");
+        const response = await axios.get(`${url}/user/${userId}/avatarToken`);
+        return response.data.token;
+    } catch (err) {
+        console.error("Error fetching project list:", err);
+        throw err;
+    }    
+}

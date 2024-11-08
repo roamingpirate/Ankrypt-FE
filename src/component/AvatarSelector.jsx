@@ -5,26 +5,22 @@ import { AvatarCreator } from '@readyplayerme/react-avatar-creator';
 import EditIcon from '@mui/icons-material/Edit';
 import { useProjectInfo } from "../utility/ProjectContext";
 import axios from "axios";
-const config= {
-  clearCache: true,
-  bodyType: 'fullbody',
-  quickStart: true,
-  language: 'en',
-
-};
+import { useAuth0 } from "@auth0/auth0-react";
+import { getAvatarToken } from "../api/projectApi";
 
 
 const GenderTypeSelectBox = ({ index, speakerData, setSpeakerData, disabled = false }) => {
     return (
-        <div className="w-full flex justify-center">
-            <Grid2 container spacing={2} className="min-w-[100px] flex items-center justify-center flex-wrap p-1 w-[75%] rounded-md bg-[#D9D9D9] mt-1">
+        <div className="w-full flex justify-center border-[1px] border-gray-500 p-1 rounded-lg">
+            <p className="flex-grow text-[12px] text-gray-300 w-[150px] p-3">Avatar Voice</p>
+            <Grid2 container spacing={1} className="min-w-[100px] flex items-center justify-center flex-wrap p-1 w-[100%] rounded-md mt-1">
                 {["male", "female"].map((val, ind) => (
                     <Grid2
                         key={ind}
                         size={6}
                         className={`min-w-[60px] rounded-md bg-[#FFFBFB] border border-black flex items-center justify-center hover:cursor-pointer`}
                         sx={{
-                            backgroundColor: (speakerData[index]?.vgender === val) ? '#3F3A39' : 'white',
+                            backgroundColor: (speakerData[index]?.vgender === val) ? '#1e9487' : 'white',
                             color: (speakerData[index]?.vgender === val) ? 'white' : 'black', 
                         }}
                         onClick={() => {
@@ -80,22 +76,14 @@ const AvatarBox = ({index, speakerList, setSpeakerList, startAvatarCreation,disa
     }, [speakerList]);
 
     return (
-        <Grid2 style={{border:'1px solid grey', borderRadius: '10px', margin: '10px',padding:'20px',display:'flex',flex:'1',flexDirection:'column',height:'480px'}}>
+        <Grid2 style={{border:'1px solid grey', borderRadius: '10px', margin: '10px',padding:'20px',display:'flex',flex:'1',flexDirection:'column'}}>
             <Suspense fallback={<LoadingCircle/>}>
             <AvatarDisplay avatarUrl={avatarUrl} avatarGender={avatarGender} speakerList={speakerList}/>
             </Suspense>
-            <GenderTypeSelectBox index={index} speakerData={speakerList} setSpeakerData={setSpeakerList} disabled={disabled}/>
-            <TextField variant='outlined' 
-                  label="Avatar Name" 
-                  onChange={(e) => changeAvatarName(e.target.value)}
-                  value={avatarName}
-                  fullWidth 
-                  height={'80px'}
-                  disabled={disabled}
-                  margin='normal'/>
+            <div>
             <Grid2 size={5} 
                 sx={{...styles.scriptTypeSubBox, 
-                    backgroundColor:'#3F3A39',
+                    backgroundColor:'#1e9487',
                     color:'white', 
                     width:'100%'
                 }}
@@ -106,6 +94,16 @@ const AvatarBox = ({index, speakerList, setSpeakerList, startAvatarCreation,disa
                     <EditIcon sx={{color:'white',width:'20px',height:'20px'}}/>
                 </div>
             </Grid2>
+            </div>
+            <TextField variant='outlined' 
+                  label="Avatar Name" 
+                  onChange={(e) => changeAvatarName(e.target.value)}
+                  value={avatarName}
+                  fullWidth 
+                  height={'80px'}
+                  disabled={disabled}
+                  margin='normal'/>
+            <GenderTypeSelectBox index={index} speakerData={speakerList} setSpeakerData={setSpeakerList} disabled={disabled}/>
         </Grid2>
     )
 }
@@ -117,6 +115,22 @@ const AvatarSelector = ({speakerList,setSpeakerList, disabled = false}) => {
    // const [speakerList, setSpeakerList] = useState(speakersListD)
     const [creatorMode, setCreatorMode] = useState(false);
     const [avatarCreateIndex, setAvatarCreateIndex] = useState(0);
+    const {user} = useAuth0();
+    const [token, setToken] = useState(null);
+
+    useEffect(() => {
+        const fetchToken = async () => {
+            const tokendata = await getAvatarToken(user.email);
+            setToken(tokendata);
+            console.log(tokendata,"token");
+        }
+        fetchToken();
+    },[])
+
+    const config= {
+        quickStart: true,
+        token: token
+     };
 
     const startAvatarCreation = (index) => {
         setCreatorMode(true);
@@ -139,15 +153,15 @@ const AvatarSelector = ({speakerList,setSpeakerList, disabled = false}) => {
         console.log(`Avatar URL is: ${event.data.url}`);
       };
 
-    if(creatorMode)
+    if(creatorMode )
     {
         return(
-           <AvatarCreator subdomain="ankrypt" config={config} style={style} onAvatarExported={handleOnAvatarExported} />
+           <AvatarCreator subdomain="ancript" config={config} style={style} onAvatarExported={handleOnAvatarExported} />
         )
     }
 
     return (
-        <Grid2 style={{display:'flex',flexDirection:'column', justifyContent:'center', alignItems:'center',height:'100%'}}>
+        <Grid2 className='bg-[#1e1f20] rounded-lg border-[1px]' style={{display:'flex',flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
         <Typography sx={styles.genScriptTxt}>Edit Speakers Avatars</Typography>
         <Grid2 style={{color:'white', display: 'flex', flexDirection:'row', justifyContent: 'center', alignItems:'center'}}>
             {

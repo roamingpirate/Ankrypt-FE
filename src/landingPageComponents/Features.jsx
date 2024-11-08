@@ -32,7 +32,7 @@ const VideoPlayer = ({ src , ar}) => {
     }, [videoRef]);
 
     return (
-        <div className={`overflow-hidden rounded-lg ${ar == 2? `w-[65%]`: `w-[85%]`}`} >
+        <div className={`overflow-hidden rounded-lg ${ar == 2? `w-[65%]`: `w-[85%]`} p-10`} >
             <video
                 ref={videoRef}
                 className="rounded-lg"
@@ -47,19 +47,31 @@ const VideoPlayer = ({ src , ar}) => {
 };
 
 
-const Feature = ({heading, subtext, videoSrc,ar}) => {
-    return(
-        <div className="flex py-[50px] mx-auto w-[70%] h-[600px]">
-            <div className="flex flex-col flex-1 justify-center">
-                <p className="font-bold pb-3 text-4xl pr-[80px]">{heading}</p>
-                <p className="font-semibold font-karma text-sm pr-[80px]">{subtext}</p>
+const Feature = ({ heading, subtext, videoSrc, ar }) => {
+    return (
+        <div className="flex flex-col md:flex-row py-[50px] mx-auto md:mb-[150px] sm:items-center sm:justify-center w-[95%] lg:w-[90%] xl-[80%]">
+            {/* Text Section */}
+            <div className="flex flex-col flex-1 justify-center text-white sm:pr-12 md:pr-20 lg:pr-28">
+                <p className="font-bold pb-3 text-xl sm:text-2xl md:text-3xl text-center sm:text-center">
+                    {heading}
+                </p>
+                <p className="font-semibold font-karma text-sm sm:text-base md:text-lg text-center ">
+                    {subtext}
+                </p>
             </div>
-            <div className="flex-1 rounded-lg flex justify-center items-center" style={{  'background' : 'linear-gradient(to right, #9796f0, #fbc7d4)'}}>
-                     <VideoPlayer src={videoSrc} ar={ar}/>
+
+            {/* Video Section */}
+            <div className="flex-1  flex justify-center items-center mt-8 sm:mt-4 sm:ml-8">
+                <div
+                    className="w-full h-full rounded-2xl flex justify-center items-center  md:w-[430px] lg:w-[500px] xl:w-[600px] bg-gradient-to-br from-[#3a6186] to-[#89253e]"
+                >
+                    <VideoPlayer src={videoSrc} ar={ar} />
+                </div>
             </div>
         </div>
-    )
-}
+    );
+};
+
 
 const featuresData = [
     {

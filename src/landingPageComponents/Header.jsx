@@ -17,12 +17,12 @@ const Header = () => {
 
   return (
     <div
-      className={`w-full flex items-end justify-between p-4 h-16 transition-all duration-300 ${
-        isSticky ? "fixed top-0 bg-white shadow-lg z-50" : ""
+      className={`w-full flex items-end justify-between pt-[10px] h-16 px-[8%] transition-all duration-300 text-white ${
+        isSticky ? "fixed top-0 bg-[#16222A] shadow-lg z-50 py-3" : ""
       }`}
     >
       <div>
-        <p className="font-ks text-3xl">Ancript</p>
+        <p className="font-bold font-mono text-3xl">Ancript</p>
       </div>
 
       <div className="flex-grow flex justify-center gap-5">
@@ -32,10 +32,16 @@ const Header = () => {
       </div>
 
       <div
-        className="rounded-lg hover:cursor-pointer bg-black text-center items-center px-3 py-2"
+        className="rounded-lg hover:cursor-pointer text-center items-center px-3"
         onClick={() => navigate("/studio")}
       >
-        <p className="font-karma text-white text-sm">Go To App</p>
+          <div class="p-[2px] rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] flex justify-center items-center">
+          <div className="text-center">
+            <button className="bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold m-[1px] py-2 px-4 rounded-3xl ">
+              Go To App
+            </button>
+          </div>
+          </div>
       </div>
     </div>
   );

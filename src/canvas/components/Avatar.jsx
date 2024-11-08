@@ -173,7 +173,7 @@ export function Avatar(props) {
 
     if(videoState == "Playing")
     {
-      mixer.timeScale=1;
+      mixer.timeScale=0.9;
       if(audio.current === null || audio.current === undefined)
         {
           console.log("opps");
@@ -222,13 +222,13 @@ export function Avatar(props) {
     
     if(currentAnimation != previousAnimation){
      // console.log("play")
-      action.reset().fadeIn(0.5).play();
+      action.reset().fadeIn(0.9).play();
       }
 
     return () => {
       //It gets value of previous render itself
       if(currentAnimation != nextAnimation){
-        action.fadeOut(0.5);
+        action.fadeOut(0.9);
       }
     }
 

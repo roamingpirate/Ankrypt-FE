@@ -18,6 +18,7 @@ import { useProjectInfo } from '../../utility/ProjectContext';
 import AvatarSelector from '../AvatarSelector';
 import zIndex from '@mui/material/styles/zIndex';
 import { updateSpeakerList } from '../../api/projectApi';
+import AnimatedTextbox from '../UtilityComponents/AnimatedTextBox';
 
 
 const toneD = ['funny', 'informative', 'narative']
@@ -25,16 +26,16 @@ const speakersListD = [
   {
     avatarName: "Jordan",
     avatar: "av",
-    avatarUrl: "https://models.readyplayer.me/6720e609ec2fa8d5d540e75c.glb?morphTargets=ARKit,Oculus%20Visemes",
-    avatarId: "6720e609ec2fa8d5d540e75c",
+    avatarUrl: "https://models.readyplayer.me/672e0f1bb1448fd6b482c385.glb?morphTargets=ARKit,Oculus%20Visemes",
+    avatarId: "672e0f1bb1448fd6b482c385",
     gender: "male",
     vgender: "male",
   },
   {
     avatarName: "Anaya",
     avatar: "av",
-    avatarUrl: "https://models.readyplayer.me/6720e89961ebe84488779c09.glb?morphTargets=ARKit,Oculus%20Visemes",
-    avatarId: "6720e89961ebe84488779c09",
+    avatarUrl: "https://models.readyplayer.me/672e0f19f8bb2fcf50cc6409.glb?morphTargets=ARKit,Oculus%20Visemes",
+    avatarId: "672e0f19f8bb2fcf50cc6409",
     gender:"female",
     vgender:"female",
   },
@@ -42,7 +43,7 @@ const speakersListD = [
 
 const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
    return(
-       <Grid2 container spacing={2} sx={styles.scriptTypeBox}>
+       <Grid2 container spacing={2} className="bg-gray-800" sx={styles.scriptTypeBox}>
        {
           ["podcast","story"].map((val,ind) => (
             <Grid2 key={ind} size={5} 
@@ -62,13 +63,13 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
  const SpeakersCountSelectBox = ({speakerCount, setSpeakerCount}) => {
    return (
       <Grid2>
-        <Typography sx={{color:'grey',fontSize:'12px',fontWeight:'80',paddingBottom:'3px'}}> Number of Speakers </Typography>
-      <ButtonGroup variant="outlined" size="large" color="grey">
+        <Typography sx={{color:'white',fontSize:'12px',fontWeight:'80',paddingBottom:'3px'}}> Number of Speakers </Typography>
+      <ButtonGroup variant="outlined" size="large" color="white">
         {
           [1, 2].map((num) => (
             <Button
               key={num}
-              style={speakerCount === num ? { backgroundColor: '#3F3A39', color: 'white', border: '1px solid black' } : {}}
+              style={speakerCount === num ? { backgroundColor: '#161717', color: 'white', border: '1px solid white' } : { backgroundColor: '#1F2937', color: 'white', border: '1px solid white'}}
               onClick={() => setSpeakerCount(num)}
             >
               {num}
@@ -87,12 +88,12 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
 
       return(
         <>
-        <Grid2 sx={{border:"1px solid grey",borderRadius:'5px',marginTop:'10px'}}>
+        <Grid2 sx={{border:"1px solid white",borderRadius:'5px',marginTop:'10px'}}>
           {/* Heading and Edit Button*/}
           <Grid2 sx={{display:'flex', justifyContent:'space-between',padding:'10px'}}>
-          <Typography sx={{color:'grey',fontSize:'14px',fontWeight:'80',paddingBottom:'3px'}}>Speakers</Typography>
+          <Typography sx={{color:'white',fontSize:'14px',fontWeight:'80',paddingBottom:'3px'}}>Speakers</Typography>
           <IconButton sx={{padding:'0px'}} onClick={() => setOpen(true)}>
-          <EditIcon sx={{color:'grey',width:'20px',height:'20px'}}/>
+          <EditIcon sx={{color:'white',width:'20px',height:'20px'}}/>
           </IconButton>
           </Grid2>
           {/* Speakers List */}
@@ -105,13 +106,13 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
                     <Grid2 sx={{width:'auto', 
                                 height:'auto', 
                                 padding : '5px 10px',
-                                border:'1px solid black', 
+                                border:'1px solid white', 
                                 borderRadius:'5px',
                                 display:'flex', 
                                 gap:'10px', 
                                 justifyContent:'center',
                                 alignItems:'center',
-                                backgroundColor:'#3F3A39'}}>
+                                backgroundColor:'#111827'}}>
                       <Avatar sx={{width:'22px',height:'22px', blackgroundColor:'white'}}>
                         A
                       </Avatar>
@@ -130,7 +131,7 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
           aria-labelledby="modal-title"
           aria-describedby="modal-description"
           BackdropProps={{
-            style: { backgroundColor: 'rgba(0, 0, 0, 0.05)' }, 
+            style: { backgroundColor: 'rgba(0, 0, 0, 0.3)' }, 
           }}>
             <Grid2 style={styles.AvatarSelectorModal}>
                 <AvatarSelector speakerList={speakerList} setSpeakerList={setSpeakerList}/>
@@ -144,7 +145,7 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
 const ScriptInputBox = () => {
 
    const [scriptType, setScriptType] = useState('podcast')
-   const [speakerCount,setSpeakerCount] = useState(null);
+   const [speakerCount,setSpeakerCount] = useState(2);
   // const [speakersList, setSpeakerList] = useState(speakersListD);
    const [speakerList, setSpeakerList] = useState(speakersListD)
    const [inputPrompt,setInputPrompt] = useState('');
@@ -170,9 +171,8 @@ const ScriptInputBox = () => {
   return (
     <Box sx={styles.root}>
       <Box display= 'flex' flexDirection='column' alignItems='center' justifyContent='center'>
-
-      <Typography className="font-semibold pt-5 pb-3" sx={styles.genScriptTxt}>Generate Script Using AI</Typography>
-      <ScriptTypeSelectBox scriptType={scriptType} setScriptType={setScriptType}/>
+      <p className='font-semibold pt-5 pb-3 font-mono text-3xl text-gray-200'>Generate Script Using AI</p>
+      {/* <ScriptTypeSelectBox scriptType={scriptType} setScriptType={setScriptType} /> */}
       </Box>
       <div className="mx-[12px]">
       <TextField variant='outlined' 
@@ -181,8 +181,36 @@ const ScriptInputBox = () => {
                   value={inputPrompt}
                   placeholder='Enter your prompt' 
                   fullWidth multiline 
-                  maxRows={5} 
-                  margin='normal'/>
+                  
+                  maxRows={8} 
+                  margin='normal'
+                  sx={{
+                    '& .MuiInputBase-input': {
+                      color: 'white', // Input text color
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: 'white', // Label color
+                    },
+                    '& .MuiInputBase-root.Mui-focused': {
+                      '& .MuiInputBase-input': {
+                        color: 'white', // Change text color to blue when focused
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: 'white', // Change label color to purple when focused
+                      },
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'white', // Set border color to white
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'white', // Border color on hover
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'white', // Border color when focused
+                      },
+                    },
+                  }}/>
       <div style={styles.row}>
           <TextField
             select
@@ -190,6 +218,33 @@ const ScriptInputBox = () => {
             defaultValue="funny"
             margin='dense'
             onChange={(e)=> setTone(e.target.value)}
+            sx={{
+              '& .MuiInputBase-input': {
+                color: 'white', // Input text color
+              },
+              '& .MuiInputLabel-root': {
+                color: 'white', // Label color
+              },
+              '& .MuiInputBase-root.Mui-focused': {
+                '& .MuiInputBase-input': {
+                  color: 'white', // Change text color to blue when focused
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'white', // Change label color to purple when focused
+                },
+              },
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: 'white', // Set border color to white
+                },
+                '&:hover fieldset': {
+                  borderColor: 'white', // Border color on hover
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: 'white', // Border color when focused
+                },
+              },
+            }}
           >
             {toneD.map((value) => (
               <MenuItem key={value} value={value}>
@@ -206,18 +261,21 @@ const ScriptInputBox = () => {
                      setSpeakerList={setSpeakerList}/>
 
      <div style={{...styles.row,justifyContent:'space-between', marginTop:'20px',}}>
-      <Grid2 size={5} 
-                sx={{...styles.scriptTypeSubBox, 
-                    backgroundColor:'#3F3A39',
-                    color:'white', 
-                    width:'60%'
-                    }}>
-        <Typography sx={styles.scriptTypeSubBoxText}>Browse Prompt</Typography>
-          <ArrowDropDownIcon sx={{color:'white',width:'25px',height:'25px'}}/>
-      </Grid2>
-      <IconButton sx={{backgroundColor:'#3F3A39'}} onClick={() => createScript()}>
-          <SendIcon sx={{color:'white',width:'25px',height:'25px'}}/>
-      </IconButton>
+      <div onClick={()=>handleNext(currentStage+1)} class="p-[2px] rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] flex justify-center items-center">
+            <div className="text-center">
+              <button className="flex bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold m-[1px] py-2 px-4 rounded-3xl ">
+              <Typography sx={styles.scriptTypeSubBoxText}>Browse Prompt</Typography>
+              <ArrowDropDownIcon sx={{color:'white',width:'25px',height:'25px'}}/>
+              </button>
+      </div>
+      </div>
+      <div onClick={()=>handleNext(currentStage+1)} class="p-[3px] rounded-[50%] bg-gradient-to-r from-[#2b5876] to-[#4e4376] flex justify-center items-center">
+            <div className="text-center">
+            <IconButton className="shadow-lg" sx={{backgroundColor:'#111827'}} onClick={() => createScript()}>
+                <SendIcon sx={{color:'white',width:'25px',height:'25px'}}/>
+            </IconButton>
+      </div>
+      </div>
       </div> 
       </div>
 
@@ -228,7 +286,7 @@ const ScriptInputBox = () => {
 
 const styles = {
   root : {display: 'flex',flexDirection:'column',margin: 2,flexGrow:1,flexWrap: 1},
-  genScriptTxt: {fontFamily:"Oswald",fontSize: 28,justifyContent:'space-between', fontWeight:'500',},
+  genScriptTxt: {fontFamily:"Oswald",fontSize: 28,justifyContent:'space-between', fontWeight:'500'},
   scriptTypeBox: {
     minWidth: '70px',
     alignItems: 'center',
@@ -243,7 +301,7 @@ const styles = {
   scriptTypeSubBox : {
     minWidth: '60px',
     borderRadius: 2,
-    backgroundColor: '#FFFBFB',
+    backgroundColor: 'white',
     border: '1px solid black',
     display: 'flex',
     alignItems: 'center',

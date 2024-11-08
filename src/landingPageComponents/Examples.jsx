@@ -1,7 +1,80 @@
-import React, {useEffect,useState} from 'react';
+import React, {useEffect,useState,useRef} from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import { Navigation, EffectCoverflow } from 'swiper/modules';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+
+const VideoSection = ({ videoSrc }) => {
+  const videoRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Handle play/pause toggle
+  const togglePlayPause = () => {
+    if (videoRef.current.paused) {
+      videoRef.current.play();
+      setIsPlaying(true);
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  // Handle video going out of view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            videoRef.current.pause();
+            setIsPlaying(false); // Update state when video is paused
+          }
+        });
+      },
+      { threshold: 0.5 } // Pause when 50% of the video is out of view
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      observer.disconnect(); // Clean up observer on unmount
+    };
+  }, []);
+
+  return (
+    <div className="flex-1 flex justify-center items-center p-2 relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+      <div className="overflow-hidden rounded-lg relative">
+        <video
+          ref={videoRef}
+          className="rounded-lg"
+          controls={false} // Disable the default controls
+        >
+          <source src={videoSrc} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        <div
+          className={`absolute inset-0 bg-gray-800 transition-all duration-300 ${isPlaying ? (isHovered? 'opacity-30' : 'opacity-0') : 'opacity-30'}`}
+        ></div>
+        
+        {/* Custom Play/Pause Button with Material UI Icon */}
+        <button
+          onClick={togglePlayPause}
+          className={`absolute bottom-1 left-[50%] transform -translate-x-1/2 -translate-y-1/2 p-2 bg-black rounded-full text-white ${isPlaying ? (isHovered? 'opacity-100' : 'opacity-0') :'opacity-100'}`}
+        >
+          {isPlaying ? (
+            <PauseIcon style={{ fontSize: 40 }} />
+          ) : (
+            <PlayArrowIcon style={{ fontSize: 40 }} />
+          )}
+        </button>
+      </div>
+    </div>
+  );
+};
 
 const  exampleData = [
     {
@@ -28,24 +101,33 @@ const  exampleData = [
   
 
 
-const ExampleCard = ({ heading, subheading, videoSrc}) => {
+  const ExampleCard = ({ heading, subheading, videoSrc }) => {
     return (
-      <div className="flex p-4 w-[800px] h-[650px] flex-wrap">
-        <div className="flex-1 flex flex-col items-center justify-center pr-4">
-          <h2 className="text-4xl font-bold text-white">{heading}</h2>
-          <p className="text-white mt-4">{subheading}</p>
+      <div className="flex flex-col lg:flex-row md:flex-row p-4">
+        {/* Text Section */}
+        <div className="flex-1 flex flex-col items-center sm:justify-center lg:pr-4 mb-4 md:mb-0 lg:mb-0">
+          <h2 className="text-2xl sm:text-3xl md:text-3xl lg:text-3xl font-bold text-white">
+            {heading}
+          </h2>
+          <p className="text-white mt-4 text-sm sm:text-base md:text-lg lg:text-lg">
+            {subheading}
+          </p>
         </div>
-        <div className="flex-1 flex justify-center items-center min-w-[300px] p-2">
-            <div className="overflow-hidden rounded-lg">
+  
+        {/* Video Section */}
+        {/* <div className="flex-1 flex justify-center items-center p-2">
+          <div className="overflow-hidden rounded-lg">
             <video className="rounded-lg" controls>
-                <source src={videoSrc} type="video/mp4" />
-                Your browser does not support the video tag.
+              <source src={videoSrc} type="video/mp4" />
+              Your browser does not support the video tag.
             </video>
-            </div>
-        </div>
+          </div>
+        </div> */}
+        <VideoSection videoSrc={videoSrc}/>
       </div>
     );
   };
+  
 
 const Carousel = () => {
     const slides = [
@@ -76,13 +158,35 @@ const Carousel = () => {
         // Add more slides as needed
     ];
 
+    const [spaceBetween, setSpaceBetween] = useState(150); 
+    const [pagePerScreen, setPagePerScreen] = useState(1.5);
     const [activeIndex, setActiveIndex] = useState(0);
+  
+    useEffect(() => {
+      const handleResize = () => {
+        if (window.innerWidth <= 510) {
+          setSpaceBetween(50); 
+          setPagePerScreen(1.1);
+        } else if (window.innerWidth <= 1024) {
+          setSpaceBetween(100); 
+          setPagePerScreen(1.3)
+        } else {
+          setSpaceBetween(150); 
+          setPagePerScreen(1.5);
+        }
+      };
+  
+      
+      handleResize(); 
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     return (
         <Swiper
             modules={[Navigation, EffectCoverflow]}
-            spaceBetween={170}
-            slidesPerView={1.5}
+            spaceBetween={spaceBetween}
+            slidesPerView={pagePerScreen}
             centeredSlides={true}
             navigation
             loop={true}
@@ -104,7 +208,7 @@ const Carousel = () => {
                         index === activeIndex ? 'opacity-100 scale-100' : 'opacity-60 scale-95'
                     }`}
                 >
-                     <div className="flex rounded-lg justify-center items-center w-full h-full" style={{ background: 'linear-gradient(to right, #83a4d4, #b6fbff)' }}>
+                     <div className="flex rounded-lg justify-center items-center bg-[#0b374d]">
                             <ExampleCard
                                 heading={example.heading}
                                 subheading={example.subheading}
@@ -124,7 +228,7 @@ const Examples = () => {
     const Topics = ["Education Explainer","Business Insights","Travel Vlogs","Personal Development","Technology Reviews"]
 
     return (
-        <><Carousel/><br/></>
+        <><Carousel/><br/><div className='mb-[150px]'/></>
     )
 }
 
