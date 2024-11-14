@@ -1,10 +1,10 @@
 export default {
   Smile: {
-    mouthSmile_L: 0.8,
-    mouthSmile_R: 0.8,
+    mouthSmile_L: 1,
+    mouthSmile_R: 1,
     eyeSquint_L: 0.4,
     eyeSquint_R: 0.4,
-    cheekPuff: 0.2,
+    cheekPuff: 0,
     jawOpen: 0.1,
   },
   Happy: {

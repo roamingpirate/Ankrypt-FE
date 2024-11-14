@@ -35,3 +35,21 @@
       opacity: 0;
     }
   }
+
+  /* Style for the entire scrollbar */
+::-webkit-scrollbar {
+    width: 4px; /* Thin scrollbar width */
+    height: 4px; /* Thin horizontal scrollbar height */
+  }
+  
+  /* Style for the draggable part (thumb) of the scrollbar */
+  ::-webkit-scrollbar-thumb {
+    background-color: white; /* White color for the scrollbar thumb */
+    border-radius: 2px; /* Optional: Rounded corners for the thumb */
+  }
+  
+  /* Style for the track (background part) of the scrollbar */
+  ::-webkit-scrollbar-track {
+    background: transparent; /* No background for the track */
+  }
+  

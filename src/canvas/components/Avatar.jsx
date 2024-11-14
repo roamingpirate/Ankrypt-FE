@@ -57,7 +57,7 @@ export function Avatar(props) {
   const avatarFaceExpression = useRef(null);
   const avatarLipSync = useRef(null);
 
-  const {script, animationState,setAnimationState, next, videoState, setVideoState,currentAudioData,setCurrentSceneIndex,currentSceneIndex,setCurrentSceneScript,characterLook,updateAnimationState,avatarVisibility} = usePlayer();
+  const {script, animationState,setAnimationState,toggleState, next, videoState, setVideoState,currentAudioData,setCurrentSceneIndex,currentSceneIndex,setCurrentSceneScript,characterLook,updateAnimationState,avatarVisibility,currentView} = usePlayer();
 
   const {actions, mixer,names} =useAnimations(avatarAnimation,avatarRef);
   const {actions : pose, mixer : poseSetup} = useAnimations(avatarPose, avatarRef);
@@ -68,8 +68,8 @@ export function Avatar(props) {
   const avatarLookPosition = useRef([0,0,1.5]);
 
   useGSAP(() => {
-    console.log("telo");
-    const requiredLookPosition = (characterLook == "Character")?charCoord:[0,0,1.5];
+    console.log("teloankit", characterLook.current, currentView, avatarName);
+    const requiredLookPosition = (characterLook.current == "Character" && currentView.current != 'Focused')?charCoord:[0,0,1.5];
 
     gsap.to(avatarLookPosition.current, {
       0: requiredLookPosition[0],
@@ -78,7 +78,7 @@ export function Avatar(props) {
       duration: 1,
       overwrite: 'auto'
     });
-  },[characterLook])
+  },[animationState,toggleState])
 
 
   const moveMorphTarget = (target, value, speed = 0.1) => {
@@ -108,6 +108,7 @@ export function Avatar(props) {
     // {
     //   setBlink(false);
     // }
+    
 
     if(videoState === "Paused"){
        // mixer.timeScale = 0;
@@ -117,7 +118,7 @@ export function Avatar(props) {
        avatarRef.current.getObjectByName('Head').lookAt(...avatarLookPosition.current)
     }
 
-    const faceExpressionConfiguration = faceExpressions[currentFaceExpression];
+    const faceExpressionConfiguration = faceExpressions['Smile'];
     morphTargetList.forEach((morphTarget) => {
       if(faceExpressionConfiguration && faceExpressionConfiguration[morphTarget])
       {
@@ -163,7 +164,7 @@ export function Avatar(props) {
     if(videoState == "Paused")
     {
         mixer.timeScale = 0;
-       
+        setCurrentFaceExpression('Happy')
       if(audio.current === null || audio.current === undefined)
       {
          return;
@@ -173,7 +174,7 @@ export function Avatar(props) {
 
     if(videoState == "Playing")
     {
-      mixer.timeScale=0.9;
+       mixer.timeScale=0.9;
       if(audio.current === null || audio.current === undefined)
         {
           console.log("opps");

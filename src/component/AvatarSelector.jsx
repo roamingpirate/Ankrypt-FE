@@ -49,7 +49,7 @@ const fetchAvatarBodyType = async (avatarId) => {
     return isMale ? "male" : "female";
 }
 
-const style = { width: '100%', height: '80vh', borderRadius: '10px' };
+const style = { width: '100%', height: '100%', borderRadius: '24px' };
 
 
 
@@ -161,7 +161,7 @@ const AvatarSelector = ({speakerList,setSpeakerList, disabled = false}) => {
     }
 
     return (
-        <Grid2 className='bg-[#1e1f20] rounded-lg border-[1px]' style={{display:'flex',flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
+        <Grid2 className='bg-[#1e1f20] rounded-3xl p-4' style={{display:'flex',flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
         <Typography sx={styles.genScriptTxt}>Edit Speakers Avatars</Typography>
         <Grid2 style={{color:'white', display: 'flex', flexDirection:'row', justifyContent: 'center', alignItems:'center'}}>
             {

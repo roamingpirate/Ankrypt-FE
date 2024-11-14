@@ -57,7 +57,7 @@ const VideoSection = ({ videoSrc }) => {
         </video>
 
         <div
-          className={`absolute inset-0 bg-gray-800 transition-all duration-300 ${isPlaying ? (isHovered? 'opacity-30' : 'opacity-0') : 'opacity-30'}`}
+          className={`absolute inset-0 bg-gray-800 transition-all duration-300 ${isPlaying ? (isHovered? 'opacity-0' : 'opacity-0') : 'opacity-30'}`}
         ></div>
         
         {/* Custom Play/Pause Button with Material UI Icon */}

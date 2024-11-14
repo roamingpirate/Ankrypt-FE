@@ -1,4 +1,4 @@
-import { Children, createContext, useContext, useEffect, useState } from "react";
+import { Children, createContext, useContext, useEffect, useRef, useState } from "react";
  import  AnimationScriptData from "../data/japanAnimationScriptData.js"
 // import  AnimationScriptData from "../data/script.js"
 import script from "../data/script.js";
@@ -20,7 +20,10 @@ export const PlayerController = ({ children }) => {
   const [animationType,setAnimationType] = useState(null);
   const [currentSceneIndex, setCurrentSceneIndex] = useState(null);
   const [currentSceneScript, setCurrentSceneScript] = useState([]);
-  const [characterLook, setCharacterLook] = useState("Listener");
+  //const [characterLook, setCharacterLook] = useState("Listener");
+  const characterLook = useRef("Listener");
+  //const [currentView, setCurrentView] = useState('All');
+  const currentView = useRef("All");
  // const [currentAudioData, setCurrentAudioData] = useState();
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [previousBackgroundImage, setPreviousBackgroundImage] = useState(null);
@@ -28,6 +31,8 @@ export const PlayerController = ({ children }) => {
   const [videoState, setVideoState] = useState("Paused");
   const [avatarVisibility, setAvatarVisibility] = useState(true);
   const [backgroundImageUrls,setBackgroundImageUrls] = useState(undefined);
+  const [toggleState, setToggleState] = useState(0);
+  const [playMode, setPlayMode] = useState("Normal");
  //const [reset, setReset] = useState(false);
 
  useEffect(() => {
@@ -125,12 +130,30 @@ async function loadTextures(urls) {
 
   },[currentSceneIndex]);
 
+  useEffect(() => {
+      console.log("data changed");
+      console.log(AnimationScriptData);
+      if(currentSceneIndex === null)
+      {
+        return ;
+      }
+
+    setCurrentSceneScript(AnimationScriptData[currentSceneIndex].Script);
+    console.log(AnimationScriptData[currentSceneIndex].Script);
+    let currentSceneScriptData = AnimationScriptData[currentSceneIndex].Script;
+    characterLook.current = currentSceneScriptData[animationState.currentSpeechIndex].Look ?? 'Listener'
+    currentView.current = currentSceneScriptData[animationState.currentSpeechIndex].View ?? 'Normal';
+    setToggleState((pv) => pv+1);
+  },[AnimationScriptData]);
+
 
   const updateAnimationState = (currentSceneIndex,currentSpeechIndex,currentDialogIndex) => {
 
     let currentSceneScriptData = AnimationScriptData[currentSceneIndex].Script;
     console.log("babaji");
     console.log(currentSceneScriptData);
+    characterLook.current = currentSceneScriptData[currentSpeechIndex].Look ?? 'Listener'
+    currentView.current = currentSceneScriptData[currentSpeechIndex].View ?? 'Normal';
 
     const animationStateObj = {
       currentSpeechIndex: currentSpeechIndex,
@@ -144,6 +167,13 @@ async function loadTextures(urls) {
 
     setAnimationState(animationStateObj);
   }
+
+  // const playSpecificSpeech = (currentSceneIndex,currentSpeechIndex) => {
+  //   setAnimationState(undefined);
+  //   setVideoState("Playing");
+  //   setPlayMode("Speech");
+  //   updateAnimationState(currentSceneIndex,currentSpeechIndex,0);
+  // }
 
   const createSceneTransition = () => {
     console.log("Popopop")
@@ -180,6 +210,12 @@ async function loadTextures(urls) {
         nextSpeechIndex = (animationState.currentSpeechIndex+1)%animationState.speechLength;
         if(nextSpeechIndex === 0)
         {
+           if(playMode == 'Speech')
+           {
+              setPlayMode('Normal');
+              setVideoState('Paused');
+              return;
+           }
            createSceneTransition();
            //setCurrentSceneIndex(currentSceneIndex + 1);
            return;
@@ -191,7 +227,11 @@ async function loadTextures(urls) {
         nextCurrentView= currentSceneScript[nextSpeechIndex].View;
         console.log("meowwww!")
         console.log(currentSceneScript[nextSpeechIndex].Look)
-        setCharacterLook(currentSceneScript[nextSpeechIndex].Look);
+        console.log(currentSceneScript[nextSpeechIndex].View)
+        //setCharacterLook(currentSceneScript[nextSpeechIndex].Look ?? 'Listener');
+        characterLook.current = currentSceneScript[nextSpeechIndex].Look ?? 'Listener'
+        //setCurrentView(currentSceneScript[nextSpeechIndex].View ?? 'All');
+        currentView.current = currentSceneScript[nextSpeechIndex].View ?? 'Normal';
 
     }
     else{
@@ -229,6 +269,8 @@ async function loadTextures(urls) {
         setCurrentSceneScript,
         updateAnimationState,
         avatarVisibility,
+        currentView,
+        toggleState,
       }}
     >
       {children}

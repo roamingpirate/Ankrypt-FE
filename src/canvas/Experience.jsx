@@ -73,7 +73,6 @@ const Experience = () => {
   return (
     <>
     <ErrorBoundary>
-    <PlayerController>
     <Paper elevation={5} style={{display:'grid', width:'82%', aspectRatio: '4/5', margin:'7px',backgroundColor:'white', borderRadius:'10px'}}>
     <Canvas style={{borderRadius:'10px'}} shadows>
     <PerspectiveCamera
@@ -91,7 +90,6 @@ const Experience = () => {
       <AnimationEditor/>
     </Grid2>
     {/* <AnimationEditor/> */}
-    </PlayerController>
     </ErrorBoundary>
     </>
   );

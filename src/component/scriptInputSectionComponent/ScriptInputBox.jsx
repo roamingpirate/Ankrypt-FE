@@ -19,6 +19,7 @@ import AvatarSelector from '../AvatarSelector';
 import zIndex from '@mui/material/styles/zIndex';
 import { updateSpeakerList } from '../../api/projectApi';
 import AnimatedTextbox from '../UtilityComponents/AnimatedTextBox';
+import { PromptSelector } from '../PromptSelector';
 
 
 const toneD = ['funny', 'informative', 'narative']
@@ -133,7 +134,7 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
           BackdropProps={{
             style: { backgroundColor: 'rgba(0, 0, 0, 0.3)' }, 
           }}>
-            <Grid2 style={styles.AvatarSelectorModal}>
+            <Grid2 className="w-[95%] sm:w-[90%] md:w-[80%] lg:w-[75%] xl:w-[55%] bg-[#1e1f20] rounded-3xl border-[1px]" style={styles.AvatarSelectorModal}>
                 <AvatarSelector speakerList={speakerList} setSpeakerList={setSpeakerList}/>
             </Grid2>
         </Modal>
@@ -151,6 +152,7 @@ const ScriptInputBox = () => {
    const [inputPrompt,setInputPrompt] = useState('');
    const [tone,setTone] = useState('Funny');
    const {generateScript, setSpeakerList : setProjectSpeakerList, speakerList: projectSpeakerList,projectId} = useProjectInfo();
+   const [openPrompt,setOpenPrompt] = useState(false);
 
    const handleChange = (event) => {
     setScriptType(event.value);
@@ -260,15 +262,31 @@ const ScriptInputBox = () => {
                      speakerList={speakerList} 
                      setSpeakerList={setSpeakerList}/>
 
-     <div style={{...styles.row,justifyContent:'space-between', marginTop:'20px',}}>
-      <div onClick={()=>handleNext(currentStage+1)} class="p-[2px] rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] flex justify-center items-center">
-            <div className="text-center">
-              <button className="flex bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold m-[1px] py-2 px-4 rounded-3xl ">
-              <Typography sx={styles.scriptTypeSubBoxText}>Browse Prompt</Typography>
-              <ArrowDropDownIcon sx={{color:'white',width:'25px',height:'25px'}}/>
-              </button>
-      </div>
-      </div>
+      {/* Prompt Browse */}
+        <div style={{...styles.row,justifyContent:'space-between', marginTop:'20px',}}>
+          <div onClick={()=>setOpenPrompt(true)} class="p-[2px] rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] flex justify-center items-center">
+                <div className="text-center">
+                  <button className="flex bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold m-[1px] py-2 px-4 rounded-3xl ">
+                  <Typography sx={styles.scriptTypeSubBoxText}>Browse Prompt</Typography>
+                  <ArrowDropDownIcon sx={{color:'white',width:'25px',height:'25px'}}/>
+                  </button>
+          </div>
+          </div>
+
+        {/* Modal for Prompt Browse */}
+        <Modal  open={openPrompt}
+          onClose={() => setOpenPrompt(false)}
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+          BackdropProps={{
+            style: { backgroundColor: 'rgba(0, 0, 0, 0.3)' }, 
+          }}>
+            <Grid2 className="w-[95%] sm:w-[90%] md:w-[80%] lg:w-[75%] xl:w-[55%] bg-[#1e1f20] rounded-3xl border-[1px]" style={styles.AvatarSelectorModal}>
+                <PromptSelector setPrompt={setInputPrompt} setOpen={setOpenPrompt}/>
+            </Grid2>
+        </Modal>
+
+
       <div onClick={()=>handleNext(currentStage+1)} class="p-[3px] rounded-[50%] bg-gradient-to-r from-[#2b5876] to-[#4e4376] flex justify-center items-center">
             <div className="text-center">
             <IconButton className="shadow-lg" sx={{backgroundColor:'#111827'}} onClick={() => createScript()}>
@@ -320,16 +338,13 @@ const styles = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    backgroundColor:'white',
-    borderRadius:'15px',
     //border: '0.5px solid grey',
     zIndex: 5,
     boxShadow: 24,
     pt: 2,
     px: 4,
     pb: 3,
-    width: '50%',
-    height:'80%',
+    height:'85%',
   }
 
 }

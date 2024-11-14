@@ -25,7 +25,7 @@ const Header = () => {
         <p className="font-bold font-mono text-3xl">Ancript</p>
       </div>
 
-      <div className="flex-grow flex justify-center gap-5">
+      <div className="hidden lg:flex flex-grow  justify-center gap-5">
         <p className="font-karma font-medium hover:cursor-pointer">Features</p>
         <p className="font-karma font-medium hover:cursor-pointer">Examples</p>
         <p className="font-karma font-medium hover:cursor-pointer">Pricing</p>

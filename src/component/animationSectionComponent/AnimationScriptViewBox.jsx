@@ -1,20 +1,41 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { Grid2 as Grid,Typography,TextField,MenuItem, IconButton, Button, Divider,Tooltip,CircularProgress,Paper} from '@mui/material';
 import animationScriptData from '../../data/animationScriptData';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { useProjectInfo } from '../../utility/ProjectContext';
 import { updateAnimationScript } from '../../api/projectApi';
+import { usePlayer } from '../../canvas/hooks/usePlayer';
 
 
-const FCCorrespondingColors = {
-    "Smile": "#FFF8DC",   // Cornsilk - light and warm
-    "Happy": "#FFA07A",   // LightSalmon - soft and energetic
-    "Laughing": "#FFDAB9",  // PeachPuff - light and playful
-    "Neutral": "#D3D3D3", // LightGray - subtle and calm
-    "Curious": "#E0FFFF", // LightCyan - fresh and inquisitive
-    "Surprised": "#FFB6C1" // LightPink - gentle and expressive
-  }
+// const FCCorrespondingColors = {
+//     "Smile": "#FFF8DC",   // Cornsilk - light and warm
+//     "Happy": "#FFA07A",   // LightSalmon - soft and energetic
+//     "Laughing": "#FFDAB9",  // PeachPuff - light and playful
+//     "Neutral": "#D3D3D3", // LightGray - subtle and calm
+//     "Curious": "#E0FFFF", // LightCyan - fresh and inquisitive
+//     "Surprised": "#FFB6C1" // LightPink - gentle and expressive
+//   }
+
+  const FCCorrespondingColors = {
+    "Smile": "#C2B280",   // Darker Cornsilk
+    "Happy": "#D2691E",   // Chocolate - deeper shade of LightSalmon
+    "Laughing": "#FF6347",  // Tomato - darker PeachPuff
+    "Neutral": "#A9A9A9", // DarkGray - deeper shade of LightGray
+    "Curious": "#66CDAA", // MediumAquaMarine - darker LightCyan
+    "Surprised": "#FF1493" // DeepPink - darker LightPink
+}
+
+// const FCCorrespondingColors = {
+//     "Smile": "#B49B6D",   // Muted Cornsilk - a more neutral beige
+//     "Happy": "#CD5C5C",   // IndianRed - a deeper, less vibrant shade of LightSalmon
+//     "Laughing": "#FF8C69",  // Salmon - softer shade of PeachPuff
+//     "Neutral": "#8A8A8A", // Darker, muted gray - less bright than LightGray
+//     "Curious": "#66B3B8", // Darker and softer LightCyan
+//     "Surprised": "#D48FB1" // MediumRose - toned-down version of LightPink
+// }
+
+
 
 
 const SelectBtn = ({val,data,updateValue,label}) => {
@@ -30,7 +51,7 @@ const SelectBtn = ({val,data,updateValue,label}) => {
               fontSize:'12px' 
             }
           }}
-          onChange={(event)=>{updateValue(event,label)}}
+          onChange={(event)=>{updateValue(event.target.value,label)}}
         >
         {data.map((arr) => (
         <MenuItem key={arr} value={arr}>
@@ -44,8 +65,8 @@ const SelectBtn = ({val,data,updateValue,label}) => {
 
 const DialogBox = ({obj}) => {
     return (
-            <Paper elevation={1} style={{...styles.DialogBoxStyle,backgroundColor:FCCorrespondingColors[obj.FaceExpression]}}> 
-            <Typography>
+            <Paper elevation={1} style={{...styles.DialogBoxStyle, backgroundColor:FCCorrespondingColors[obj.FaceExpression]}}> 
+            <Typography >
                 {obj.Text}
             </Typography>
             </Paper>
@@ -57,9 +78,9 @@ const ExpandedDialogBox = ({obj,sind,sceneInd,scriptInd,isSelected,setIsSelected
     const FaceExpressions=["Smile","Neutral", "Happy","Curious","Surprised","Laughing"]
     const {setSave} = useProjectInfo();
 
-    const updateAnimationSpeechObject = (event,label) => {
+    const updateAnimationSpeechObject = (val,label) => {
         const updatedSceneAnimationScript = [...animationScript[sceneInd].Script];
-        updatedSceneAnimationScript[scriptInd].Speech[sind][label]=event.target.value;
+        updatedSceneAnimationScript[scriptInd].Speech[sind][label]=val;
         const updatedAnimationScript = [...animationScript];
         updatedAnimationScript[sceneInd].Script=updatedSceneAnimationScript;
         setAnimationScript(updatedAnimationScript);
@@ -100,12 +121,12 @@ const ExpandedDialogBox = ({obj,sind,sceneInd,scriptInd,isSelected,setIsSelected
                 <Grid  container spacing={1} direction={'column'} sx={{alignItems:'center',padding:'2px',width:'5%'}}>
                     <Tooltip title="Close" >
                         <Grid item >
-                            <CancelRoundedIcon onClick={()=> setIsSelected(!isSelected)} sx={{ color: 'black', width: '20px', height: '20px' }}/>
+                            <CancelRoundedIcon onClick={()=> setIsSelected(!isSelected)} sx={{ color: 'white', width: '20px', height: '20px' }}/>
                         </Grid>
                     </Tooltip>
                     <Tooltip title="Play">
                         <Grid item>
-                            <PlayCircleFilledIcon sx={{ color: 'black', width: '20px', height: '20px' }}/>
+                            <PlayCircleFilledIcon sx={{ color: 'white', width: '20px', height: '20px' }}/>
                         </Grid>
                     </Tooltip>
                 </Grid>
@@ -143,10 +164,13 @@ const DynamicDialogBox = ({obj,sind,sceneInd,scriptInd,animationScript,setAnimat
 const AnimationSpeechBox = ({sceneInd,scriptInd,animationScript,setAnimationScript}) => {
 
     const viewType = ["Listener", "Character"]
+    const view = ["Focused", "Normal"]
+    const currentView = animationScript[sceneInd].Script[scriptInd].View ;
     const {setSave} = useProjectInfo();
-    const updateAnimationScriptObj = (event,label) => {
+
+    const updateAnimationScriptObj = (val,label) => {
         const updatedSceneAnimationScript = [...animationScript[sceneInd].Script];
-        updatedSceneAnimationScript[scriptInd][label]=event.target.value;
+        updatedSceneAnimationScript[scriptInd][label]=val;
         const updatedAnimationScript = [...animationScript];
         updatedAnimationScript[sceneInd].Script=updatedSceneAnimationScript;
         setAnimationScript(updatedAnimationScript);
@@ -154,8 +178,14 @@ const AnimationSpeechBox = ({sceneInd,scriptInd,animationScript,setAnimationScri
         setSave(true);
     }
 
+    // useEffect(() => {
+    //     if(currentView != 'Focused'){
+    //         updateAnimationScriptObj('Normal', 'View');
+    //     }
+    // },[])
+
     return (
-      <Paper elevation={2} sx={styles.AnimationSpeechBoxStyle}>
+      <Paper elevation={2} sx={styles.AnimationSpeechBoxStyle} className="bg-[#1e1f20]">
 
              {/* Head */}
             <Grid container sx={{ display: 'flex', alignItems: 'center',width:'100%' }}>
@@ -164,14 +194,25 @@ const AnimationSpeechBox = ({sceneInd,scriptInd,animationScript,setAnimationScri
                     <Grid item>
                      <Typography style={{height: '25px', fontFamily:'karma', fontSize:'14px',padding:'2px',fontWeight:'600' }}>{animationScript[sceneInd].Script[scriptInd].Speaker}</Typography>
                     </Grid>
-                    <Grid item>
-                        <SelectBtn val={animationScript[sceneInd].Script[scriptInd].Look} data={viewType} label={"Look"} updateValue={updateAnimationScriptObj}/>
-                    </Grid>
+                    {/* View  */}
+                        <Tooltip title="View Mode" placement="top" arrow>
+                            <Grid item>
+                                <SelectBtn val={(currentView == 'Focused')? currentView : "Normal"} data={view} label={"View"} updateValue={updateAnimationScriptObj}/>
+                            </Grid>
+                        </Tooltip>
+                    {/* Character Look */}
+                    { currentView != 'Focused' &&
+                        <Tooltip title="Speakers Look" placement="top" arrow >
+                            <Grid item>
+                                <SelectBtn val={animationScript[sceneInd].Script[scriptInd].Look ?? 'Listener'} data={viewType} label={"Look"} updateValue={updateAnimationScriptObj}/>
+                            </Grid>
+                        </Tooltip>
+                    }
                 </Grid>
                 </Grid>
                 <Grid item>
                 <IconButton>
-                    <PlayCircleFilledIcon sx={{ color: 'black', width: '20px', height: '20px' }} />
+                    <PlayCircleFilledIcon sx={{ color: 'white', width: '20px', height: '20px' }} />
                 </IconButton>
                 </Grid>
             </Grid>
@@ -251,7 +292,7 @@ const styles = {
         cursor: 'pointer',
         borderRadius:'5px',
         margin:'5px',
-        padding:'2px'
+        padding:'2px',
     },
     ExpandedDialogBoxStyle : {
             width:'100%', 
@@ -267,7 +308,8 @@ const styles = {
            // border:'1px solid grey', 
             borderRadius:'5px',
             margin:'10px',
-            marginBottom:'15px'
+            marginBottom:'15px',
+            backgroundColor:'#1f2937'
     }
   
   }

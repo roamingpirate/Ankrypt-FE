@@ -17,6 +17,25 @@ export const useProjectInfo= () => {
     return useContext(ProjectContext);
 }
 
+const speakersListD = [
+    {
+      avatarName: "Jordan",
+      avatar: "av",
+      avatarUrl: "https://models.readyplayer.me/672e0f1bb1448fd6b482c385.glb?morphTargets=ARKit,Oculus%20Visemes",
+      avatarId: "672e0f1bb1448fd6b482c385",
+      gender: "male",
+      vgender: "male",
+    },
+    {
+      avatarName: "Anaya",
+      avatar: "av",
+      avatarUrl: "https://models.readyplayer.me/672e0f19f8bb2fcf50cc6409.glb?morphTargets=ARKit,Oculus%20Visemes",
+      avatarId: "672e0f19f8bb2fcf50cc6409",
+      gender:"female",
+      vgender:"female",
+    },
+  ]
+
 
 export const ProjectInfoProvider = ({children}) => {
 
@@ -30,7 +49,7 @@ export const ProjectInfoProvider = ({children}) => {
     const [script,setScript] = useState([]);
     const [changesList, setChangesList] = useState([]);
     const [animationScript,setAnimationScript] = useState([]);
-    const [speakerList, setSpeakerList] = useState([]);
+    const [speakerList, setSpeakerList] = useState(speakersListD);
     const [audioData,setAudioData] = useState([]);
     const [isLoading,setIsLoading] = useState(false);
     const [canavsLoaded,setCanvasLoaded] = useState(false);
@@ -176,11 +195,12 @@ export const ProjectInfoProvider = ({children}) => {
                     console.log("background image status:" + status);
                     
                     if (status === 1) {
+                        clearInterval(fetchStatus); 
                         const urls = await getBackgroundImageUrls(projectId);
                         console.log(urls);
                         const textureArray = await loadTextures(urls);
                         setBackgroundTextureArray(textureArray);
-                        clearInterval(fetchStatus);  
+                         
                         resolve(); 
                     }
                 }, 5000);

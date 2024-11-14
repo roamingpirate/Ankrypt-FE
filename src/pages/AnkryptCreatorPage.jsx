@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -20,6 +20,31 @@ const AnkryptCreatorPage = () => {
   const {currentStage,alert,setAlert,alertMessage, isPageLoading, error} = useProjectInfo();
   const {isAuthenticated, loginWithPopup} = useAuth0();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Store the original viewport content
+    const originalViewport = document
+      .querySelector('meta[name="viewport"]')
+      ?.getAttribute('content');
+
+    // Set viewport to desktop mode if on mobile
+    if (window.innerWidth < 768) {
+      const metaViewport = document.querySelector('meta[name="viewport"]');
+      if (metaViewport) {
+        metaViewport.setAttribute('content', 'width=1024');
+      }
+    }
+
+    // Restore the original viewport when the component unmounts
+    return () => {
+      const metaViewport = document.querySelector('meta[name="viewport"]');
+      if (metaViewport && originalViewport) {
+        metaViewport.setAttribute('content', originalViewport);
+      }
+    };
+  }, []);
+
+
 
   const renderSection = () => {
         switch(currentStage)
@@ -68,6 +93,7 @@ const AnkryptCreatorPage = () => {
         </div>
       )
   }
+  
 
   return (
        <Box sx={{height:'100vh',display: 'flex',flexDirection: 'column',width:'100%'}}>

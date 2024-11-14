@@ -198,7 +198,7 @@ const Dashboard = () => {
                 :
                 <div className='flex flex-col h-full ml-[5%] '>
                   <p className='text-xl sm:text-3xl font-karma font-semibold pt-10 pb-5 text-white'>Recent Projects</p>
-                <div className='flex flex-wrap gap-8 overflow-y-auto pb-10 pt-2 pl-2'>
+                <div className='flex flex-wrap gap-8 overflow-y-auto pb-10 pt-2 pl-2 pr-5'>
                     <CreateNew/>
                     {projectsList.map((project) => (
                         <ProjectCard name={project.projectName} id={project.projectId} img={project.img}/>

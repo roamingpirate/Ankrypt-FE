@@ -13,6 +13,7 @@ import ScriptViewComp from './scriptInputSectionComponent/ScriptViewBox';
 import AnimationScriptViewBox from './animationSectionComponent/AnimationScriptViewBox';
 import CanvasViewBox from './animationSectionComponent/CanvasViewBox';
 import { Height } from '@mui/icons-material';
+import { PlayerController } from '../canvas/hooks/usePlayer';
 
 {/* <Box sx={{height:'100vh',display: 'flex',flexDirection: 'column'}}>
 <h1 style={{backgroundColor: FCCorrespondingColors['Smile']}}>Hello</h1>
@@ -28,14 +29,16 @@ import { Height } from '@mui/icons-material';
 
 const AnimationSection = () => {
   return (
+    <PlayerController>
     <Box sx={{display: 'flex', flexDirection:'row',overflow:'auto',height:'100%'}}>
          <Box className="w-[40%] border-t-2 border-t-gray-200" >
           <CanvasViewBox/>
           </Box>
-          <Box className="border-t-2 border-t-gray-200 border-l-2 border-l-gray-200" sx={{width: '65%',overflow:'auto'}}>
+          <Box className="border-t-2 bg-[#1e1f20] border-t-gray-200 border-l-2 border-l-gray-200" sx={{width: '65%',overflow:'auto'}}>
             <AnimationScriptViewBox/>
           </Box>
        </Box>
+       </PlayerController>
   )
 }
 

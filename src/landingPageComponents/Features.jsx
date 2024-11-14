@@ -32,7 +32,7 @@ const VideoPlayer = ({ src , ar}) => {
     }, [videoRef]);
 
     return (
-        <div className={`overflow-hidden rounded-lg ${ar == 2? `w-[65%]`: `w-[85%]`} p-10`} >
+        <div className={`overflow-hidden rounded-lg ${ar == 2? `w-[90%] md:w-[65%]`: `w-[90%] md:w-[85%]`} p-10`} >
             <video
                 ref={videoRef}
                 className="rounded-lg"
