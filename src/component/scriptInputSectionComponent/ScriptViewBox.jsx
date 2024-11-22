@@ -149,7 +149,7 @@ const ScriptViewComp = () => {
 
     const {script,setScript,isLoading,setSave,changesList, setChangesList} = useProjectInfo(); 
 
-    if(isLoading || script.length === 0)
+    if(isLoading)
     {
       return (
         <div className='flex flex-col justify-center items-center h-screen bg-[#181414]'>

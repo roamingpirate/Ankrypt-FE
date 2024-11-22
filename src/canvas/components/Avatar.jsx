@@ -44,6 +44,7 @@ export function Avatar(props) {
   const {animations : avatarPose} = useGLTF(`/animations/${avatarGender}AvatarPose.glb`);
 
   const [blink,setBlink] = useState(false);
+  const isStart = useRef(true);
 
   const [currentAnimation,setCurrentAnimation] = useState(undefined);
   const [nextAnimation,setNextAnimation] = useState(undefined);
@@ -75,7 +76,7 @@ export function Avatar(props) {
       0: requiredLookPosition[0],
       1: requiredLookPosition[1],
       2: requiredLookPosition[2],
-      duration: 1,
+      duration: (currentView.current != 'Focused'? 1: 0),
       overwrite: 'auto'
     });
   },[animationState,toggleState])
@@ -175,6 +176,7 @@ export function Avatar(props) {
     if(videoState == "Playing")
     {
        mixer.timeScale=0.9;
+       isStart.current = false;
       if(audio.current === null || audio.current === undefined)
         {
           console.log("opps");
@@ -189,19 +191,20 @@ export function Avatar(props) {
     {
       mixer.stopAllAction();
       setVideoState("Paused");
+      isStart.current = true;
       setCurrentAnimation(undefined);
       if(audio.current === null || audio.current === undefined)
       {
           return;
       }
-        audio.current.pause();
-      
+        audio.current.pause(); 
     }
 
   },[videoState])
 
 
   useEffect(()=> {
+
 
     if(animationState === undefined || !currentAnimation || !animationNumber)
     {
@@ -238,6 +241,16 @@ export function Avatar(props) {
 
    useEffect(()=> {
 
+    if(isStart.current)
+    {
+      mixer.timeScale = 1;
+      actions['Idle'].reset().play();
+      setTimeout(() => {
+        mixer.timeScale = 0;
+      },[200])
+      
+      console.log("keto")
+    }
 
     console.log(animationState);
     console.log('animation Statee');
@@ -328,6 +341,7 @@ export function Avatar(props) {
     // else{
     //   pose['Idle'].play();
     // }
+    //console.log("av",avatarAnimation)
 
     let blinkTimeout;
     const nextBlink = () => {

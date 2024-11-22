@@ -45,7 +45,7 @@ const AvatarDisplay = ({ avatarUrl, avatarGender, speakerList }) => {
 
   return (
     <>
-      <div style={{ display: 'grid', height: '300px', margin: '5px', backgroundColor: 'white', border: '1px solid grey' }}>
+      <div className="bg-gray" style={{ display: 'grid', height: '300px', margin: '5px', border: '1px solid grey' }}>
         <Canvas shadows>
           <OrbitControls
             enableZoom={true}
@@ -56,14 +56,14 @@ const AvatarDisplay = ({ avatarUrl, avatarGender, speakerList }) => {
           />
           
           {/* Ambient Light for general lighting */}
-          <ambientLight intensity={0.5} />
+          <ambientLight intensity={1.7} />
 
           {/* Directional Light for casting shadows */}
           <directionalLight
             ref={directionalLightRef}
             color={0xffffff}
-            intensity={0.4}
-            position={[-10.0, -9.1, -0.7]} // Dynamic position based on Leva controls
+            intensity={1.2}
+            position={[3.9, 10.0, 10.0]} // Dynamic position based on Leva controls
             castShadow
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
@@ -76,7 +76,7 @@ const AvatarDisplay = ({ avatarUrl, avatarGender, speakerList }) => {
           />
 
           {/* Optional Environment (HDR or preset) for reflections */}
-          <Environment preset="sunset" background />
+          {/* <Environment preset="sunset" background /> */}
 
           {/* Camera setup */}
           <PerspectiveCamera

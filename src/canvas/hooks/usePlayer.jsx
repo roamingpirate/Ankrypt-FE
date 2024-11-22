@@ -119,6 +119,12 @@ async function loadTextures(urls) {
           return;
       }
 
+      if(currentSceneIndex == 0 && backgroundImageUrls != undefined)
+      {
+          setPreviousBackgroundImage(backgroundImageUrls[0]);
+          setBackgroundImage(backgroundImageUrls[0]);
+      }
+
       setCurrentSceneScript(AnimationScriptData[currentSceneIndex].Script);
       updateAnimationState(currentSceneIndex,0,0);
 

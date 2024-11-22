@@ -22,7 +22,26 @@ import AnimatedTextbox from '../UtilityComponents/AnimatedTextBox';
 import { PromptSelector } from '../PromptSelector';
 
 
-const toneD = ['funny', 'informative', 'narative']
+
+const toneD = [
+  "Informative",
+  "Educational",
+  "Funny",
+  "Entertaining",
+  "Engaging",
+  "Encouraging",
+  "Adventurous",
+  "Inspirational",
+  "Empowering",
+  "Professional",
+  "Strategic",
+  "Mysterious",
+  "Lighthearted",
+  "Confident",
+  "Practical",
+  "Positive"
+];
+
 const speakersListD = [
   {
     avatarName: "Jordan",
@@ -173,7 +192,7 @@ const ScriptInputBox = () => {
   return (
     <Box sx={styles.root}>
       <Box display= 'flex' flexDirection='column' alignItems='center' justifyContent='center'>
-      <p className='font-semibold pt-5 pb-3 font-mono text-3xl text-gray-200'>Generate Script Using AI</p>
+      <p className='font-semibold pt-5 pb-3 font-mono text-center sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl text-gray-200'>Generate Script Using AI</p>
       {/* <ScriptTypeSelectBox scriptType={scriptType} setScriptType={setScriptType} /> */}
       </Box>
       <div className="mx-[12px]">
@@ -217,7 +236,7 @@ const ScriptInputBox = () => {
           <TextField
             select
             label="Tone"
-            defaultValue="funny"
+            defaultValue="Informative"
             margin='dense'
             onChange={(e)=> setTone(e.target.value)}
             sx={{

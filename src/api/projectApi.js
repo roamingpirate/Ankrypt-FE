@@ -1,7 +1,7 @@
 import api from 'axios';
 
 const axios = api.create({
-    baseURL: "https://3606-2401-4900-1c35-8c50-98ff-25d1-147a-3469.ngrok-free.app",
+    baseURL: "https://82f5-103-186-41-170.ngrok-free.app",
     headers: {
         'ngrok-skip-browser-warning': 'true' // Skip ngrok's warning page by default
     }
@@ -9,7 +9,7 @@ const axios = api.create({
 
 
 //const url = "http://localhost:3000";
-const url = "https://3606-2401-4900-1c35-8c50-98ff-25d1-147a-3469.ngrok-free.app";
+const url = "https://82f5-103-186-41-170.ngrok-free.app";
 
 
 export const fetchScript = async (projectId) => {

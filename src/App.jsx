@@ -31,7 +31,7 @@ const App = () => {
         <BrowserRouter>
           <Routes>
             <Route
-              path="/app/:projectId"
+              path="/app/:projectNo"
               element={
                 <ProjectInfoProvider>
                   <AnkryptCreatorPage />

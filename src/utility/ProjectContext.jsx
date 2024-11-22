@@ -43,7 +43,10 @@ export const ProjectInfoProvider = ({children}) => {
     // download test
     const test=0;
     const [currentStage, setCurrentStage] = useState(1);
-    const { projectId } = useParams();
+    const { projectNo } = useParams();
+    const [projectId, setProjectId] = useState("");
+    //const location = useLocation();
+    //const { projectName, projectId } = location.state || {};
     //
     const [scriptData, setScriptData] = useState();
     const [script,setScript] = useState([]);
@@ -66,13 +69,16 @@ export const ProjectInfoProvider = ({children}) => {
 
 
     const getScript = async () => {
-        //console.log(scriptData.scenes);
+        setIsLoading(true);
+       // console.log("jajja");
         const scriptDa = await fetchScript(projectId);
         const changesListDa = await fetchChangesList(projectId);
         //console.log(scriptDa);
         setScriptData(scriptDa);
         setChangesList(changesListDa);
         setScript(scriptDa.scenes);
+       // console.log(scriptDa.scenes,"pepa");
+        setIsLoading(false);
      }
 
      const getSpeakerList = async () => {
@@ -303,6 +309,7 @@ export const ProjectInfoProvider = ({children}) => {
     
     useEffect(() => {
         if(currentStage == 1){
+            
             getScript();
             return;
         }
@@ -320,6 +327,7 @@ export const ProjectInfoProvider = ({children}) => {
 
     useEffect(() => {
         console.log("pwpwpwp");
+        setIsPageLoading(true);
        // console.log(projectId,projectName);
        if(!isAuthenticated)
        {
@@ -329,14 +337,18 @@ export const ProjectInfoProvider = ({children}) => {
        }
        else{
           const validate = async () => {
-             const res = await getProjectDetail(user.email, projectId);
+            console.log(projectNo,"pn");
+             const res = await getProjectDetail(user.email, projectNo);
+             setError("Fetching project")
              if(res.status == 0)
              {
-                setError(`Project with id ${projectId} not found!`);
+                setError(`Project with no ${projectNo} not found!`);
                 setIsPageLoading(false);
              }
              else{
+                console.log("detailes fetched",res.projectName);
                 setProjectName(res.projectName);
+                setProjectId(user.email+"_"+projectNo);
                 setError("");
                 setIsPageLoading(false);
              }
@@ -345,6 +357,24 @@ export const ProjectInfoProvider = ({children}) => {
        }
 
     },[isAuthenticated]);
+
+    useEffect(()=>{
+
+    const SpeakerListSet = async () => {
+            if(projectId!="")
+            {
+                const sl = await fetchSpeakerList(projectId);
+                console.log("sl",sl);
+                if(sl.length != 0){
+                    console.log("aeyo")
+                    setSpeakerList(sl);
+                }
+            }
+    }
+
+    SpeakerListSet();
+
+    },[projectId])
 
     return (
         <ProjectContext.Provider value={{currentStage,

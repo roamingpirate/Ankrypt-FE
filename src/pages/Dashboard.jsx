@@ -10,14 +10,14 @@ import { Button, Grid2, Modal, TextField } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 
-const ProjectCard = ({ name, id, img }) => {
+const ProjectCard = ({ name, id, projectNo, img }) => {
 
     const navigate = useNavigate();
 
     console.log(img)
     return (
       <div class="p-[2px] rounded-xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] hover:cursor-pointer flex justify-center items-center hover:scale-105 transition duration-500">
-      <div onClick={()=> navigate(`/app/${id}`,{ state: { projectName : name } })} className="rounded-xl w-[20%] min-w-[150px]  sm:min-w-[200px] h-[200px] sm:h-[350px] hover:cursor-pointer shadow-md p-4 bg-gray-800 hover:shadow-lg transform transition duration-500 ">
+      <div onClick={()=> navigate(`/app/${projectNo}`,{ state: { projectName : name } })} className="rounded-xl w-[20%] min-w-[150px]  sm:min-w-[200px] h-[200px] sm:h-[350px] hover:cursor-pointer shadow-md p-4 bg-gray-800 hover:shadow-lg transform transition duration-500 ">
         {img ? (
           <img
             src={img}
@@ -29,7 +29,7 @@ const ProjectCard = ({ name, id, img }) => {
         )}
         <div className='sm:p-2'>
         <h2 className="text-lg sm:text-xl text-white font-semibold mt-2">{name}</h2>
-        <p className="text-[12px] text-white sm:text-sm">Project ID: {id}</p>
+        <p className="text-[12px] text-white sm:text-sm">Project No: {projectNo}</p>
         </div>
       </div>
       </div>
@@ -44,8 +44,8 @@ const CreateNew = () => {
   const navigate = useNavigate();
 
   const addProject = async () => {
-    const pid=await addProjectToUser(user.email,projectName);
-      navigate(`/app/${pid}`,{ state: { projectName } });
+    const pno=await addProjectToUser(user.email,projectName);
+      navigate(`/app/${pno}`,{ state: { projectName } });
   }
 
     return (
@@ -61,7 +61,7 @@ const CreateNew = () => {
         BackdropProps={{
           style: { backgroundColor: 'rgba(0, 0, 0, 0.05)' }, 
         }}>
-              <Grid2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg z-50 shadow-md pt-2 px-4 pb-3 w-[200px] h-[200px] sm:w-[400px] sm:h-[200px]">
+              <Grid2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-gray-800 rounded-lg z-50 shadow-md pt-2 px-4 pb-3 w-[200px] h-[200px] sm:w-[400px] sm:h-[200px]">
                <div className="w-full h-full flex flex-col justify-center items-center ">
                  <TextField
                   label="Project Name" 
@@ -72,7 +72,7 @@ const CreateNew = () => {
               />
               <div 
                   onClick={() => addProject()}
-                  className="bg-gray-800 text-white rounded-xl mt-4 p-3 hover:cursor-pointer" 
+                  className="bg-white text-gray-700 rounded-xl mt-4 p-3 hover:cursor-pointer" 
               >
                   <p>Create Project</p>
               </div>
@@ -153,15 +153,16 @@ const Dashboard = () => {
       )}
 
          {/* Projects */}
-            <div className=" mt-20 flex-grow hidden sm:block">
+            <div className=" mt-[30px] flex-grow hidden sm:block">
                 <h3 className="text-3xl font-karma font-semibold px-4 py-2">Projects</h3>
-                <ul>
-                {projectsList.map((project) => (
+                <ul className="max-h-72 overflow-y-scroll">
+                  {projectsList.map((project) => (
                     <li key={project.id} className="px-4 py-2 hover:bg-gray-700">
-                    {project.projectName}
+                      {project.projectName}
                     </li>
-                ))}
+                  ))}
                 </ul>
+
             </div>
           {/* user info */}
           <div className="hidden sm:flex flex-wrap items-center p-1">
@@ -201,7 +202,7 @@ const Dashboard = () => {
                 <div className='flex flex-wrap gap-8 overflow-y-auto pb-10 pt-2 pl-2 pr-5'>
                     <CreateNew/>
                     {projectsList.map((project) => (
-                        <ProjectCard name={project.projectName} id={project.projectId} img={project.img}/>
+                        <ProjectCard name={project.projectName} id={project.projectId} projectNo={project.projectNo} img={project.img}/>
                     ))}                   
                 </div>
                 </div>
