@@ -156,7 +156,7 @@ const AvatarSelector = ({speakerList,setSpeakerList, disabled = false}) => {
     if(creatorMode )
     {
         return(
-           <AvatarCreator subdomain="ancript" config={config} style={style} onAvatarExported={handleOnAvatarExported} />
+           <AvatarCreator subdomain="ankrypt" config={config} style={style} onAvatarExported={handleOnAvatarExported} />
         )
     }
 
