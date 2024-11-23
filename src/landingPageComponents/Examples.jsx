@@ -7,132 +7,129 @@ import PauseIcon from '@mui/icons-material/Pause';
 import { CircularProgress } from '@mui/material';
 
 const VideoSection = ({ videoSrc, placeholderImage }) => {
-  const videoRef = useRef(null);
+  const iframeRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(true);
 
-  const togglePlayPause = () => {
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
+  const togglePlayPause = (play) => {
+    if (iframeRef.current) {
+      iframeRef.current.contentWindow.postMessage(
+        JSON.stringify({
+          event: "command",
+          func: play ? "playVideo" : "pauseVideo",
+        }),
+        "*"
+      );
+      setIsPlaying(play);
     }
-  };
-
-  const handleLoadedData = () => {
-    setIsLoading(false);
   };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) {
-            videoRef.current.pause();
-            setIsPlaying(false);
-          }
-        });
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+        if (!entry.isIntersecting && isPlaying) {
+          togglePlayPause(false); // Pause video when out of view
+        }
       },
       { threshold: 0.5 }
     );
 
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
+    const container = iframeRef.current?.parentElement;
+    if (container) {
+      observer.observe(container);
     }
 
     return () => {
-      observer.disconnect();
+      if (container) {
+        observer.unobserve(container);
+      }
     };
-  }, []);
+  }, [isPlaying]);
 
   return (
     <div
-      className="flex-1 flex justify-center items-center p-2 relative"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="relative"
+      style={{
+        width: "80%",
+        maxWidth: "400px",
+        aspectRatio: "4 / 5",
+        margin: "auto",
+      }}
     >
-      <div className="overflow-hidden rounded-lg relative">
-        {isLoading && (
-          <div className="absolute inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50">
-            <CircularProgress size={50} color="inherit" />
-          </div>
-        )}
-
-        {isLoading && placeholderImage && (
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${placeholderImage})`,
-            }}
-          ></div>
-        )}
-
-        <video
-          ref={videoRef}
-          className="rounded-lg"
-          controls={false}
-          onLoadedData={handleLoadedData}
+      {(!isPlaying || !isVisible) && (
+        <div
+          className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 z-10"
+          style={{
+            backgroundImage: `url(${placeholderImage})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
         >
-          <source src={videoSrc} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-
-        <button
-          onClick={togglePlayPause}
-          className={`absolute bottom-1 left-[50%] transform -translate-x-1/2 -translate-y-1/2 p-2 bg-black rounded-full text-white ${
-            isPlaying ? (isHovered ? 'opacity-100' : 'opacity-0') : 'opacity-100'
-          }`}
-        >
-          {isPlaying ? (
-            <PauseIcon style={{ fontSize: 40 }} />
-          ) : (
+          <button
+            onClick={() => togglePlayPause(true)}
+            className="p-3 bg-black bg-opacity-70 rounded-full text-white"
+          >
             <PlayArrowIcon style={{ fontSize: 40 }} />
-          )}
-        </button>
-      </div>
+          </button>
+        </div>
+      )}
+
+      <iframe
+        ref={iframeRef}
+        style={{
+          opacity: isPlaying && isVisible ? 1 : 0,
+          pointerEvents: isPlaying && isVisible ? "auto" : "none",
+          transition: "opacity 0.3s ease",
+        }}
+        width="100%"
+        height="100%"
+        src={`https://www.youtube.com/embed/${videoSrc}?controls=1&modestbranding=1&showinfo=0&rel=0&autohide=1&enablejsapi=1`}
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
     </div>
   );
 };
+
 
 const  exampleData = [
     {
       "heading": "Share Your Travel Experiences",
       "subheading": "Share your stories about your travel experiences to any destination, and watch as 3D avatars bring your adventures to life in captivating dialogues, all set against stunning AI-generated backgrounds!",
-      "videoSrc": "exampleVid/Trip.mp4",
+      "videoSrc": "WpxVy08a7fk",
       "placeHolder":"exampleVid/Trip.png"
     },
     {
       "heading": "Transform Business Concepts into Visuals",
       "subheading": "Turn your business ideas into engaging presentations! Just provide a text prompt, and let our 3D avatars explain and discuss your insights in contextually rich environments.",
-      "videoSrc": "exampleVid/business.mp4",
+      "videoSrc": "bVWuw3s-vJo",
       "placeHolder":"exampleVid/business.png"
     },
     {
       "heading": "Effortless Explainer Videos",
       "subheading": "Simplify complex topics with a single prompt! Our 3D avatars will create interactive dialogues, complemented by AI-generated backgrounds, making learning engaging and fun.",
-      "videoSrc": "exampleVid/explainV.mp4",
+      "videoSrc": "7o6cIPZvSAM",
       "placeHolder":"exampleVid/explainV.png"
     },
     {
       "heading": "Create Social Media Content",
       "subheading": "Generate eye-catching social media videos in seconds! Provide a text prompt, and 3D avatars will create dynamic interactions, perfectly suited for your audience.",
-      "videoSrc": "exampleVid/social.mp4",
+      "videoSrc": "67SO5wTOF64",
       "placeHolder":"exampleVid/social.png"
     },
     {
       "heading": "Engaging Storytelling Experiences",
       "subheading": "Bring your stories to life with just a text prompt! Our 3D avatars will engage in conversations, creating a vivid narrative enhanced by beautiful AI-generated scenes.",
-      "videoSrc": "exampleVid/story.mp4",
+      "videoSrc": "MtfOtpLxJEo",
       "placeHolder":"exampleVid/story.png"
     }
   ]
   
 
 
-  const ExampleCard = ({ heading, subheading, videoSrc }) => {
+  const ExampleCard = ({ heading, subheading, videoSrc, placeholderImage }) => {
     return (
       <div className="flex flex-col lg:flex-row md:flex-row p-4">
         {/* Text Section */}
@@ -154,7 +151,7 @@ const  exampleData = [
             </video>
           </div>
         </div> */}
-        <VideoSection videoSrc={videoSrc}/>
+        <VideoSection videoSrc={videoSrc} placeholderImage={placeholderImage}/>
       </div>
     );
   };
@@ -216,6 +213,7 @@ const Carousel = () => {
                                 heading={example.heading}
                                 subheading={example.subheading}
                                 videoSrc={example.videoSrc}
+                                placeholderImage={example.placeHolder}
                             />
                     </div>
                 </SwiperSlide>
