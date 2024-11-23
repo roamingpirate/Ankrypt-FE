@@ -49,9 +49,9 @@ const VideoSection = ({ videoSrc, placeholderImage }) => {
 
   return (
     <div
-      className="relative"
+      className="relative rounded-lg"
       style={{
-        width: "80%",
+        width: "90%",
         maxWidth: "400px",
         aspectRatio: "4 / 5",
         margin: "auto",
@@ -59,7 +59,7 @@ const VideoSection = ({ videoSrc, placeholderImage }) => {
     >
       {(!isPlaying || !isVisible) && (
         <div
-          className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 z-10"
+          className="absolute inset-0 rounded-lg flex justify-center items-center bg-black bg-opacity-50 z-10"
           style={{
             backgroundImage: `url(${placeholderImage})`,
             backgroundSize: "cover",
@@ -77,6 +77,7 @@ const VideoSection = ({ videoSrc, placeholderImage }) => {
 
       <iframe
         ref={iframeRef}
+        className='rounded-lg'
         style={{
           opacity: isPlaying && isVisible ? 1 : 0,
           pointerEvents: isPlaying && isVisible ? "auto" : "none",
@@ -110,7 +111,7 @@ const  exampleData = [
     {
       "heading": "Effortless Explainer Videos",
       "subheading": "Simplify complex topics with a single prompt! Our 3D avatars will create interactive dialogues, complemented by AI-generated backgrounds, making learning engaging and fun.",
-      "videoSrc": "7o6cIPZvSAM",
+      "videoSrc": "aWAk9GN2X5o",
       "placeHolder":"exampleVid/explainV.png"
     },
     {
