@@ -80,7 +80,7 @@ const VideoSection = ({ videoSrc, placeholderImage }) => {
         className='rounded-lg'
         style={{
           opacity: isPlaying && isVisible ? 1 : 0,
-          pointerEvents: "auto",
+          pointerEvents: "auto" ,
           transition: "opacity 0.3s ease",
         }}
         width="100%"

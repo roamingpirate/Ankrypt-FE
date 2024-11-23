@@ -49,7 +49,7 @@ const VideoPlayer = ({ src , ar}) => {
 
 const Feature = ({ heading, subtext, videoSrc, ar }) => {
     return (
-        <div className="flex flex-col md:flex-row py-[50px] mx-auto mb-[300px] md:mb-[150px] sm:items-center sm:justify-center w-[95%] lg:w-[90%] xl-[80%]">
+        <div className="flex flex-col md:flex-row py-[50px] mx-auto mb-[120px] md:mb-[150px] sm:items-center sm:justify-center w-[95%] lg:w-[90%] xl-[80%]">
             {/* Text Section */}
             <div className="flex flex-col flex-1 justify-center text-white sm:pr-12 md:pr-20 lg:pr-28">
                 <p className="font-bold pb-3 text-xl sm:text-2xl md:text-3xl text-center sm:text-center">
