@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PromptInput = () => {
   const [prompt, setPrompt] = useState('');
+  const navigate = useNavigate();
 
   const handlePromptChange = (event) => {
-    setPrompt(event.target.value);
+    // setPrompt(event.target.value);
+     navigate("/studio")
   };
 
   const handleStart = () => {
@@ -28,14 +31,14 @@ const PromptInput = () => {
           onChange={handlePromptChange}
         />
         <div className="flex justify-center mt-4">
-          <button
+          <button onClick={() => navigate("/studio")}
             className="bg-gray-800 shadow-md hover:bg-gray-300 text-white font-semibold font-karma py-2 px-4 rounded-md mr-2"
           >
             Browse Prompt
           </button>
-          <button
+          <button onClick={() => navigate("/studio")}
             className="bg-gray-800 shadow-md hover:bg-gray-300 text-white font-semibold font-karma py-2 px-4 rounded-md"
-            onClick={handleStart}
+            // onClick={handleStart}
           >
             Start
           </button>
