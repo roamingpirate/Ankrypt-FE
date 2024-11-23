@@ -6,6 +6,7 @@ import { BorderRight, } from "@mui/icons-material";
 import React, {useEffect, useState} from 'react';
 import AvatarSelector from '../AvatarSelector';
 import { updateSpeakerList } from "../../api/projectApi";
+import zIndex from "@mui/material/styles/zIndex";
 
 
 const CanvasViewBox = () => {
@@ -52,7 +53,7 @@ const CanvasViewBox = () => {
           }}
         >
             <Tooltip title={"Edit Avatar"}>
-            <IconButton style={{backgroundColor:'#3F3A39',position: 'absolute',top: '10px',right: '10px',}} onClick={() => {setOpen(true);setExperienceLoaded(false)}} >
+            <IconButton style={{backgroundColor:'#3F3A39',position: 'absolute',top: '10px',right: '10px',zIndex:10}} onClick={() => {setOpen(true);setExperienceLoaded(false)}} >
             <DesignServicesIcon style={{fontSize:'20px',color:'white'}}/>
           </IconButton>
           </Tooltip>

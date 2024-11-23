@@ -4,13 +4,14 @@ import 'swiper/swiper-bundle.css';
 import { Navigation, EffectCoverflow } from 'swiper/modules';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
+import { CircularProgress } from '@mui/material';
 
-const VideoSection = ({ videoSrc }) => {
+const VideoSection = ({ videoSrc, placeholderImage }) => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Handle play/pause toggle
   const togglePlayPause = () => {
     if (videoRef.current.paused) {
       videoRef.current.play();
@@ -21,18 +22,21 @@ const VideoSection = ({ videoSrc }) => {
     }
   };
 
-  // Handle video going out of view
+  const handleLoadedData = () => {
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
             videoRef.current.pause();
-            setIsPlaying(false); // Update state when video is paused
+            setIsPlaying(false);
           }
         });
       },
-      { threshold: 0.5 } // Pause when 50% of the video is out of view
+      { threshold: 0.5 }
     );
 
     if (videoRef.current) {
@@ -40,30 +44,47 @@ const VideoSection = ({ videoSrc }) => {
     }
 
     return () => {
-      observer.disconnect(); // Clean up observer on unmount
+      observer.disconnect();
     };
   }, []);
 
   return (
-    <div className="flex-1 flex justify-center items-center p-2 relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+    <div
+      className="flex-1 flex justify-center items-center p-2 relative"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <div className="overflow-hidden rounded-lg relative">
+        {isLoading && (
+          <div className="absolute inset-0 flex justify-center items-center bg-gray-800 bg-opacity-50">
+            <CircularProgress size={50} color="inherit" />
+          </div>
+        )}
+
+        {isLoading && placeholderImage && (
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: `url(${placeholderImage})`,
+            }}
+          ></div>
+        )}
+
         <video
           ref={videoRef}
           className="rounded-lg"
-          controls={false} // Disable the default controls
+          controls={false}
+          onLoadedData={handleLoadedData}
         >
           <source src={videoSrc} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
 
-        <div
-          className={`absolute inset-0 bg-gray-800 transition-all duration-300 ${isPlaying ? (isHovered? 'opacity-0' : 'opacity-0') : 'opacity-30'}`}
-        ></div>
-        
-        {/* Custom Play/Pause Button with Material UI Icon */}
         <button
           onClick={togglePlayPause}
-          className={`absolute bottom-1 left-[50%] transform -translate-x-1/2 -translate-y-1/2 p-2 bg-black rounded-full text-white ${isPlaying ? (isHovered? 'opacity-100' : 'opacity-0') :'opacity-100'}`}
+          className={`absolute bottom-1 left-[50%] transform -translate-x-1/2 -translate-y-1/2 p-2 bg-black rounded-full text-white ${
+            isPlaying ? (isHovered ? 'opacity-100' : 'opacity-0') : 'opacity-100'
+          }`}
         >
           {isPlaying ? (
             <PauseIcon style={{ fontSize: 40 }} />
@@ -79,23 +100,33 @@ const VideoSection = ({ videoSrc }) => {
 const  exampleData = [
     {
       "heading": "Share Your Travel Experiences",
-      "subheading": "Share your stories about your travel experiences to any destination, and watch as 3D avatars bring your adventures to life in captivating dialogues, all set against stunning AI-generated backgrounds!"
+      "subheading": "Share your stories about your travel experiences to any destination, and watch as 3D avatars bring your adventures to life in captivating dialogues, all set against stunning AI-generated backgrounds!",
+      "videoSrc": "exampleVid/Trip.mp4",
+      "placeHolder":"exampleVid/Trip.png"
     },
     {
       "heading": "Transform Business Concepts into Visuals",
-      "subheading": "Turn your business ideas into engaging presentations! Just provide a text prompt, and let our 3D avatars explain and discuss your insights in contextually rich environments."
+      "subheading": "Turn your business ideas into engaging presentations! Just provide a text prompt, and let our 3D avatars explain and discuss your insights in contextually rich environments.",
+      "videoSrc": "exampleVid/business.mp4",
+      "placeHolder":"exampleVid/business.png"
     },
     {
       "heading": "Effortless Explainer Videos",
-      "subheading": "Simplify complex topics with a single prompt! Our 3D avatars will create interactive dialogues, complemented by AI-generated backgrounds, making learning engaging and fun."
+      "subheading": "Simplify complex topics with a single prompt! Our 3D avatars will create interactive dialogues, complemented by AI-generated backgrounds, making learning engaging and fun.",
+      "videoSrc": "exampleVid/explainV.mp4",
+      "placeHolder":"exampleVid/explainV.png"
     },
     {
       "heading": "Create Social Media Content",
-      "subheading": "Generate eye-catching social media videos in seconds! Provide a text prompt, and 3D avatars will create dynamic interactions, perfectly suited for your audience."
+      "subheading": "Generate eye-catching social media videos in seconds! Provide a text prompt, and 3D avatars will create dynamic interactions, perfectly suited for your audience.",
+      "videoSrc": "exampleVid/social.mp4",
+      "placeHolder":"exampleVid/social.png"
     },
     {
       "heading": "Engaging Storytelling Experiences",
-      "subheading": "Bring your stories to life with just a text prompt! Our 3D avatars will engage in conversations, creating a vivid narrative enhanced by beautiful AI-generated scenes."
+      "subheading": "Bring your stories to life with just a text prompt! Our 3D avatars will engage in conversations, creating a vivid narrative enhanced by beautiful AI-generated scenes.",
+      "videoSrc": "exampleVid/story.mp4",
+      "placeHolder":"exampleVid/story.png"
     }
   ]
   
@@ -130,34 +161,6 @@ const  exampleData = [
   
 
 const Carousel = () => {
-    const slides = [
-        {
-            image: '/background/back1.jpg',
-            title: 'Customer Story 1',
-            description: 'Description for Customer Story 1',
-            logo: 'path/to/logo1.png',
-        },
-        {
-            image: '/background/back1.jpg',
-            title: 'Customer Story 2',
-            description: 'Description for Customer Story 2',
-            logo: 'path/to/logo2.png',
-        },
-        {
-            image: '/background/back1.jpg',
-            title: 'Customer Story 3',
-            description: 'Description for Customer Story 3',
-            logo: 'path/to/logo3.png',
-        },
-        {
-            image: '/background/back1.jpg',
-            title: 'Customer Story 4',
-            description: 'Description for Customer Story 4',
-            logo: 'path/to/logo4.png',
-        },
-        // Add more slides as needed
-    ];
-
     const [spaceBetween, setSpaceBetween] = useState(150); 
     const [pagePerScreen, setPagePerScreen] = useState(1.5);
     const [activeIndex, setActiveIndex] = useState(0);
@@ -212,7 +215,7 @@ const Carousel = () => {
                             <ExampleCard
                                 heading={example.heading}
                                 subheading={example.subheading}
-                                videoSrc="/JapanTrip.mp4"
+                                videoSrc={example.videoSrc}
                             />
                     </div>
                 </SwiperSlide>

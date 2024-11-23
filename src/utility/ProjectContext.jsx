@@ -1,5 +1,5 @@
 import React, {useState, useContext, createContext, useEffect} from "react";
-import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest, getBackgroundImageStatus, fetchSpeakerList, getBackgroundImageUrls, getProjectDetail } from "../api/projectApi";
+import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest, getBackgroundImageStatus, fetchSpeakerList, getBackgroundImageUrls, getProjectDetail, createPartAudio, createAudioFile } from "../api/projectApi";
 //import scriptData from "../data/scriptData";
 //import AudioData from "../data/audioData.json";
 //import animationScriptData from "../data/animationScriptData";
@@ -58,6 +58,7 @@ export const ProjectInfoProvider = ({children}) => {
     const [canavsLoaded,setCanvasLoaded] = useState(false);
     const [canavsLoadingMessage, setCanvasLoadingMessage] = useState("Creating Your Video :)")
     const [save, setSave] = useState(false);
+    const [saveDisabled, setSaveDisabled] = useState(false);
     const [alert,setAlert] = useState(true);
     const [alertMessage,setAlertMessage] = useState(true);
     const [backgroundTextureArray,setBackgroundTextureArray] = useState([]);
@@ -151,6 +152,33 @@ export const ProjectInfoProvider = ({children}) => {
         });
      }
 
+     const fetchAudio = async () => {
+        console.log("Fetching audio..")
+        const scriptDa = await fetchScript(projectId);
+        const scriptD = scriptDa.scenes;
+
+        for(let i =0;i< scriptD.length;i++) {
+            const sceneScript = script[i].script;
+            for(let j=0;j<sceneScript.length;j++)
+            {
+                const speechObj = sceneScript[j];
+                if(speechObj["isChanged"] != false)
+                {
+                    console.log("zozi","creating audio for "+i+j)
+                    setCanvasLoadingMessage(speechObj["Speech"]);
+                    await createPartAudio(projectId, i, j);
+                }
+                else{
+                    console.log("zozi","audio present for "+i+j)
+                }
+            }
+        }
+
+        const audioFileD = await createAudioFile(projectId);
+        console.log("Audio Created Successfully!");
+        setAudioData(audioFileD);
+     }
+
      const getBackgroundImage = async () => {
 
         async function loadTextures(urls) {
@@ -235,7 +263,7 @@ export const ProjectInfoProvider = ({children}) => {
          console.log("pelo pelo");
          //download test
          if(!test){
-         Promise.all([getAnimationScript(),getAudio(), getBackgroundImage()]).then(
+         Promise.all([getAnimationScript(),fetchAudio(), getBackgroundImage()]).then(
             () => {
                 console.log("bale bale");
                 setCanvasLoaded(true);
@@ -252,26 +280,47 @@ export const ProjectInfoProvider = ({children}) => {
          }
      }
 
+     function removeEmptySpeech(scriptDataa) {
+        // Iterate over the scenes and filter scripts
+        scriptDataa.scenes = scriptDataa.scenes.map(scene => {
+          return {
+            ...scene,
+            script: scene.script.filter(item => item.Speech.trim() !== "")
+          };
+        });
+        return scriptDataa;
+      }
+
      const saveContentToServer = async () => {
         try{
             if(currentStage == 1)
             {
-                const copySD = {...scriptData, scenes : script}
+                let copySD = {...scriptData, scenes : script}  
+                copySD = removeEmptySpeech(copySD);
+                setSaveDisabled(true);   
+                setAlert(true);
+                setAlertMessage("Saving your Script!");
                 await updateScript(projectId,copySD);
                 await updateChangesList(projectId,changesList);
                 setAlert(true);
                 setAlertMessage("Script Successfully Saved!");
                 setSave(false);
+                setSaveDisabled(false);   
+                
                 return;
             }
 
             if(currentStage == 2)
             {
                 console.log(animationScript);
+                setSaveDisabled(true);   
+                setAlert(true);
+                setAlertMessage("Saving your Animation Script!");
                 await updateAnimationScript(projectId,animationScript);
                 setAlert(true);
                 setAlertMessage("Animation Script Successfully Saved!");
                 setSave(false); 
+                setSaveDisabled(false); 
             }
         }
         catch(err){
@@ -392,6 +441,7 @@ export const ProjectInfoProvider = ({children}) => {
         canavsLoadingMessage,
         save,
         setSave,
+        saveDisabled,
         saveContentToServer,
         resetContent,
         alert,

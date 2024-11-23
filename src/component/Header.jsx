@@ -10,7 +10,7 @@ import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { Grid2 as Grid, Paper, Container, Icon} from '@mui/material';
+import { Grid2 as Grid, Paper, Container, Icon, CircularProgress} from '@mui/material';
 import { useProjectInfo } from '../utility/ProjectContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -72,7 +72,7 @@ const ProgressBox = ({currentStage,handleNext}) => {
  
 
 const Header = () => {
-  const {currentStage,setCurrentStage,save,saveContentToServer,resetContent,handleNext, projectName,projectId} = useProjectInfo();
+  const {currentStage,setCurrentStage,save,saveDisabled,saveContentToServer,resetContent,handleNext, projectName,projectId} = useProjectInfo();
   //const projectName = 'My Interesting Project';
 
 
@@ -94,7 +94,26 @@ const Header = () => {
             { save &&
               <>
               <IconButton aria-label="reset" sx={{ mr: 1}} onClick={() => resetContent()}><RestartAltIcon /></IconButton>
-              <Button variant="contained" sx={{backgroundColor:'#51c4b7',marginRight: 2}}  onClick={()=>saveContentToServer()}>Save</Button>
+              <Button 
+                  disabled={saveDisabled} 
+                  variant="contained" 
+                  sx={{ 
+                    backgroundColor: saveDisabled ? '#9e9e9e' : '#51c4b7', 
+                    marginRight: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                  }} 
+                  onClick={() => saveContentToServer()}
+                >
+                  {saveDisabled ? (
+                    <>
+                      <CircularProgress size={20} sx={{ color: 'white', marginRight: 1 }} />
+                      Saving...
+                    </>
+                  ) : (
+                    'Save'
+                  )}
+              </Button>
               </>
             }
            { (currentStage != 3) &&

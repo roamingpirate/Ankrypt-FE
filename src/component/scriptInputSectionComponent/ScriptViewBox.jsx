@@ -76,6 +76,7 @@ const DialogBox = ({sceneInd,scriptInd,script,setScript,setSave}) => {
   const updateScriptArray = (label,val) => {
     const scriptSceneDialogsCopy = [...script[sceneInd].script];
     scriptSceneDialogsCopy[scriptInd][label] = val;
+    scriptSceneDialogsCopy[scriptInd]["isChanged"] = true;
     const scriptCopy = [...script];
     scriptCopy[sceneInd].script = scriptSceneDialogsCopy;
     setScript(scriptCopy);
@@ -186,6 +187,7 @@ const changeScriptData = (event,scriptInd,sceneInd,script,setScript,setSave,chan
 
     const updatedSceneScriptData = [...(script[sceneInd].script)];
     updatedSceneScriptData[scriptInd].Speech = event.target.value;
+    updatedSceneScriptData[scriptInd]["isChanged"] = true;
     const scriptData = [...script];
     scriptData[sceneInd].script = updatedSceneScriptData;
     setScript(scriptData); 
@@ -218,7 +220,7 @@ const deleteScriptData = (scriptInd, sceneInd, script, setScript, setSave, chang
 
 const addScriptData = (scriptInd, sceneInd, script, setScript, setSave, changesList, setChangesList, speaker) => {
   const updatedSceneScriptData = [...script[sceneInd].script];
-  const newDialogue = { Speech: '' , Speaker: speaker };
+  const newDialogue = { Speech: '' , Speaker: speaker, isChanged : true };
   updatedSceneScriptData.splice(scriptInd + 1, 0, newDialogue);
 
   const scriptData = [...script];

@@ -73,7 +73,7 @@ const Experience = () => {
   return (
     <>
     <ErrorBoundary>
-    <Paper elevation={5} style={{display:'grid', width:'82%', aspectRatio: '4/5', margin:'7px',backgroundColor:'gray', borderRadius:'10px'}}>
+    <Paper elevation={5} style={{display:'grid', width:'90%', aspectRatio: '4/5', margin:'7px',backgroundColor:'gray', borderRadius:'10px'}}>
     <Canvas style={{borderRadius:'10px'}} shadows>
     <PerspectiveCamera
         makeDefault

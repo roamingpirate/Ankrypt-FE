@@ -220,7 +220,7 @@ export function Avatar(props) {
 
 
     console.log("speaker " + avatarName + " AN " + animationNumber)
-    console.log("previous Animaytion: " + previousAnimation);
+    console.log("previous Animation: " + previousAnimation);
     console.log("Current Animation: " + currentAnimation);
     console.log("Next Animation: " + nextAnimation);
     
@@ -241,17 +241,7 @@ export function Avatar(props) {
 
    useEffect(()=> {
 
-    if(isStart.current)
-    {
-      mixer.timeScale = 1;
-      actions['Idle'].reset().play();
-      setTimeout(() => {
-        mixer.timeScale = 0;
-      },[200])
-      
-      console.log("keto")
-    }
-
+    const nextAnimation = () => {
     console.log(animationState);
     console.log('animation Statee');
 
@@ -318,8 +308,22 @@ export function Avatar(props) {
     else{
         next();
     }
+    }
 
-
+      if(isStart.current)
+      {
+        mixer.timeScale = 1;
+        setPreviousAnimation('Idle');
+        actions['Idle'].play();
+        setTimeout(() => {
+          mixer.timeScale = 0;
+          nextAnimation();
+        },[1000])
+        console.log("keto")
+      }
+      else{
+        nextAnimation();
+      }
 
     // return () => {
     //   setCurrentAnimation(undefined);

@@ -128,6 +128,30 @@ export const fetchAudioData = async (projectId) => {
     }
 }
 
+export const createPartAudio  = async (projectId, sceneIndex, scriptIndex) => {
+    try{
+        console.log("Trying to create Part Audio ");
+        const response = await axios.get(`${url}/audio/createPart/${projectId}/${sceneIndex}/${scriptIndex}`);
+        return response.data;
+    }
+    catch(err)
+    {
+        return {status : -1};
+    }
+}
+
+export const createAudioFile = async (projectId) => {
+    try{
+        console.log("Getting Audio File");
+        const response = await axios.get(`${url}/audio/createAudioFile/${projectId}`);
+        return response.data;
+    }
+    catch(err)
+    {
+        return {status : -1};
+    }
+}
+
 export const getBackgroundImageStatus = async (projectId) => {
     try{
         console.log("Trying to get Image Data");
