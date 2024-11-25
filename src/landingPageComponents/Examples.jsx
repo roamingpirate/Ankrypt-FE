@@ -105,7 +105,7 @@ const  exampleData = [
     {
       "heading": "Transform Business Concepts into Visuals",
       "subheading": "Turn your business ideas into engaging presentations! Just provide a text prompt, and let our 3D avatars explain and discuss your insights in contextually rich environments.",
-      "videoSrc": "bVWuw3s-vJo",
+      "videoSrc": "6VrtFVMi7zc",
       "placeHolder":"exampleVid/business.png"
     },
     {

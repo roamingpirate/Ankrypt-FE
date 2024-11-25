@@ -119,7 +119,7 @@ export function Avatar(props) {
        avatarRef.current.getObjectByName('Head').lookAt(...avatarLookPosition.current)
     }
 
-    const faceExpressionConfiguration = faceExpressions['Smile'];
+    const faceExpressionConfiguration = faceExpressions[currentFaceExpression]; 
     morphTargetList.forEach((morphTarget) => {
       if(faceExpressionConfiguration && faceExpressionConfiguration[morphTarget])
       {
@@ -165,7 +165,7 @@ export function Avatar(props) {
     if(videoState == "Paused")
     {
         mixer.timeScale = 0;
-        setCurrentFaceExpression('Happy')
+        setCurrentFaceExpression('Smile')
       if(audio.current === null || audio.current === undefined)
       {
          return;
@@ -262,7 +262,7 @@ export function Avatar(props) {
       setAnimationNumber(animationNumber+1);
       setLipsync(undefined);
       audio.current = undefined;
-      setCurrentFaceExpression('Happy');
+      setCurrentFaceExpression('Smile');
       return;
     }
 
@@ -293,7 +293,7 @@ export function Avatar(props) {
     const currentAudioDataItem = currentAudioData[currentSceneIndex]?.[animationState.currentSpeechIndex]?.[animationState.currentDialogIndex];
     
     avatarFaceExpression.current = animationState.currentDialogs[animationState.currentDialogIndex].FaceExpression;
-    setCurrentFaceExpression(avatarFaceExpression.current);
+    setCurrentFaceExpression("");
 
     if (currentAudioDataItem) {
       console.log(currentAudioDataItem?.lipsync);
