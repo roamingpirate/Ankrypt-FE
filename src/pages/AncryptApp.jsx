@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, IconButton } from '@mui/material';
 import Dashboard from './Dashboard';
-import { addNewUser } from '../api/projectApi';
+import { addNewUser, addUserRequest } from '../api/projectApi';
+import { LogoutOutlined } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const AncryptApp = () => {
     const { logout, user, isAuthenticated, isLoading, loginWithPopup, error } = useAuth0();
     const [isDone, setIsDone] = useState(false);
+    const [isAddScreen, setIsAddScreen] = useState(false);
 
     useEffect(() => {
         if (!isAuthenticated) {
             loginWithPopup();
-            setIsDone(true);
+            //setIsDone(true);
         }
         else{
             const addUser = async () => {
-                await addNewUser(user.email);
-                setIsDone(true);
+                const res = await addNewUser(user.email);
+                console.log("paka")
+                console.log(res,"tata");
+                if(res.status)
+                {
+                    setIsDone(true);
+                }
+                else{
+                    setIsAddScreen(true);
+                }
             };
             addUser();
         }
@@ -44,15 +55,83 @@ const AncryptApp = () => {
         )
     };
 
+    const AddScreen = () => {
+
+        const [isAdd, setIsAdd] = useState(false);
+        const navigate = useNavigate();
+
+        return (
+            <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#16222A] to-[#3A6073] px-4">
+                <div className="w-full max-w-[400px] md:max-w-[600px] bg-[#1E293B] shadow-2xl rounded-lg p-6 md:p-8 space-y-6">
+                    <p className="text-xl md:text-2xl font-karma font-bold text-white text-center">
+                        We're thrilled to have you here! 🚀
+                    </p>
+                    {/* Placeholder for Circular Logo */}
+                    <div className="flex justify-center">
+                        <img
+                            src="/logo.png"
+                            alt="Ancript Logo"
+                            className="w-24 h-24 md:w-32 md:h-32 rounded-full shadow-md"
+                        />
+                    </div>
+                    <p className="text-sm md:text-base font-karma text-gray-300 text-center">
+                        Ancript is under development, and we'd love for you to be among the first to experience it. Help us shape the future of Ancript by trying it before its official release.
+                    </p>
+                    {isAdd ? (
+                        <>
+                            <p className="text-sm md:text-base font-karma text-green-400 text-center">
+                                Your request has been sent! You will be notified when you are added.!🎉 
+                            </p>
+                            <div className="flex justify-center">
+                            <button
+                                onClick={() => logout()}
+                                className="px-8 py-3 bg-[#51c4b7] text-white font-karma font-semibold rounded-lg shadow-md hover:bg-blue-500 transition duration-200"
+                            >
+                                Home
+                            </button>
+                           </div>
+                        </>
+                        ) : (
+                            <>
+                                <p className="text-sm md:text-base font-karma text-gray-300 text-center">
+                                    Click the button below to send a request and join our exclusive early access list.
+                                </p>
+                                <div className="flex justify-center">
+                                    <button
+                                        onClick={() => {setIsAdd(true); addUserRequest(user.email);}}
+                                        className="px-8 py-3 bg-[#51c4b7] text-white font-karma font-semibold rounded-lg shadow-md hover:bg-blue-500 transition duration-200"
+                                    >
+                                        Add Me
+                                    </button>
+                                </div>
+                            </>
+                    )}
+                    <p className="text-xs md:text-sm font-karma text-gray-400 text-center">
+                        We can’t wait to have you onboard!
+                    </p>
+                </div>
+            </div>
+        );
+    };
+    
+    
+    
+
     return (
         <>
-            {isDone ? (
-                <>
-                    <Dashboard/>
-                </>
-            ) : (
+            {isDone ? 
+                (
+                    <>
+                        <Dashboard/>
+                    </>
+                ) :
+             isAddScreen ?    (
+                <AddScreen/>
+            ): 
+            (
                 <WaitScreen/>
-            )}
+            )
+            }
         </>
     );
 };
