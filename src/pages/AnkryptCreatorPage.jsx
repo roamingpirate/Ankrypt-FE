@@ -13,11 +13,12 @@ import AnimationSection from '../component/AnimationSection';
 import { useProjectInfo } from '../utility/ProjectContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import DownloadSection from '../component/VideoDownloadSection';
 
  
 
 const AnkryptCreatorPage = () => {
-  const {currentStage,alert,setAlert,alertMessage, isPageLoading, error} = useProjectInfo();
+  const {currentStage,alert,setAlert,alertMessage, isPageLoading, error,setShowTooltip} = useProjectInfo();
   const {isAuthenticated, loginWithPopup} = useAuth0();
   const navigate = useNavigate();
 
@@ -54,7 +55,7 @@ const AnkryptCreatorPage = () => {
           case 2:
             return <AnimationSection/>;
           default:
-            return <ScriptInputSection/>
+            return <DownloadSection/>
         }
   }
 
@@ -96,7 +97,7 @@ const AnkryptCreatorPage = () => {
   
 
   return (
-       <Box sx={{height:'100vh',display: 'flex',flexDirection: 'column',width:'100%'}}>
+       <Box sx={{height:'100vh',display: 'flex',flexDirection: 'column',width:'100%'}} onClick={() =>setShowTooltip(false)}>
        <Header/>
         {renderSection()}
         <Snackbar

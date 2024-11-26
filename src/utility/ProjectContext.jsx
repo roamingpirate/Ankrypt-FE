@@ -1,5 +1,5 @@
 import React, {useState, useContext, createContext, useEffect} from "react";
-import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest, getBackgroundImageStatus, fetchSpeakerList, getBackgroundImageUrls, getProjectDetail, createPartAudio, createAudioFile } from "../api/projectApi";
+import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest, getBackgroundImageStatus, fetchSpeakerList, getBackgroundImageUrls, getProjectDetail, createPartAudio, createAudioFile, fetchIsNewStatus, setIsNewToFalse } from "../api/projectApi";
 //import scriptData from "../data/scriptData";
 //import AudioData from "../data/audioData.json";
 //import animationScriptData from "../data/animationScriptData";
@@ -66,6 +66,8 @@ export const ProjectInfoProvider = ({children}) => {
     const [isPageLoading, setIsPageLoading] = useState(true);
     const [projectName, setProjectName] = useState("");
     const {user, isAuthenticated, loginWithPopup} = useAuth0();
+    const [userStatus, setUserStatus] = useState(0);
+    const [showTooltip, setShowTooltip] = useState(false);
 
 
 
@@ -355,16 +357,31 @@ export const ProjectInfoProvider = ({children}) => {
          setCurrentStage(v);
      }
 
+     const userStatusFetch = async () => {
+        const resp = await fetchIsNewStatus(user.email);
+        setUserStatus(resp.status);
+     }
+
+     const updateUserStatus = async () => {
+        await setIsNewToFalse(user.email);
+     }
+
     
     useEffect(() => {
+
         if(currentStage == 1){
             
             getScript();
+            userStatusFetch();
             return;
         }
         if(currentStage == 2){
             getAnimationData();
             getSpeakerList();
+            if(userStatus == 1 )
+            {
+                updateUserStatus(user.email)
+            }
             return;
         }
         if(currentStage == -1)
@@ -373,6 +390,16 @@ export const ProjectInfoProvider = ({children}) => {
         }
        //setScript(getScript());
     },[currentStage,projectId])
+
+    useEffect(() => {
+        if(userStatus == 1)
+        {
+            setShowTooltip(true);
+        }
+        else{
+            setShowTooltip(false);
+        }
+    },[userStatus, currentStage])
 
     useEffect(() => {
         console.log("pwpwpwp");
@@ -455,7 +482,10 @@ export const ProjectInfoProvider = ({children}) => {
         isPageLoading,
         error,
         projectName,
-        projectId}}>
+        projectId,
+        userStatus,
+        showTooltip,
+        setShowTooltip}}>
             {children}
         </ProjectContext.Provider>
     )

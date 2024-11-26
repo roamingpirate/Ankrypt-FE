@@ -22,6 +22,7 @@ const ScriptInputSection = () => {
             <ScriptViewComp/>
           </Box>
        </Box>
+       
   )
 }
 

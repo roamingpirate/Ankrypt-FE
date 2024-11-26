@@ -244,3 +244,25 @@ export const getAvatarToken = async (userId) => {
         throw err;
     }    
 }
+
+export const fetchIsNewStatus = async (userId) => {
+    try {
+        console.log(`Fetching isNew status for user: ${userId}`);
+        const response = await axios.get(`${url}/user/status/${userId}`);
+        return response.data; // Return the full response (status object)
+    } catch (err) {
+        console.error("Error fetching isNew status:", err);
+        throw err;
+    }
+};
+
+export const setIsNewToFalse = async (userId) => {
+    try {
+        console.log(`Setting isNew to false for user: ${userId}`);
+        const response = await axios.post(`${url}/user/setIsNewFalse/${userId}`);
+        return response.data; // Return the server response
+    } catch (err) {
+        console.error("Error setting isNew to false:", err);
+        throw err;
+    }
+};

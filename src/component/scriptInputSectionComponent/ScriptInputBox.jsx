@@ -13,6 +13,7 @@ import {
          ButtonGroup,
          Avatar,
          Modal,
+         Tooltip,
 } from '@mui/material';
 import { useProjectInfo } from '../../utility/ProjectContext';
 import AvatarSelector from '../AvatarSelector';
@@ -102,9 +103,10 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
  }
 
 
- const SpeakerListBox = ({speakerCount,speakerList,setSpeakerList}) => {
+ const SpeakerListBox = ({speakerCount,speakerList,setSpeakerList,showTooltip}) => {
 
       const [open,setOpen] = useState(false);
+      //const [showTooltip, setShowTooltip] = useState(true);
 
       return(
         <>
@@ -112,9 +114,11 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
           {/* Heading and Edit Button*/}
           <Grid2 sx={{display:'flex', justifyContent:'space-between',padding:'10px'}}>
           <Typography sx={{color:'white',fontSize:'14px',fontWeight:'80',paddingBottom:'3px'}}>Speakers</Typography>
-          <IconButton sx={{padding:'0px'}} onClick={() => setOpen(true)}>
+          <Tooltip title="Customise Your Avatar" open={showTooltip} placement="right" arrow>
+          <IconButton className="relative" sx={{padding:'0px'}} onClick={() => setOpen(true)}>
           <EditIcon sx={{color:'white',width:'20px',height:'20px'}}/>
           </IconButton>
+          </Tooltip>
           </Grid2>
           {/* Speakers List */}
           <Grid2 sx={{display:'flex', flexWrap:'wrap',padding:'10px', gap:'10px'}}>
@@ -170,7 +174,7 @@ const ScriptInputBox = () => {
    const [speakerList, setSpeakerList] = useState(speakersListD)
    const [inputPrompt,setInputPrompt] = useState('');
    const [tone,setTone] = useState('Funny');
-   const {generateScript, setSpeakerList : setProjectSpeakerList, speakerList: projectSpeakerList,projectId} = useProjectInfo();
+   const {generateScript, setSpeakerList : setProjectSpeakerList, speakerList: projectSpeakerList,projectId,showTooltip} = useProjectInfo();
    const [openPrompt,setOpenPrompt] = useState(false);
 
    const handleChange = (event) => {
@@ -196,6 +200,7 @@ const ScriptInputBox = () => {
       {/* <ScriptTypeSelectBox scriptType={scriptType} setScriptType={setScriptType} /> */}
       </Box>
       <div className="mx-[12px]">
+      <Tooltip title="Enter your prompt" open={showTooltip} placement="right" arrow>
       <TextField variant='outlined' 
                   label="Prompt" 
                   onChange={(e) => setInputPrompt(e.target.value)}
@@ -232,6 +237,7 @@ const ScriptInputBox = () => {
                       },
                     },
                   }}/>
+      </Tooltip>
       <div style={styles.row}>
           <TextField
             select
@@ -279,7 +285,8 @@ const ScriptInputBox = () => {
 
      <SpeakerListBox speakerCount={speakerCount} 
                      speakerList={speakerList} 
-                     setSpeakerList={setSpeakerList}/>
+                     setSpeakerList={setSpeakerList}
+                     showTooltip={showTooltip}/>
 
       {/* Prompt Browse */}
         <div style={{...styles.row,justifyContent:'space-between', marginTop:'20px',}}>

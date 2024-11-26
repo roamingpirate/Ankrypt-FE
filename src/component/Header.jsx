@@ -10,7 +10,7 @@ import EditNoteOutlinedIcon from '@mui/icons-material/EditNoteOutlined';
 import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { Grid2 as Grid, Paper, Container, Icon, CircularProgress} from '@mui/material';
+import { Grid2 as Grid, Paper, Container, Icon, CircularProgress, Tooltip} from '@mui/material';
 import { useProjectInfo } from '../utility/ProjectContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,12 +48,16 @@ const ProjectPath = ({ projectName, projectId }) => {
 
 const ProgressBox = ({currentStage,handleNext}) => {
 
+  const {showTooltip} = useProjectInfo();
+
   return(
     <Grid container spacing={2} >
+        <Tooltip title="Click to go Back" open={showTooltip && (currentStage > 1)} placement="left" arrow>
         <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 1)?'#51c4b7':'white'}}
              onClick={()=>{(currentStage>=1) && handleNext(1)}}>
           <EditNoteOutlinedIcon sx={{ fontSize: 25, color:'black' }} />
         </Paper>
+        </Tooltip>
         <Grid size={4}>
           <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 2)?'#51c4b7':'white'}}
                onClick={()=>{(currentStage>=2) && handleNext(2)}}>
