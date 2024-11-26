@@ -59,6 +59,19 @@ const AncryptApp = () => {
 
         const [isAdd, setIsAdd] = useState(false);
         const navigate = useNavigate();
+        const [message, setMessage] = useState("");
+
+        const handleAdd = async () => {
+            const res = await addUserRequest(user.email,user.name);
+            if(res.status == 1)
+            {
+                setMessage("Your request has been sent! You will be notified when you are added.!🎉 ")
+            }
+            else{
+                setMessage("Your request has already been sent! You will be notified when you are added.!🎉 ")
+            }
+            setIsAdd(true);
+        }
 
         return (
             <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-[#16222A] to-[#3A6073] px-4">
@@ -80,7 +93,7 @@ const AncryptApp = () => {
                     {isAdd ? (
                         <>
                             <p className="text-sm md:text-base font-karma text-green-400 text-center">
-                                Your request has been sent! You will be notified when you are added.!🎉 
+                                {message}
                             </p>
                             <div className="flex justify-center">
                             <button
@@ -98,7 +111,7 @@ const AncryptApp = () => {
                                 </p>
                                 <div className="flex justify-center">
                                     <button
-                                        onClick={() => {setIsAdd(true); addUserRequest(user.email);}}
+                                        onClick={() => { handleAdd()}}
                                         className="px-8 py-3 bg-[#51c4b7] text-white font-karma font-semibold rounded-lg shadow-md hover:bg-blue-500 transition duration-200"
                                     >
                                         Add Me

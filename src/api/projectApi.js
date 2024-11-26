@@ -189,10 +189,10 @@ export const addNewUser = async (userId) => {
     }
 };
 
-export const addUserRequest = async (userId) => {
+export const addUserRequest = async (userId,userName) => {
     try {
         console.log("Trying to add user request...");
-        const response = await axios.post(`${url}/user/request/${userId}`);
+        const response = await axios.post(`${url}/user/request/${userId}/${userName}`);
         return response.data;
     } catch (err) {
         console.error("Error adding new user:", err);
