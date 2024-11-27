@@ -139,7 +139,7 @@ const AvatarSelector = ({speakerList,setSpeakerList, disabled = false}) => {
 
     const changeAvatarData = async (index, avatarUrl,avatarId) => {
         const speakerListCopy = [...speakerList];
-        speakerListCopy[index].avatarUrl = avatarUrl + "?morphTargets=ARKit,Oculus%20Visemes";
+        speakerListCopy[index].avatarUrl =avatarUrl;
         speakerListCopy[index].avatarId =avatarId;
         speakerListCopy[index].gender =await fetchAvatarBodyType(avatarId);
         console.log(speakerListCopy[index].avatarUrl);

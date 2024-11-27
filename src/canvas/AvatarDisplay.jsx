@@ -6,7 +6,7 @@ import { SkeletonUtils } from 'three-stdlib';
 import { useControls } from 'leva';  // Import Leva controls
 
 const Avatar = ({ avatarUrl, avatarGender, speakerList }) => {
-  const { scene } = useGLTF(avatarUrl);
+  const { scene } = useGLTF(`${avatarUrl}?quality=high&textureQuality=high&textureFormat=webp`);
   const clone = useMemo(() => SkeletonUtils.clone(scene), [scene]);
   const avatarRef = useRef();
   const { animations: avatarAnimation } = useGLTF(`/animations/${avatarGender}AvatarAnimation.glb`, [avatarGender]);
