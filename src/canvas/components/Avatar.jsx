@@ -184,7 +184,7 @@ export function Avatar(props) {
           console.log("opps");
            return;
         }
-      if (!audio.current.sourceNode) {
+      if (!audio.current.sourceNode && isRecording) {
           const source = audioContextRef.current.createMediaElementSource(audio.current);
           source.connect(mediaStreamAudioDestinationRef.current);
           audio.current.sourceNode = source;
