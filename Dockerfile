@@ -1,29 +1,27 @@
-# Build Stage
-FROM node:16 AS build
+# Step 1: Use an official Node.js image to build the app
+FROM node:20 AS build
 
-# Set the working directory in the container
+# Step 2: Set the working directory in the container
 WORKDIR /app
 
-# Copy the package.json and package-lock.json (or yarn.lock if using yarn)
+# Step 3: Copy package.json and package-lock.json and install dependencies
 COPY package.json package-lock.json ./
-
-# Install the dependencies
 RUN npm install
 
-# Copy the rest of the application code
-COPY . ./
+# Step 4: Copy the rest of the app's files
+COPY . .
 
-# Build the Vite project
+# Step 5: Build the app for production
 RUN npm run build
 
-# Production Stage
+# Step 6: Serve the app using an Nginx server
 FROM nginx:alpine
 
-# Copy the built files from the build stage to the Nginx container
+# Step 7: Copy the build folder from the build stage to the Nginx server directory
 COPY --from=build /app/dist /usr/share/nginx/html
 
-# Expose the port Nginx is running on (default is 80, but we'll map to 8080)
+# Step 8: Expose the port on which the app will be running
 EXPOSE 8080
 
-# Start Nginx to serve the application
+# Step 9: Start Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]
