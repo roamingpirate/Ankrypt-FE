@@ -1,7 +1,7 @@
 import api from 'axios';
 
 const axios = api.create({
-    baseURL: "http://localhost:3000",
+    baseURL: "https://api.ancript.com",
     headers: {
         'ngrok-skip-browser-warning': 'true' // Skip ngrok's warning page by default
 
@@ -10,7 +10,7 @@ const axios = api.create({
 
 
 //const url = "http://localhost:3000";
-const url = "http://localhost:3000";
+const url = "https://api.ancript.com";
 
 
 export const fetchScript = async (projectId) => {
