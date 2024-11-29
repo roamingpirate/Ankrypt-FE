@@ -19,11 +19,13 @@ const AnimationEditor = () => {
   return(
     <Paper elevation={3} sx={{backgroundColor:'#3F3A39'}}>
     {/* Play Button */}
-    <IconButton variant="contained"   onClick={() => {
+      <IconButton variant="contained"   onClick={() => {
           if(videoState != "playing"){
             setVideoState("Playing")
           }
-      }}><PlayArrowIcon sx={{color:'white'}} /></IconButton>
+      }}>
+        <PlayArrowIcon sx={{color:'white'}} />
+      </IconButton>
       {/* Pause Button */}
       <IconButton variant="contained" onClick={() => {
         setVideoState("Paused")

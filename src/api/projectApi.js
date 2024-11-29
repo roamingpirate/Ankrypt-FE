@@ -1,15 +1,16 @@
 import api from 'axios';
 
 const axios = api.create({
-    baseURL: "https://82f5-103-186-41-170.ngrok-free.app",
+    baseURL: "http://localhost:3000",
     headers: {
         'ngrok-skip-browser-warning': 'true' // Skip ngrok's warning page by default
+
     }
 });
 
 
 //const url = "http://localhost:3000";
-const url = "https://82f5-103-186-41-170.ngrok-free.app";
+const url = "http://localhost:3000";
 
 
 export const fetchScript = async (projectId) => {
@@ -266,3 +267,17 @@ export const setIsNewToFalse = async (userId) => {
         throw err;
     }
 };
+
+export const getConvertedVideo = async (projectId,data) => {
+    console.log(projectId)
+    try {
+        const response = await api.post(`${url}/video/create/${projectId}`, data, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
+        return response.data.videoURL;
+    } catch (error) {
+        console.error("Error uploading video:", error);
+    }
+}

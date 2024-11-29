@@ -13,7 +13,7 @@ import AnimationSection from '../component/AnimationSection';
 import { useProjectInfo } from '../utility/ProjectContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import DownloadSection from '../component/VideoDownloadSection';
+import DownloadSection from '../component/animationSectionComponent/VideoDownloadSection';
 
  
 

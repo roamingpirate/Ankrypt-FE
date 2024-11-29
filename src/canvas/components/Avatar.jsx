@@ -9,6 +9,7 @@ import { usePlayer } from '../hooks/usePlayer'
 import gsap from "gsap";
 import {useGSAP} from "@gsap/react";
 import axios from 'axios'
+import { useProjectInfo } from '../../utility/ProjectContext'
 //import audioData from '../data/storyAudioData';
 
 const corresponding = {
@@ -58,7 +59,8 @@ export function Avatar(props) {
   const avatarFaceExpression = useRef(null);
   const avatarLipSync = useRef(null);
 
-  const {script, animationState,setAnimationState,toggleState, next, videoState, setVideoState,currentAudioData,setCurrentSceneIndex,currentSceneIndex,setCurrentSceneScript,characterLook,updateAnimationState,avatarVisibility,currentView} = usePlayer();
+  const {script, animationState,setAnimationState,toggleState, next, videoState, setVideoState,currentAudioData,setCurrentSceneIndex,currentSceneIndex,setCurrentSceneScript,characterLook,updateAnimationState,avatarVisibility,currentView,mediaStreamAudioDestinationRef,audioContextRef} = usePlayer();
+  const {isRecording,currentStage} = useProjectInfo();
 
   const {actions, mixer,names} =useAnimations(avatarAnimation,avatarRef);
   const {actions : pose, mixer : poseSetup} = useAnimations(avatarPose, avatarRef);
@@ -103,7 +105,7 @@ export function Avatar(props) {
   };
 
   //useFrame
-  useFrame((state,delta)=> {
+  useFrame(()=> {
 
     // if(videoState === "Paused")
     // {
@@ -182,7 +184,11 @@ export function Avatar(props) {
           console.log("opps");
            return;
         }
-
+      if (!audio.current.sourceNode) {
+          const source = audioContextRef.current.createMediaElementSource(audio.current);
+          source.connect(mediaStreamAudioDestinationRef.current);
+          audio.current.sourceNode = source;
+      }
       audio.current.play();
       return;
     }
@@ -298,6 +304,28 @@ export function Avatar(props) {
     if (currentAudioDataItem) {
       console.log(currentAudioDataItem?.lipsync);
       audio.current = new Audio("data:audio/mp3;base64," + currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
+
+      // if(currentStage == 3)
+      // {
+      //   if(audioContextRef.current == undefined )
+      //   {
+      //     audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      //   }
+        
+      //   const source = audioContextRef.current.createMediaElementSource(audio.current);
+      //   source.connect(mediaStreamAudioDestinationRef.current);
+      // }
+
+      if(isRecording)
+      {
+        if (!audio.current.sourceNode) {
+          const source = audioContextRef.current.createMediaElementSource(audio.current);
+          source.connect(mediaStreamAudioDestinationRef.current);
+          audio.current.sourceNode = source;
+        }
+      }
+
+
       if(videoState === "Playing"){
     
         audio.current.play();

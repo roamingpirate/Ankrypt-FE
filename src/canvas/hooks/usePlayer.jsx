@@ -15,7 +15,7 @@ const PlayerContext = createContext();
 export const PlayerController = ({ children }) => {
 
  // const [isLoaded, setIsLoaded] = useState(true);
- const {animationScript : AnimationScriptData,audioData: currentAudioData,canavsLoaded: isLoaded,backgroundTextureArray} = useProjectInfo();
+ const {animationScript : AnimationScriptData,audioData: currentAudioData,canavsLoaded: isLoaded,backgroundTextureArray,isRecording,setIsRecording} = useProjectInfo();
  // const [animationScript,setAnimationScript] = useState();
   const [animationType,setAnimationType] = useState(null);
   const [currentSceneIndex, setCurrentSceneIndex] = useState(null);
@@ -33,6 +33,8 @@ export const PlayerController = ({ children }) => {
   const [backgroundImageUrls,setBackgroundImageUrls] = useState(undefined);
   const [toggleState, setToggleState] = useState(0);
   const [playMode, setPlayMode] = useState("Normal");
+  const mediaStreamAudioDestinationRef = useRef();
+  const audioContextRef = useRef();
  //const [reset, setReset] = useState(false);
 
  useEffect(() => {
@@ -185,6 +187,10 @@ async function loadTextures(urls) {
     console.log("Popopop")
     setAvatarVisibility(false);
     setPreviousBackgroundImage(backgroundImage);
+    if((currentSceneIndex+1) == AnimationScriptData.length && isRecording)
+    {
+       setIsRecording(false);
+    }
     //modified
     setBackgroundImage(backgroundImageUrls[((currentSceneIndex+1)%AnimationScriptData.length)]);
     setTimeout(() => {
@@ -277,6 +283,8 @@ async function loadTextures(urls) {
         avatarVisibility,
         currentView,
         toggleState,
+        mediaStreamAudioDestinationRef,
+        audioContextRef
       }}
     >
       {children}

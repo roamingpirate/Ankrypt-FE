@@ -1,4 +1,4 @@
-import React, {useState, useContext, createContext, useEffect} from "react";
+import React, {useState, useContext, createContext, useEffect, useRef} from "react";
 import { fetchGeneratedScript, fetchScript, fetchAnimationScript, updateScript, updateAnimationScript, fetchAudioData, createAudioRequest, getAudioCreationStatus, fetchChangesList, updateChangesList, updateAudioRequest, getBackgroundImageStatus, fetchSpeakerList, getBackgroundImageUrls, getProjectDetail, createPartAudio, createAudioFile, fetchIsNewStatus, setIsNewToFalse } from "../api/projectApi";
 //import scriptData from "../data/scriptData";
 //import AudioData from "../data/audioData.json";
@@ -68,6 +68,7 @@ export const ProjectInfoProvider = ({children}) => {
     const {user, isAuthenticated, loginWithPopup} = useAuth0();
     const [userStatus, setUserStatus] = useState(0);
     const [showTooltip, setShowTooltip] = useState(false);
+    const [isRecording, setIsRecording] = useState(false);
 
 
 
@@ -485,7 +486,10 @@ export const ProjectInfoProvider = ({children}) => {
         projectId,
         userStatus,
         showTooltip,
-        setShowTooltip}}>
+        setShowTooltip,
+        isRecording,
+        setIsRecording
+        }}>
             {children}
         </ProjectContext.Provider>
     )
