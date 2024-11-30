@@ -69,6 +69,7 @@ export const ProjectInfoProvider = ({children}) => {
     const [userStatus, setUserStatus] = useState(0);
     const [showTooltip, setShowTooltip] = useState(false);
     const [isRecording, setIsRecording] = useState(false);
+    const [currentActive, setCurrentActive] = useState(0);
 
 
 
@@ -488,7 +489,9 @@ export const ProjectInfoProvider = ({children}) => {
         showTooltip,
         setShowTooltip,
         isRecording,
-        setIsRecording
+        setIsRecording,
+        currentActive, 
+        setCurrentActive
         }}>
             {children}
         </ProjectContext.Provider>

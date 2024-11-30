@@ -67,7 +67,7 @@ const CanvasViewBox = () => {
                 BackdropProps={{
                   style: { backgroundColor: 'rgba(0, 0, 0, 0.05)' }, 
                 }}>
-            <Grid2 className="w-[95%] sm:w-[90%] md:w-[80%] lg:w-[75%] xl:w-[55%] bg-[#1e1f20] rounded-3xl border-[1px]" style={styles.AvatarSelectorModal}>                  
+                  <Grid2 className="w-[95%] sm:w-[90%] md:w-[80%] lg:w-[75%] xl:w-[55%] bg-[#1e1f20] rounded-3xl border-[1px]" style={styles.AvatarSelectorModal}>                  
                   {/* </Grid2><Grid2 style={styles.AvatarSelectorModal}> */}
                       <AvatarSelector speakerList={speakerList} setSpeakerList={setSpeakerList} disabled={true}/>
                   </Grid2>

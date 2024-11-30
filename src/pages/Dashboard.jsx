@@ -5,7 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
-import { addProjectToUser, getProjectList } from '../api/projectApi';
+import { addProjectToUser, getBackgroundCoverUrl, getProjectList } from '../api/projectApi';
 import { Button, Grid2, Modal, TextField } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -13,19 +13,32 @@ import MenuIcon from '@mui/icons-material/Menu';
 const ProjectCard = ({ name, id, projectNo, img }) => {
 
     const navigate = useNavigate();
+    const [imageUrl, setImageUrl] =useState(undefined);
+
+    useEffect(() => {
+      if(imageUrl == undefined) {
+       const func = async () => {
+        const url = await getBackgroundCoverUrl(id);
+        console.log("pepo kepo",name,projectNo)
+        console.log(url);
+        setImageUrl(url);
+       }
+       func();
+      }
+    },[])
 
     console.log(img)
     return (
       <div class="p-[2px] rounded-xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] hover:cursor-pointer flex justify-center items-center hover:scale-105 transition duration-500">
       <div onClick={()=> navigate(`/app/${projectNo}`,{ state: { projectName : name } })} className="rounded-xl w-[20%] min-w-[150px]  sm:min-w-[200px] h-[200px] sm:h-[350px] hover:cursor-pointer shadow-md p-4 bg-gray-800 hover:shadow-lg transform transition duration-500 ">
-        {img ? (
+        {imageUrl? (
           <img
-            src={img}
+            src={imageUrl}
             alt={name}
-            className="w-full h-[70%] rounded-md object-cover mb-4"
+            className="w-full h-[70%] rounded-lg object-cover mb-4 brightness-75 border-2 border-gray-100" 
           />
         ) : (
-          <div className="w-full h-[70%] rounded-md bg-gray-700"></div>
+          <div className="w-full h-[70%] rounded-md bg-gray-700 border-2 brightness-75 border-gray-100"></div>
         )}
         <div className='sm:p-2'>
         <h2 className="text-lg sm:text-xl text-white font-semibold mt-2">{name}</h2>
@@ -199,7 +212,7 @@ const Dashboard = () => {
                 :
                 <div className='flex flex-col h-full ml-[5%] '>
                   <p className='text-xl sm:text-3xl font-karma font-semibold pt-10 pb-5 text-white'>Recent Projects</p>
-                <div className='flex flex-wrap gap-8 overflow-y-auto pb-10 pt-2 pl-2 pr-5'>
+                <div className='flex flex-wrap gap-8 overflow-y-auto pb-10 pt-2 md:pl-2 md:pr-5'>
                     <CreateNew/>
                     {projectsList.map((project) => (
                         <ProjectCard name={project.projectName} id={project.projectId} projectNo={project.projectNo} img={project.img}/>

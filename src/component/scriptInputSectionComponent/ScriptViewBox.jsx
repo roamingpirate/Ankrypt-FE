@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Grid2 as Grid,Typography,TextField,MenuItem, IconButton, Button,CircularProgress} from '@mui/material';
+import { Grid2 as Grid,Typography,TextField,MenuItem, IconButton, Button,CircularProgress,useMediaQuery, useTheme} from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import scriptData from '../../data/scriptData';
@@ -45,7 +45,8 @@ const AddDialogLine = () => {
 }
 
 const SelectBtn = ({val,data,updateValue,label}) => {
-
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   return (
       <TextField
       select
@@ -54,7 +55,7 @@ const SelectBtn = ({val,data,updateValue,label}) => {
           style: {
             height: '25px',
             fontFamily:'karma',
-            fontSize:'14px' 
+            fontSize: isSmallScreen ? '10px' : '14px',
           }
         }}
         onChange={(event)=>{updateValue(label,event.target.value)}}
@@ -122,9 +123,10 @@ const DialogBox = ({sceneInd,scriptInd,script,setScript,setSave}) => {
             <TextField
                        value={(script[sceneInd].script)[scriptInd].Speech}
                        placeholder='your dialogs goes here...'
-                       sx={{padding:'3px', fontFamily:'Hubballi',fontSize:'16px',width:'100%',
+                       sx={{padding:'3px', fontSize:'16px',fontFamily: 'monospace',width:'100%',
                         '& .MuiInputBase-root': {
                             border: 'none',
+                            fontSize: {xs:'14px',sm:'16px'}
                         },
                         '& .MuiOutlinedInput-root': {
                             '& fieldset': {
@@ -264,7 +266,7 @@ const styles = {
       justifyContent: 'center',
       cursor: 'pointer'
     },
-    scriptTypeSubBoxText: {fontFamily:'Hubballi',fontSize: '1rem',textAlign: 'center',},
+    scriptTypeSubBoxText: {fontFamily:'mono',fontSize: '1rem',textAlign: 'center',},
     row: {
       display: 'flex',
       flexDirection: 'row',

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,13 +14,24 @@ import { useProjectInfo } from '../utility/ProjectContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import DownloadSection from '../component/animationSectionComponent/VideoDownloadSection';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
  
 
 const AnkryptCreatorPage = () => {
-  const {currentStage,alert,setAlert,alertMessage, isPageLoading, error,setShowTooltip} = useProjectInfo();
+  const {currentStage,alert,setAlert,alertMessage, isPageLoading, error,setShowTooltip,currentActive,setCurrentActive} = useProjectInfo();
   const {isAuthenticated, loginWithPopup} = useAuth0();
+  
   const navigate = useNavigate();
+
+  const handleLeftArrowClick = () => {
+    setCurrentActive(0);
+  };
+
+  const handleRightArrowClick = () => {
+    setCurrentActive(1);
+  };
 
   useEffect(() => {
     // Store the original viewport content
@@ -32,7 +43,7 @@ const AnkryptCreatorPage = () => {
     if (window.innerWidth < 768) {
       const metaViewport = document.querySelector('meta[name="viewport"]');
       if (metaViewport) {
-        metaViewport.setAttribute('content', 'width=1024');
+       // metaViewport.setAttribute('content', 'width=1024');
       }
     }
 
@@ -51,11 +62,11 @@ const AnkryptCreatorPage = () => {
         switch(currentStage)
         {
           case 1: 
-            return <ScriptInputSection/>;
+            return <ScriptInputSection currentActive={currentActive}/>;
           case 2:
-            return <AnimationSection/>;
+            return <AnimationSection currentActive={currentActive}/>;
           default:
-            return <DownloadSection/>
+            return <DownloadSection currentActive={currentActive}/>
         }
   }
 
@@ -97,17 +108,33 @@ const AnkryptCreatorPage = () => {
   
 
   return (
-       <Box sx={{height:'100vh',display: 'flex',flexDirection: 'column',width:'100%'}} onClick={() =>setShowTooltip(false)}>
-       <Header/>
+       <Box sx={{position:'relative', height:'100vh',display: 'flex',flexDirection: 'column',width:'100%'}} onClick={() =>setShowTooltip(false)}>
+         <Header/>
         {renderSection()}
-        <Snackbar
-        open={alert}
-        autoHideDuration={3000} // Automatically close after 3 seconds
-        onClose={() => {setAlert(false)}}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} // Position at bottom-center
-      >
-       <Typography sx={{backgroundColor:'#3F3A39',color:'white',padding:'10px',borderRadius:'7px'}}>{alertMessage}</Typography>
-      </Snackbar>
+          <Snackbar
+          open={alert}
+          autoHideDuration={3000} // Automatically close after 3 seconds
+          onClose={() => {setAlert(false)}}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} // Position at bottom-center
+        >
+          <Typography sx={{backgroundColor:'#3F3A39',color:'white',padding:'10px',borderRadius:'7px'}}>{alertMessage}</Typography>
+          </Snackbar>
+          
+        {currentActive === 1 && currentStage != 3 &&(
+          <ArrowBackIcon
+            onClick={handleLeftArrowClick}
+            className="absolute bottom-4 right-4 bg-gray-800 rounded-full p-2 border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible "
+            style={{ fontSize: "45px" }}
+          />
+        )}
+
+        {currentActive === 0 && currentStage !=3 &&(
+          <ArrowForwardIcon
+            onClick={handleRightArrowClick}
+            className="absolute bottom-4 left-4 bg-gray-800 rounded-full p-2 border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible"
+            style={{ fontSize: "45px" }}
+          />
+        )}
        </Box>
   )
 }

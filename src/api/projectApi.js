@@ -2,6 +2,7 @@ import api from 'axios';
 
 const axios = api.create({
     baseURL: "https://api.ancript.com",
+    //baseURL: "http://localhost:8080",
     headers: {
         'ngrok-skip-browser-warning': 'true' // Skip ngrok's warning page by default
 
@@ -9,7 +10,7 @@ const axios = api.create({
 });
 
 
-//const url = "http://localhost:3000";
+//const url = "http://localhost:8080";
 const url = "https://api.ancript.com";
 
 
@@ -170,6 +171,20 @@ export const getBackgroundImageUrls = async (projectId) => {
     try{
         console.log("Trying to get Image Urls");
         const response = await axios.get(`${url}/background/${projectId}`);
+        return response.data;
+    }
+    catch(err)
+    {
+        //return {status : -1};
+        throw err;
+    }   
+}
+
+export const getBackgroundCoverUrl = async (projectId) => {
+    try{
+        console.log("Trying to get Backgroud image Url");
+        const response = await axios.get(`${url}/background/cover/${projectId}`);
+        console.log("opo",response)
         return response.data;
     }
     catch(err)

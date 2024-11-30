@@ -1,4 +1,4 @@
-import { Grid2, Typography, TextField,CircularProgress} from "@mui/material";
+import { Grid2, Typography, TextField,CircularProgress,IconButton,useMediaQuery } from "@mui/material";
 import AvatarDisplay from"../canvas/AvatarDisplay";
 import {useState, useEffect, Suspense} from "react";
 import { AvatarCreator } from '@readyplayerme/react-avatar-creator';
@@ -7,6 +7,8 @@ import { useProjectInfo } from "../utility/ProjectContext";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getAvatarToken } from "../api/projectApi";
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
+
 
 
 const GenderTypeSelectBox = ({ index, speakerData, setSpeakerData, disabled = false }) => {
@@ -117,6 +119,16 @@ const AvatarSelector = ({speakerList,setSpeakerList, disabled = false}) => {
     const [avatarCreateIndex, setAvatarCreateIndex] = useState(0);
     const {user} = useAuth0();
     const [token, setToken] = useState(null);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const isMobile = useMediaQuery('(max-width:600px)'); // Direct media query for mobile screens
+  
+    const handleNext = () => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % speakerList.length); // Loop back to start
+    };
+  
+    const handlePrev = () => {
+      setCurrentIndex((prevIndex) => (prevIndex - 1 + speakerList.length) % speakerList.length); // Loop back to end
+    };
 
     useEffect(() => {
         const fetchToken = async () => {
@@ -163,12 +175,51 @@ const AvatarSelector = ({speakerList,setSpeakerList, disabled = false}) => {
     return (
         <Grid2 className='bg-[#1e1f20] rounded-3xl p-4' style={{display:'flex',flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
         <Typography sx={styles.genScriptTxt}>Edit Speakers Avatars</Typography>
-        <Grid2 style={{color:'white', display: 'flex', flexDirection:'row', justifyContent: 'center', alignItems:'center'}}>
-            {
-            speakerList.map((speaker,index) => (
-               <AvatarBox key={index} index={index} speakerList={speakerList} setSpeakerList={setSpeakerList} startAvatarCreation={startAvatarCreation} disabled={disabled}/>
-             ))
-            }
+        <Grid2 
+            container 
+            style={{ color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}
+            >
+            {isMobile ? (
+                <>
+                {/* Display only one AvatarBox with navigation arrows */}
+                <IconButton 
+                    onClick={handlePrev} 
+                    style={{ position: 'absolute', left: '10px', zIndex: 1 }}
+                    disabled={currentIndex === 0} // Disable left arrow if first item
+                >
+                    <ArrowBack />
+                </IconButton>
+
+                <AvatarBox 
+                    key={currentIndex} 
+                    index={currentIndex} 
+                    speakerList={speakerList} 
+                    setSpeakerList={setSpeakerList} 
+                    startAvatarCreation={startAvatarCreation} 
+                    disabled={disabled} 
+                />
+
+                <IconButton 
+                    onClick={handleNext} 
+                    style={{ position: 'absolute', right: '10px', zIndex: 1 }}
+                    disabled={currentIndex === speakerList.length - 1} // Disable right arrow if last item
+                >
+                    <ArrowForward />
+                </IconButton>
+                </>
+            ) : (
+                // For larger screens, display all AvatarBoxes
+                speakerList.map((speaker, index) => (
+                <AvatarBox 
+                    key={index} 
+                    index={index} 
+                    speakerList={speakerList} 
+                    setSpeakerList={setSpeakerList} 
+                    startAvatarCreation={startAvatarCreation} 
+                    disabled={disabled}
+                />
+                ))
+            )}
         </Grid2>
         </Grid2>
     )

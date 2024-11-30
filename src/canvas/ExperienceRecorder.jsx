@@ -82,6 +82,23 @@ const RecordingController = ({ canvasRef, setVideoURL }) => {
             const blob = new Blob(chunksRef.current, { type: "video/webm" });
             const url = URL.createObjectURL(blob);
             setVideoURL(url);
+
+            console.log("Video");
+
+            const newWorker = new Worker(new URL('./recorder.js', import.meta.url));
+    
+            newWorker.onmessage = (e) => {
+              const { action, data } = e.data;
+        
+              if (action === "frame-processed") {
+                console.log("Frame processed: ", data);
+              }
+            };
+        
+            newWorker.postMessage({
+                action: "capture-frame",
+                data: "frameData",
+              });
         };
 
         recorderRef.current = recorder;
@@ -161,7 +178,7 @@ const ExperienceRecorder = ({setVideoURL}) => {
     <>
     <ErrorBoundary>
     <Paper elevation={5} style={{display:'grid',width:'100%' ,aspectRatio: '4/5',backgroundColor:'gray', borderRadius:'10px'}}>
-    <Canvas frameloop="always" dpr={[3,3]} ref={canvasRef} style={{borderRadius:'10px'}} shadows>
+    <Canvas dpr={[3,3]} ref={canvasRef} style={{borderRadius:'10px'}} shadows>
     <PerspectiveCamera
         makeDefault
         position={[0, 0, 2]}

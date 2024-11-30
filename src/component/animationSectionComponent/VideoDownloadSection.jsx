@@ -8,8 +8,7 @@ import AvatarSelector from '../AvatarSelector';
 import { updateSpeakerList } from "../../api/projectApi";
 import zIndex from "@mui/material/styles/zIndex";
 import ExperienceRecorder from "../../canvas/ExperienceRecorder";
-import Experience from "../../canvas/Experience";
-import { PlayerController } from "../../canvas/hooks/usePlayer";
+import { PlayerController, usePlayer } from "../../canvas/hooks/usePlayer";
 
 
 const CanvasViewBox = ({setVideoURL}) => {
@@ -151,7 +150,7 @@ const Download = ({videoURL}) => {
             mt: 2,
             mb: 4,
             borderRadius: "24px",
-            px: 4,
+            px: {xs:2,sm:4},
             py: 1.5,
             fontWeight: "bold",
             textTransform: "none",
@@ -265,14 +264,14 @@ const DownloadSection = () => {
     },[]);
           return (
             <>
-                <div className="flex justify-center items-center bg-gray-800 min-h-full">
+                <div className="flex justify-center items-center bg-[#262525] sm:bg-gray-800 h-full">
                   <div className="flex w-[100%] h-[500px] max-w-3xl bg-gray-700 rounded-xl">
                     {/* Video Box */}
-                    <div className="w-1/2 bg-gray-200 flex justify-center items-center rounded-l-xl bg-gradient-to-br from-[#2e2e3a] to-[#1a1a24]">
+                    <div className="w-1/2 p-4 md:p-0 bg-gray-200 flex justify-center items-center rounded-l-xl bg-gradient-to-br from-[#2e2e3a] to-[#1a1a24]">
                        <CanvasViewBox setVideoURL={setVideoURL}/>
                     </div>
                     {/* Video Download */}
-                        <div className="w-1/2 flex justify-center items-center">
+                      <div className="w-1/2 flex justify-center items-center">
                         {
                           isProcessed? <Download videoURL={videoURL}/> : isRecording? <VideoProcess/> : <StartRecording setIsRecording={setIsRecording}/>
                         }

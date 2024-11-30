@@ -174,7 +174,7 @@ const ScriptInputBox = () => {
    const [speakerList, setSpeakerList] = useState(speakersListD)
    const [inputPrompt,setInputPrompt] = useState('');
    const [tone,setTone] = useState('Funny');
-   const {generateScript, setSpeakerList : setProjectSpeakerList, speakerList: projectSpeakerList,projectId,showTooltip} = useProjectInfo();
+   const {generateScript, setSpeakerList : setProjectSpeakerList, speakerList: projectSpeakerList,projectId,showTooltip,setCurrentActive} = useProjectInfo();
    const [openPrompt,setOpenPrompt] = useState(false);
 
    const handleChange = (event) => {
@@ -315,7 +315,7 @@ const ScriptInputBox = () => {
 
       <div onClick={()=>handleNext(currentStage+1)} class="p-[3px] rounded-[50%] bg-gradient-to-r from-[#2b5876] to-[#4e4376] flex justify-center items-center">
             <div className="text-center">
-            <IconButton className="shadow-lg" sx={{backgroundColor:'#111827'}} onClick={() => createScript()}>
+            <IconButton className="shadow-lg" sx={{backgroundColor:'#111827'}} onClick={() => {createScript(); setCurrentActive(1);}}>
                 <SendIcon sx={{color:'white',width:'25px',height:'25px'}}/>
             </IconButton>
       </div>

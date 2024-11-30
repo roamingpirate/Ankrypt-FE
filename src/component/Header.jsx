@@ -30,7 +30,8 @@ const ProjectPath = ({ projectName, projectId }) => {
   };
 
   return (
-      <Typography sx={{ fontFamily: "Oswald", fontSize: 25, marginRight: '30%', color: 'white'}}>
+    <div className="ml-2 sm:ml-0 sm:mr-[10%] md:mr-[30%]">
+      <Typography  sx={{ fontFamily: "Oswald", fontSize: 25, color: 'white'}}>
           <span onClick={handleAncriptClick} style={{ cursor: 'pointer', color: 'inherit' }}>
               ancript
           </span>/
@@ -41,6 +42,7 @@ const ProjectPath = ({ projectName, projectId }) => {
               {projectName}
           </span>
       </Typography>
+  </div>
   );
 };
 
@@ -73,15 +75,15 @@ const ProgressBox = ({currentStage,handleNext}) => {
     </Grid>
   )
 }
- 
+
 
 const Header = () => {
-  const {currentStage,setCurrentStage,save,saveDisabled,saveContentToServer,resetContent,handleNext, projectName,projectId} = useProjectInfo();
-  //const projectName = 'My Interesting Project';
-
+  const { currentStage, setCurrentStage, save, saveDisabled, saveContentToServer, resetContent, handleNext, projectName, projectId,setCurrentActive } = useProjectInfo();
 
   return (
-    <div className='border-b-[0.5px]' style={{display: 'flex',flexDirection:'row',alignItems: 'center',padding: 5, flexWrap: 'wrap', backgroundColor: '#1e1f20'}}>
+    <div className="border-b-[0.5px] pt-1.5 sm:pb-1.5 flex-wrap bg-[#1e1f20]">
+        <div className='flex flex-row items-center'>
+        <div className="hidden sm:block">
           <IconButton
             size="large"
             aria-label="menu"
@@ -89,51 +91,62 @@ const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          {/* <Typography sx={{  fontFamily:"Oswald",fontSize: 25,marginRight: '30%'}}>
-                ancript/studio/{projectName}
-          </Typography> */}
-          <ProjectPath projectName={projectName} projectId={projectId} />
-          <ProgressBox currentStage={currentStage} handleNext={handleNext}/>
-          <div style={{display:'flex', justifyContent:'flex-end',flexGrow:1,marginRight:'20px'}}>
-            { save &&
-              <>
-              <IconButton aria-label="reset" sx={{ mr: 1}} onClick={() => resetContent()}><RestartAltIcon /></IconButton>
-              <Button 
-                  disabled={saveDisabled} 
-                  variant="contained" 
-                  sx={{ 
-                    backgroundColor: saveDisabled ? '#9e9e9e' : '#51c4b7', 
-                    marginRight: 2,
-                    display: 'flex',
-                    alignItems: 'center',
-                  }} 
-                  onClick={() => saveContentToServer()}
-                >
-                  {saveDisabled ? (
-                    <>
-                      <CircularProgress size={20} sx={{ color: 'white', marginRight: 1 }} />
-                      Saving...
-                    </>
-                  ) : (
-                    'Save'
-                  )}
+        </div>
+
+        <ProjectPath projectName={projectName} projectId={projectId} />
+        <div className="hidden sm:block">
+          <ProgressBox currentStage={currentStage} handleNext={handleNext} />
+        </div>
+
+        <div className="flex justify-end flex-grow mr-5">
+          {save && (
+            <>
+              <IconButton aria-label="reset" sx={{ mr: 1 }} onClick={() => resetContent()}>
+                <RestartAltIcon />
+              </IconButton>
+              <Button
+                disabled={saveDisabled}
+                variant="contained"
+                sx={{
+                  backgroundColor: saveDisabled ? '#9e9e9e' : '#51c4b7',
+                  marginRight: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+                onClick={() => saveContentToServer()}
+              >
+                {saveDisabled ? (
+                  <>
+                    <CircularProgress size={20} sx={{ color: 'white', marginRight: 1 }} />
+                    Saving...
+                  </>
+                ) : (
+                  'Save'
+                )}
               </Button>
-              </>
-            }
-           { (currentStage != 3) &&
-            // <Button variant="contained" className="bg-gray-800" onClick={()=>handleNext(currentStage+1)}>Next</Button>
-                  <div onClick={()=>handleNext(currentStage+1)} class="p-[2px] rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] flex justify-center items-center">
-                  <div className="text-center">
-                    <button className="bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold m-[1px] py-2 px-4 rounded-3xl ">
-                      Next
-                    </button>
-                  </div>
-                  </div>
-           }
-          </div>
+            </>
+          )}
+          {currentStage !== 3 && (
+            <div
+              onClick={() => {handleNext(currentStage + 1); setCurrentActive(0)}}
+              className="p-[2px] rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] flex justify-center items-center"
+            >
+              <div className="text-center">
+                <button className="bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold m-[1px] py-2 px-4 rounded-3xl">
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+       </div>
+        <div className="flex sm:hidden justify-center items-center mt-2 border-t-[1px] p-2 border-white w-full bg-gray-800 ">
+            <ProgressBox currentStage={currentStage} handleNext={handleNext} />
+        </div>
     </div>
-  )
-}
+  );
+};
+
 
 export default Header;
 
@@ -141,7 +154,6 @@ export default Header;
 const style = {
   ProgressIcon: {
     borderRadius: 1,
-   // border: 1,
     height: '35px',
     width: '35px',
     display: 'flex',

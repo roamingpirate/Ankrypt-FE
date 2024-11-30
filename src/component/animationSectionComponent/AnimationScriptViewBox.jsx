@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import { Grid2 as Grid,Typography,TextField,MenuItem, IconButton, Button, Divider,Tooltip,CircularProgress,Paper} from '@mui/material';
+import { Grid2 as Grid,Typography,TextField,MenuItem, IconButton, Button, Divider,Tooltip,CircularProgress,Paper,useMediaQuery, useTheme} from '@mui/material';
 import animationScriptData from '../../data/animationScriptData';
 import PlayCircleFilledIcon from '@mui/icons-material/PlayCircleFilled';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
 import { useProjectInfo } from '../../utility/ProjectContext';
 import { updateAnimationScript } from '../../api/projectApi';
 import { usePlayer } from '../../canvas/hooks/usePlayer';
+import zIndex from '@mui/material/styles/zIndex';
 
 
 // const FCCorrespondingColors = {
@@ -38,37 +39,40 @@ import { usePlayer } from '../../canvas/hooks/usePlayer';
 
 
 
-const SelectBtn = ({val,data,updateValue,label}) => {
+const SelectBtn = ({ val, data, updateValue, label }) => {
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm')); // Check if the screen is small (based on Material-UI's breakpoints)
 
     return (
         <TextField
-        select
-        value={val}
-          InputProps={{
-            style: {
-              height: '22px',
-              fontFamily:'karma',
-              fontSize:'12px' 
-            }
-          }}
-          onChange={(event)=>{updateValue(event.target.value,label)}}
+            select
+            value={val}
+            InputProps={{
+                style: {
+                    height: isSmallScreen ? '22px' : '22px', // Adjust height based on screen size
+                    fontFamily: 'karma',
+                    fontSize: isSmallScreen ? '9px' : '12px', // Adjust font size for small screens
+                },
+            }}
+            onChange={(event) => { updateValue(event.target.value, label); }}
         >
-        {data.map((arr) => (
-        <MenuItem key={arr} value={arr}>
-            {arr}
-        </MenuItem>
-        ))}
+            {data.map((arr) => (
+                <MenuItem key={arr} value={arr}>
+                    {arr}
+                </MenuItem>
+            ))}
         </TextField>
-    )
-}
+    );
+};
+
 
 
 const DialogBox = ({obj}) => {
     return (
             <Paper elevation={1} style={{...styles.DialogBoxStyle, backgroundColor:FCCorrespondingColors[obj.FaceExpression]}}> 
-            <Typography >
+            <p className='font-mono text-sm sm:text-base'>
                 {obj.Text}
-            </Typography>
+            </p>
             </Paper>
     )
 }
@@ -96,14 +100,14 @@ const ExpandedDialogBox = ({obj,sind,sceneInd,scriptInd,isSelected,setIsSelected
                 {/* Dialog */}
 
                 <Paper style={{...styles.DialogBoxStyle,backgroundColor:FCCorrespondingColors[obj.FaceExpression],width:'70%'}}>
-                    <Typography>
+                    <p className='font-mono text-sm sm:text-base'>
                         {obj.Text}
-                    </Typography>
+                    </p>
                 </Paper>
 
                 {/* Animation and FaceExpression Select */}
 
-                <Grid  container spacing={1} direction={'column'} sx={{ alignItems:'center',padding:'2px',width:'20%'}}>
+                <Grid  container spacing={1} direction={'column'} sx={{ alignItems:'center',padding:'2px',width:{xs:'20%',sm: '20%',md: '20%', lg: '20%'}}}>
                     <Tooltip title="Animation">
                     <Grid item>
                         <SelectBtn val={obj.Animation} data={animationsList} updateValue={updateAnimationSpeechObject} label={"Animation"}/>
@@ -118,7 +122,7 @@ const ExpandedDialogBox = ({obj,sind,sceneInd,scriptInd,isSelected,setIsSelected
 
                 {/* Play Done Icons */}
 
-                <Grid  container spacing={1} direction={'column'} sx={{alignItems:'center',padding:'2px',width:'5%'}}>
+                <Grid  container spacing={1} direction={'column'} sx={{alignItems:'center',padding:'2px',width:'5%',zIndex:5}}>
                     <Tooltip title="Close" >
                         <Grid item >
                             <CancelRoundedIcon onClick={()=> setIsSelected(!isSelected)} sx={{ color: 'white', width: '20px', height: '20px' }}/>

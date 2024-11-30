@@ -1,25 +1,19 @@
-import { FFmpeg } from '@ffmpeg/ffmpeg';
-import { fetchFile } from '@ffmpeg/util';
-
-self.onmessage = async (e) => {
-    const ffmpeg = new FFmpeg();
-    await ffmpeg.load();
-
-    const webmBlob = e.data;
-    const arrayBuffer = await webmBlob.arrayBuffer();
-    console.log("lol ");
-    // Write WebM data to FFmpeg's virtual file system
-    await ffmpeg.writeFile("input.webm", new Uint8Array(arrayBuffer));
-
-    // Run the conversion command to MP4
-    await ffmpeg.exec(['-i', 'input.webm', 'output.mp4']);
-
-    // Read the converted MP4 file from FFmpeg's virtual file system
-    const data = await ffmpeg.readFile('output.mp4');
-
-    // Create a Blob from the MP4 data
-    const mp4Blob = new Blob([data.buffer], { type: 'video/mp4' });
-
-    // Post the MP4 Blob back to the main thread
-    self.postMessage(mp4Blob);
-};
+// worker.js
+onmessage = function (e) {
+    const { action, data } = e.data;
+  
+    if (action === "capture-frame") {
+      // Process the frame data (e.g., compress or prepare it for video creation)
+      // For simplicity, let's just log the frame data
+      console.log("Received frame data", data);
+  
+      // Here you can do any processing, like compressing the frame or saving it to a queue
+  
+      // Once a frame is processed, send a response back to the main thread
+      postMessage({
+        action: "frame-processed",
+        data: "frame processed successfully",
+      });
+    }
+  };
+  

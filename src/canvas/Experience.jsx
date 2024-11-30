@@ -16,6 +16,7 @@ import RestartAltIcon from '@mui/icons-material/RestartAlt';
 const AnimationEditor = () => {
   const { setAnimationState, setVideoState, videoState,currentSceneIndex,setCurrentSceneIndex,updateAnimationState} = usePlayer();
 
+
   return(
     <Paper elevation={3} sx={{backgroundColor:'#3F3A39'}}>
     {/* Play Button */}
@@ -75,7 +76,7 @@ const Experience = () => {
   return (
     <>
     <ErrorBoundary>
-    <Paper elevation={5} style={{display:'grid', width:'90%', aspectRatio: '4/5', margin:'7px',backgroundColor:'gray', borderRadius:'10px'}}>
+    <Paper elevation={5} style={{display:'grid', width:'85%', aspectRatio: '4/5', margin:'7px',backgroundColor:'gray', borderRadius:'10px'}}>
     <Canvas style={{borderRadius:'10px'}} shadows>
     <PerspectiveCamera
         makeDefault
