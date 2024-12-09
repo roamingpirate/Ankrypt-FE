@@ -1,7 +1,7 @@
 import { Canvas} from "@react-three/fiber";
 import {PerspectiveCamera } from "@react-three/drei";
 import React, { useEffect,useRef,useState } from "react";
-import { Podcast1 } from "./components/scenes/PodcastScene1.jsx";
+import { Podcast1 } from "./components/Scenes/PodcastScene1";
 import { usePlayer } from './hooks/usePlayer'
 import { Grid2, Paper,IconButton, useMediaQuery} from "@mui/material";
 import PauseIcon from '@mui/icons-material/Pause';
