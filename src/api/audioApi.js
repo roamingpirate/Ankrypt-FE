@@ -2,12 +2,12 @@ import api from 'axios';
 
 const axios = api.create({
     //baseURL: "https://api.ancript.com",
-    baseURL: "http://35.192.90.186:8081",
+    baseURL: "https://audio.ancript.com",
     timeout: 0,
 });
 
 
-const url = "http://35.192.90.186:8081";
+const url = "https://audio.ancript.com";
 
 
 export const createAudioJob = async (projectId) => {
