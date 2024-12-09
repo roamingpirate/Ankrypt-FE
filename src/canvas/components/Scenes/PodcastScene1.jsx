@@ -12,9 +12,8 @@ import { Avatar } from "../Avatar";
 import gsap from "gsap";
 import {useGSAP} from "@gsap/react";
 import { usePlayer } from "../../hooks/usePlayer";
-import { FemaleAvatar } from "../FemaleAvatar";
 import { TransitionMaterial } from "../../data/TransitionMaterial";
-import { useProjectInfo } from "../../../utility/ProjectContext";
+import { useProjectInfo } from "../../../hooks/ProjectContext";
 
 extend({
   TransitionMaterial,
@@ -24,7 +23,7 @@ extend({
 // <group position={[positionX,positionY,positionZ]} rotation={[rotationX,rotationY,rotationZ]}>
 
 const Background = () => {
-  const { videoState, backgroundImage, previousBackgroundImage } = usePlayer();
+  const { videoState, backgroundImage, previousBackgroundImage,isBackgroundSwitch} = usePlayer();
   const { viewport } = useThree();
   const [dispTexture, setDispTexture] = useState(undefined);
   const ref = useRef();
@@ -42,11 +41,11 @@ const Background = () => {
   }, []);
 
   useEffect(() => {
-    if (ref.current) {
+    if (ref.current && isBackgroundSwitch.current) {
       ref.current.dispFactor = 0;
       gsap.to(ref.current, {
         dispFactor: 1,
-        duration: 2,
+        duration: 1.5,
       });
     }
   }, [backgroundImage]);

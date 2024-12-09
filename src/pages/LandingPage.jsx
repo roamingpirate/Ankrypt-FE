@@ -1,9 +1,9 @@
 import {useState, useEffect} from 'react';
-import Header from '../landingPageComponents/Header';
-import Intro from '../landingPageComponents/Intro';
-import Examples from '../landingPageComponents/Examples';
-import PromptInput from '../landingPageComponents/PromptInput';
-import {Features} from '../landingPageComponents/Features';
+import Header from '../landingPage/Header';
+import Intro from '../landingPage/Intro';
+import Examples from '../landingPage/Examples';
+import PromptInput from '../landingPage/PromptInput';
+import {Features} from '../landingPage/Features';
 import { fetchScript } from '../api/projectApi';
 
 const Footer = () => {

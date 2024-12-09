@@ -1,19 +1,13 @@
-import { Canvas, useThree} from "@react-three/fiber";
-import {PerspectiveCamera,ContactShadows } from "@react-three/drei";
-import { Leva } from "leva";
-import React, { useEffect,useRef } from "react";
-// import { AnimationEditor } from "./components/AnimationEditor";
-import { Podcast2 } from "./components/Scenes/PodcastScene2";
-import { Podcast1 } from "./components/Scenes/PodcastScene1";
-import { ScriptEditPage } from "./pages/ScriptEditPage";
-import { PodcastTransition } from "./components/Scenes/PodcastTransition";
-import { PlayerController, usePlayer } from './hooks/usePlayer'
-import { Grid2, Paper , Button, IconButton} from "@mui/material";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { Canvas} from "@react-three/fiber";
+import {PerspectiveCamera } from "@react-three/drei";
+import React, { useEffect,useRef,useState } from "react";
+import { Podcast1 } from "./components/scenes/PodcastScene1";
+import { usePlayer } from './hooks/usePlayer'
+import { Grid2, Paper,IconButton, useMediaQuery} from "@mui/material";
 import PauseIcon from '@mui/icons-material/Pause';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import { useProjectInfo } from "../utility/ProjectContext";
-import { getConvertedVideo } from "../api/projectApi";
+import { useProjectInfo } from "../hooks/ProjectContext";
+import { FFmpeg } from '@ffmpeg/ffmpeg'
+import { toBlobURL } from '@ffmpeg/util'
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -39,24 +33,58 @@ class ErrorBoundary extends React.Component {
 }
 
 
-const RecordingController = ({ canvasRef, setVideoURL }) => {
-    const {
-        setAnimationState,
-        setVideoState,
-        videoState,
-        currentSceneIndex,
-        setCurrentSceneIndex,
-        updateAnimationState,
-        mediaStreamAudioDestinationRef,
-        audioContextRef
-    } = usePlayer();
-    const { isRecording, setIsRecording,projectId } = useProjectInfo();
+const RecordingController = ({ canvasRef, setVideoWebmBlob,setIsProcessed}) => {
+    const { setVideoState, mediaStreamAudioDestinationRef, audioContextRef } = usePlayer();
+    const { isRecording, setIsRecording,projectId,ffmpegRef,ffmpegLoaded } = useProjectInfo();
     const recorderRef = useRef();
     const chunksRef = useRef([]);
-    const isPausedDueToTabSwitch = useRef(false); // Track pause due to tab switch
+    const isPausedDueToTabSwitch = useRef(false); 
+
+
+
+    const copyWebMStream = async (webmBlob) => {
+      const ffmpeg = ffmpegRef.current;
+      const maxRetries = 10;
+      const retryInterval = 5000;
+    
+      let attempts = 0;
+    
+      const waitForFFmpeg = async () => {
+        return new Promise((resolve, reject) => {
+          const intervalId = setInterval(() => {
+            if (ffmpeg && ffmpegLoaded) {
+              clearInterval(intervalId);
+              resolve(true);
+            } else if (attempts >= maxRetries) {
+              clearInterval(intervalId);
+              reject(new Error("FFmpeg failed to load within the time limit."));
+            } else {
+              attempts++;
+              console.log("opps");
+            }
+          }, retryInterval);
+        });
+      };
+    
+      try {
+        await waitForFFmpeg();
+    
+        const arrayBuffer = await webmBlob.arrayBuffer();
+        await ffmpeg.writeFile('input.webm', new Uint8Array(arrayBuffer));
+    
+        await ffmpeg.exec(['-i', 'input.webm', '-c', 'copy', 'output7.webm']);
+    
+        const data = await ffmpeg.readFile('output7.webm');
+        const outputBlob = new Blob([data.buffer], { type: 'video/webm' });
+    
+        return outputBlob;
+      } catch (error) {
+        console.error(error.message);
+      }
+    };    
 
     const startRecording = () => {
-        const videoStream = canvasRef.current.captureStream(60); // 60 FPS
+        const videoStream = canvasRef.current.captureStream(60); 
         audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
 
         mediaStreamAudioDestinationRef.current = audioContextRef.current.createMediaStreamDestination();
@@ -80,25 +108,9 @@ const RecordingController = ({ canvasRef, setVideoURL }) => {
 
         recorder.onstop = async () => {
             const blob = new Blob(chunksRef.current, { type: "video/webm" });
-            const url = URL.createObjectURL(blob);
-            setVideoURL(url);
-
-            console.log("Video");
-
-            const newWorker = new Worker(new URL('./recorder.js', import.meta.url));
-    
-            newWorker.onmessage = (e) => {
-              const { action, data } = e.data;
-        
-              if (action === "frame-processed") {
-                console.log("Frame processed: ", data);
-              }
-            };
-        
-            newWorker.postMessage({
-                action: "capture-frame",
-                data: "frameData",
-              });
+            setIsProcessed(true);
+            const fixedblob = await copyWebMStream(blob);
+            setVideoWebmBlob(fixedblob);
         };
 
         recorderRef.current = recorder;
@@ -141,9 +153,7 @@ const RecordingController = ({ canvasRef, setVideoURL }) => {
                 }
             }
         };
-
         document.addEventListener("visibilitychange", handleVisibilityChange);
-
         return () => {
             document.removeEventListener("visibilitychange", handleVisibilityChange);
         };
@@ -152,8 +162,8 @@ const RecordingController = ({ canvasRef, setVideoURL }) => {
     useEffect(() => {
         if (isRecording) {
             startRecording();
-            
-        } else {
+        }
+        else {
             stopRecording();
         }
     }, [isRecording]);
@@ -170,15 +180,16 @@ const RecordingController = ({ canvasRef, setVideoURL }) => {
 
 
 
-const ExperienceRecorder = ({setVideoURL}) => {
+const ExperienceRecorder = ({setVideoWebmBlob,setIsProcessed}) => {
   const cameraRef = useRef();
   const canvasRef = useRef();
+  const isMobile = useMediaQuery('(max-width:600px)');
 
   return (
     <>
     <ErrorBoundary>
-    <Paper elevation={5} style={{display:'grid',width:'100%' ,aspectRatio: '4/5',backgroundColor:'gray', borderRadius:'10px'}}>
-    <Canvas dpr={[3,3]} ref={canvasRef} style={{borderRadius:'10px'}} shadows>
+    <Paper elevation={5}  style={{display:'grid',width:isMobile? '144px':'240px', height:isMobile? '150px':'300px' ,aspectRatio: '4/5',backgroundColor:'gray', borderRadius:'10px'}}>
+    <Canvas dpr={isMobile?[5,5]:[3,3]} ref={canvasRef} style={{borderRadius:'10px'}} shadows>
     <PerspectiveCamera
         makeDefault
         position={[0, 0, 2]}
@@ -191,7 +202,7 @@ const ExperienceRecorder = ({setVideoURL}) => {
     </Canvas>
     </Paper>
     <Grid2>
-      <RecordingController canvasRef={canvasRef} setVideoURL={setVideoURL}/>
+      <RecordingController canvasRef={canvasRef} setVideoWebmBlob={setVideoWebmBlob} setIsProcessed={setIsProcessed}/>
     </Grid2>
     </ErrorBoundary>
     </>

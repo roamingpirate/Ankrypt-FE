@@ -1,20 +1,15 @@
 import { Canvas, useThree} from "@react-three/fiber";
 import {PerspectiveCamera,ContactShadows } from "@react-three/drei";
-import { Leva } from "leva";
 import React, { useEffect,useRef } from "react";
-// import { AnimationEditor } from "./components/AnimationEditor";
-import { Podcast2 } from "./components/Scenes/PodcastScene2";
-import { Podcast1 } from "./components/Scenes/PodcastScene1";
-import { ScriptEditPage } from "./pages/ScriptEditPage";
-import { PodcastTransition } from "./components/Scenes/PodcastTransition";
-import { PlayerController, usePlayer } from './hooks/usePlayer'
-import { Grid2, Paper , Button, IconButton} from "@mui/material";
+import { Podcast1 } from "./components/scenes/PodcastScene1";
+import { usePlayer } from './hooks/usePlayer'
+import { Grid2, Paper , IconButton} from "@mui/material";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 const AnimationEditor = () => {
-  const { setAnimationState, setVideoState, videoState,currentSceneIndex,setCurrentSceneIndex,updateAnimationState} = usePlayer();
+  const { setVideoState, videoState,currentSceneIndex,setCurrentSceneIndex,updateAnimationState} = usePlayer();
 
 
   return(

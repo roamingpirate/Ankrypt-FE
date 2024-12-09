@@ -9,7 +9,7 @@ import { usePlayer } from '../hooks/usePlayer'
 import gsap from "gsap";
 import {useGSAP} from "@gsap/react";
 import axios from 'axios'
-import { useProjectInfo } from '../../utility/ProjectContext'
+import { useProjectInfo } from '../../hooks/ProjectContext'
 //import audioData from '../data/storyAudioData';
 
 const corresponding = {
@@ -60,7 +60,7 @@ export function Avatar(props) {
   const avatarLipSync = useRef(null);
 
   const {script, animationState,setAnimationState,toggleState, next, videoState, setVideoState,currentAudioData,setCurrentSceneIndex,currentSceneIndex,setCurrentSceneScript,characterLook,updateAnimationState,avatarVisibility,currentView,mediaStreamAudioDestinationRef,audioContextRef} = usePlayer();
-  const {isRecording,currentStage} = useProjectInfo();
+  const {isRecording,currentStage,audioMap} = useProjectInfo();
 
   const {actions, mixer,names} =useAnimations(avatarAnimation,avatarRef);
   const {actions : pose, mixer : poseSetup} = useAnimations(avatarPose, avatarRef);
@@ -303,8 +303,8 @@ export function Avatar(props) {
 
     if (currentAudioDataItem) {
       console.log(currentAudioDataItem?.lipsync);
-      audio.current = new Audio("data:audio/mp3;base64," + currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
-
+      //audio.current = new Audio(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
+      audio.current = new Audio("data:audio/mp3;base64," + audioMap.get(`${currentSceneIndex}_${animationState.currentSpeechIndex}_${animationState.currentDialogIndex}`));
       // if(currentStage == 3)
       // {
       //   if(audioContextRef.current == undefined )
@@ -400,5 +400,4 @@ export function Avatar(props) {
     </group>
   )
 }
-
 

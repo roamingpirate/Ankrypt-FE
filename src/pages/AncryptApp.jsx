@@ -19,15 +19,15 @@ const AncryptApp = () => {
         else{
             const addUser = async () => {
                 const res = await addNewUser(user.email);
-                console.log("paka")
-                console.log(res,"tata");
-                if(res.status)
-                {
-                    setIsDone(true);
-                }
-                else{
-                    setIsAddScreen(true);
-                }
+                // it send status if user is in beta list in response
+                // if(res.status)
+                // {
+                //     setIsDone(true);
+                // }
+                // else{
+                //     setIsAddScreen(true);
+                // }
+                setIsDone(true);
             };
             addUser();
         }

@@ -3,17 +3,14 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Grid2 as Grid, Paper, Container, Snackbar, CircularProgress } from '@mui/material';
-import Header from '../component/Header';
-import ScriptInputSection from '../component/ScriptInputSection';
-import AnimationSection from '../component/AnimationSection';
-import { useProjectInfo } from '../utility/ProjectContext';
+import Header from '../studio/Header';
+import ScriptInputSection from '../studio/ScriptInputSection';
+import AnimationSection from '../studio/AnimationSection';
+import { useProjectInfo } from '../hooks/ProjectContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import DownloadSection from '../component/animationSectionComponent/VideoDownloadSection';
+import DownloadSection from '../studio/animationSectionComponent/VideoDownloadSection';
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
@@ -121,19 +118,23 @@ const AnkryptCreatorPage = () => {
           </Snackbar>
           
         {currentActive === 1 && currentStage != 3 &&(
+          <div onClick={handleLeftArrowClick} className='absolute bottom-[10%] right-4 flex justify-center items-center bg-[#51c4b7] p-1 rounded-lg md:invisible'>
           <ArrowBackIcon
-            onClick={handleLeftArrowClick}
-            className="absolute bottom-4 right-4 bg-gray-800 rounded-full p-2 border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible "
-            style={{ fontSize: "45px" }}
+            className="bg-gray-800 rounded-[10px] p-2 border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible "
+            style={{ fontSize: "30px" }}
           />
+          <p className='font-mono font-medium text-sm p-2'> {currentStage == 1? 'Generate Script' : 'Watch Video'}</p>
+          </div>
         )}
 
         {currentActive === 0 && currentStage !=3 &&(
+          <div onClick={handleRightArrowClick} className='absolute bottom-[10%] left-4 flex justify-center items-center bg-[#51c4b7] p-1 rounded-lg md:invisible'>
+          <p className='font-mono text-sm font-medium p-2'> {currentStage == 1? 'View Script' : 'View Animation Script'} </p>
           <ArrowForwardIcon
-            onClick={handleRightArrowClick}
-            className="absolute bottom-4 left-4 bg-gray-800 rounded-full p-2 border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible"
-            style={{ fontSize: "45px" }}
+            className="bg-gray-800 rounded-[10px] p-2 border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible"
+            style={{ fontSize: "30px" }}
           />
+          </div>
         )}
        </Box>
   )

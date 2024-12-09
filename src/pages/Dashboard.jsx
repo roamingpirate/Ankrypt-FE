@@ -1,4 +1,3 @@
-// Dashboard.js
 import React, { useEffect, useState } from 'react';
 import { Menu } from '@mui/icons-material';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -6,31 +5,45 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AddIcon from '@mui/icons-material/Add';
 import { useNavigate } from 'react-router-dom';
 import { addProjectToUser, getBackgroundCoverUrl, getProjectList } from '../api/projectApi';
-import { Button, Grid2, Modal, TextField } from '@mui/material';
+import { Button, CircularProgress, Grid2, Modal, TextField } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import CoverImagesUrls from '../data/coverImages.json'
 
 
-const ProjectCard = ({ name, id, projectNo, img }) => {
+const generateRandomName = () => {
+  const adjectives = [
+    "Vibrant", "Epic", "Whimsical", "Cosmic", "Dynamic", 
+    "Inspiring", "Radiant", "Innovative", "Dramatic", "Timeless",
+    "Ethereal", "Legendary", "Majestic", "Playful", "Bold",
+    "Infinite", "Ingenious", "Mystical", "Enchanting", "Luminous"
+  ];
+  
+  const nouns = [
+    "Chronicle", "Saga", "Odyssey", "Vision", "Frame", 
+    "Narrative", "Journey", "Adventure", "Realm", "Spectacle",
+    "Tale", "Storyline", "Arc", "Perspective", "Episode",
+    "Creation", "Masterpiece", "Verse", "Drama", "Sequence"
+  ];
+
+  const getRandomItem = array => array[Math.floor(Math.random() * array.length)];
+  
+  return `${getRandomItem(adjectives)} ${getRandomItem(nouns)}`;
+};
+
+const ProjectCard = ({ name, id, projectNo, img, index }) => {
 
     const navigate = useNavigate();
     const [imageUrl, setImageUrl] =useState(undefined);
 
     useEffect(() => {
-      if(imageUrl == undefined) {
-       const func = async () => {
-        const url = await getBackgroundCoverUrl(id);
-        console.log("pepo kepo",name,projectNo)
-        console.log(url);
-        setImageUrl(url);
-       }
-       func();
-      }
+      const coverUrl = CoverImagesUrls[index % CoverImagesUrls.length];
+      setImageUrl(coverUrl);
     },[])
 
     console.log(img)
     return (
-      <div class="p-[2px] rounded-xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] hover:cursor-pointer flex justify-center items-center hover:scale-105 transition duration-500">
-      <div onClick={()=> navigate(`/app/${projectNo}`,{ state: { projectName : name } })} className="rounded-xl w-[20%] min-w-[150px]  sm:min-w-[200px] h-[200px] sm:h-[350px] hover:cursor-pointer shadow-md p-4 bg-gray-800 hover:shadow-lg transform transition duration-500 ">
+      <div class="p-[2px] rounded-xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] hover:cursor-pointer flex w-[140px] sm:w-[220px] justify-center items-center hover:scale-105 transition duration-500">
+      <div onClick={()=> navigate(`/app/${projectNo}`,{ state: { projectName : name } })} className="rounded-xl w-[140px] sm:w-[220px]  h-[200px] sm:h-[350px] hover:cursor-pointer shadow-md p-4 bg-gray-800 hover:shadow-lg transform transition duration-500 ">
         {imageUrl? (
           <img
             src={imageUrl}
@@ -41,8 +54,8 @@ const ProjectCard = ({ name, id, projectNo, img }) => {
           <div className="w-full h-[70%] rounded-md bg-gray-700 border-2 brightness-75 border-gray-100"></div>
         )}
         <div className='sm:p-2'>
-        <h2 className="text-lg sm:text-xl text-white font-semibold mt-2">{name}</h2>
-        <p className="text-[12px] text-white sm:text-sm">Project No: {projectNo}</p>
+        <h2 className="text-md sm:text-lg text-white font-semibold mt-2 truncate">{name}</h2>
+        <p className="text-[10px] text-white sm:text-sm">Project No: {projectNo}</p>
         </div>
       </div>
       </div>
@@ -53,7 +66,8 @@ const CreateNew = () => {
 
   const [open, setOpen] = useState(false);
   const {user,logout} = useAuth0();
-  const [projectName, setProjectName] = useState('');
+  const [projectName, setProjectName] = useState(generateRandomName());
+  const [isDisabled, setIsDisabled] = useState(false);
   const navigate = useNavigate();
 
   const addProject = async () => {
@@ -78,16 +92,22 @@ const CreateNew = () => {
                <div className="w-full h-full flex flex-col justify-center items-center ">
                  <TextField
                   label="Project Name" 
+                  value= {projectName}
                   variant="outlined" 
                   onChange={e => setProjectName(e.target.value)}
-                  fullWidth 
-                
-              />
+                  fullWidth   
+                />
               <div 
-                  onClick={() => addProject()}
+                  onClick={() => {if(!isDisabled){addProject(); setIsDisabled(true);}}}
                   className="bg-white text-gray-700 rounded-xl mt-4 p-3 hover:cursor-pointer" 
               >
-                  <p>Create Project</p>
+                  {isDisabled ? (
+                    <>
+                      Creating Project...
+                    </>
+                    ) : (
+                      'Create Project'
+                    )}
               </div>
               </div>
           </Grid2>
@@ -214,8 +234,8 @@ const Dashboard = () => {
                   <p className='text-xl sm:text-3xl font-karma font-semibold pt-10 pb-5 text-white'>Recent Projects</p>
                 <div className='flex flex-wrap gap-8 overflow-y-auto pb-10 pt-2 md:pl-2 md:pr-5'>
                     <CreateNew/>
-                    {projectsList.map((project) => (
-                        <ProjectCard name={project.projectName} id={project.projectId} projectNo={project.projectNo} img={project.img}/>
+                    {projectsList.map((project,index) => (
+                        <ProjectCard name={project.projectName} id={project.projectId} projectNo={project.projectNo} img={project.img} index={index}/>
                     ))}                   
                 </div>
                 </div>

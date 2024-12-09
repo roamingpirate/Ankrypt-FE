@@ -5,7 +5,7 @@ import script from "../data/script.js";
 import { twoSpeakersPodcastProject, oneSpeakerProject } from "../data/projectData.js";
 import storyAudioData from '../data/japanAudioData';
 import podcastAudioData from '../data/storyAudioData'
-import { useProjectInfo } from "../../utility/ProjectContext.jsx";
+import { useProjectInfo } from "../../hooks/ProjectContext.jsx";
 //import animationScriptData from "../../data/animationScriptData.jsx";
 import { getBackgroundImageUrls } from "../../api/projectApi.js";
 import { TextureLoader } from "three";
@@ -33,6 +33,7 @@ export const PlayerController = ({ children }) => {
   const [backgroundImageUrls,setBackgroundImageUrls] = useState(undefined);
   const [toggleState, setToggleState] = useState(0);
   const [playMode, setPlayMode] = useState("Normal");
+  const isBackgroundSwitch = useRef(false);
   const mediaStreamAudioDestinationRef = useRef();
   const audioContextRef = useRef();
  //const [reset, setReset] = useState(false);
@@ -186,6 +187,7 @@ async function loadTextures(urls) {
   const createSceneTransition = () => {
     console.log("Popopop")
     setAvatarVisibility(false);
+    isBackgroundSwitch.current = true;
     setPreviousBackgroundImage(backgroundImage);
     if((currentSceneIndex+1) == AnimationScriptData.length && isRecording)
     {
@@ -196,7 +198,7 @@ async function loadTextures(urls) {
     setTimeout(() => {
       setAvatarVisibility(true);
       setCurrentSceneIndex(currentSceneIndex+1);
-    }, 3000);  
+    }, 1500);  
     
   }
 
@@ -284,7 +286,8 @@ async function loadTextures(urls) {
         currentView,
         toggleState,
         mediaStreamAudioDestinationRef,
-        audioContextRef
+        audioContextRef,
+        isBackgroundSwitch
       }}
     >
       {children}

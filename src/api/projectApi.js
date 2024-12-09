@@ -3,6 +3,7 @@ import api from 'axios';
 const axios = api.create({
     baseURL: "https://api.ancript.com",
     //baseURL: "http://localhost:8080",
+    timeout: 0,
     headers: {
         'ngrok-skip-browser-warning': 'true' // Skip ngrok's warning page by default
 
@@ -45,15 +46,6 @@ export const updateSpeakerList = async (projectId,speakerList) => {
     {
         console.log("error");
     }
-}
-
-export const fetchChangesList = async (projectId) => {
-    const response = await axios.get(`${url}/script/changes/${projectId}`);
-    return response.data;
-}
-
-export const updateChangesList = async (projectId,changesList) => {
-    const response = await axios.post(`${url}/script/changes/${projectId}`,{changesList: changesList});
 }
 
 export const fetchGeneratedScript = async (projectId, prompt) => {
@@ -146,6 +138,18 @@ export const createAudioFile = async (projectId) => {
     try{
         console.log("Getting Audio File");
         const response = await axios.get(`${url}/audio/createAudioFile/${projectId}`);
+        return response.data;
+    }
+    catch(err)
+    {
+        return {status : -1};
+    }
+}
+
+export const getAudioFile = async (projectId) => {
+    try{
+        console.log("Getting Audio File");
+        const response = await axios.get(`${url}/audio/createAudio/${projectId}`);
         return response.data;
     }
     catch(err)
@@ -296,3 +300,23 @@ export const getConvertedVideo = async (projectId,data) => {
         console.error("Error uploading video:", error);
     }
 }
+
+export const fetchVideoRecordStatus = async (projectId) => {
+    try {
+        const response = await axios.get(`${url}/video/recordStatus/${projectId}`);
+        return response.data.status;
+    } catch (error) {
+        console.log("Error fetching record status:", error);
+        return 0; 
+    }
+};
+
+export const updateVideoRecordStatus = async (projectId, status) => {
+    try {
+        const response = await axios.post(`${url}/video/recordStatus/${projectId}/${status}`);
+        return response.data; 
+    } catch (error) {
+        console.log("Error updating record status:", error);
+        return "failure"; 
+    }
+};
