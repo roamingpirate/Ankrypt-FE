@@ -1,7 +1,7 @@
 import { Canvas, useThree} from "@react-three/fiber";
 import {PerspectiveCamera,ContactShadows } from "@react-three/drei";
 import React, { useEffect,useRef } from "react";
-import { Podcast1 } from "./components/scenes/PodcastScene1";
+import { Podcast1 } from "./components/scenes/PodcastScene1.jsx";
 import { usePlayer } from './hooks/usePlayer'
 import { Grid2, Paper , IconButton} from "@mui/material";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
