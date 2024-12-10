@@ -316,6 +316,11 @@ export function Avatar(props) {
       //   source.connect(mediaStreamAudioDestinationRef.current);
       // }
 
+      if(audio.current == undefined)
+      {
+         next();
+      }
+
       if(isRecording)
       {
         if (!audio.current.sourceNode) {
