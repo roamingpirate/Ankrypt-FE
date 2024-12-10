@@ -303,8 +303,16 @@ export function Avatar(props) {
 
     if (currentAudioDataItem) {
       console.log(currentAudioDataItem?.lipsync);
+
+      const audioSource = audioMap.get(`${currentSceneIndex}_${animationState.currentSpeechIndex}_${animationState.currentDialogIndex}`);
+        
+      if (!audioSource) {
+          console.error("Audio source not found");
+          next();  // Skip to the next action if no audio found
+          return;
+      }
       //audio.current = new Audio(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
-      audio.current = new Audio("data:audio/mp3;base64," + audioMap.get(`${currentSceneIndex}_${animationState.currentSpeechIndex}_${animationState.currentDialogIndex}`));
+      audio.current = new Audio("data:audio/mp3;base64," + audioSource);
       // if(currentStage == 3)
       // {
       //   if(audioContextRef.current == undefined )
@@ -318,7 +326,9 @@ export function Avatar(props) {
 
       if(audio.current == undefined)
       {
+        console.log("beba");
          next();
+         return;
       }
 
       if(isRecording)
