@@ -31,27 +31,11 @@ const AnkryptCreatorPage = () => {
   };
 
   useEffect(() => {
-    // Store the original viewport content
-    const originalViewport = document
-      .querySelector('meta[name="viewport"]')
-      ?.getAttribute('content');
-
-    // Set viewport to desktop mode if on mobile
-    if (window.innerWidth < 768) {
-      const metaViewport = document.querySelector('meta[name="viewport"]');
-      if (metaViewport) {
-       // metaViewport.setAttribute('content', 'width=1024');
+      if(currentStage == 1 && script.length !=0)
+      {
+        setCurrentActive(1);
       }
-    }
-
-    // Restore the original viewport when the component unmounts
-    return () => {
-      const metaViewport = document.querySelector('meta[name="viewport"]');
-      if (metaViewport && originalViewport) {
-        metaViewport.setAttribute('content', originalViewport);
-      }
-    };
-  }, []);
+  }, [script]);
 
 
 

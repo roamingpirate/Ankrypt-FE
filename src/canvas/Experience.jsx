@@ -9,38 +9,36 @@ import PauseIcon from '@mui/icons-material/Pause';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 const AnimationEditor = () => {
-  const { setVideoState, videoState,currentSceneIndex,setCurrentSceneIndex,updateAnimationState} = usePlayer();
+  const { setVideoState, videoState, currentSceneIndex, setCurrentSceneIndex, updateAnimationState } = usePlayer();
 
-
-  return(
-    <Paper elevation={3} sx={{backgroundColor:'#3F3A39'}}>
-    {/* Play Button */}
-      <IconButton variant="contained"   onClick={() => {
-          if(videoState != "playing"){
-            setVideoState("Playing")
-          }
-      }}>
-        <PlayArrowIcon sx={{color:'white'}} />
-      </IconButton>
-      {/* Pause Button */}
-      <IconButton variant="contained" onClick={() => {
-        setVideoState("Paused")
-      }}><PauseIcon sx={{color:'white'}} /></IconButton>
+  return (
+    <Paper elevation={3} sx={{ backgroundColor: '#3F3A39' }}>
+      {/* Conditional Play/Pause Button */}
+      {videoState !== "Playing" ? (
+        <IconButton variant="contained" onClick={() => setVideoState("Playing")}>
+          <PlayArrowIcon sx={{ color: 'white' }} />
+        </IconButton>
+      ) : (
+        <IconButton variant="contained" onClick={() => setVideoState("Paused")}>
+          <PauseIcon sx={{ color: 'white' }} />
+        </IconButton>
+      )}
 
       {/* Reset Button */}
       <IconButton variant="contained" onClick={() => {
         setVideoState("Reset");
-        if(currentSceneIndex)
-          {
-            setCurrentSceneIndex(0);
-          }
-          else{
-          updateAnimationState(0,0,0);
-          }
-      }}><RestartAltIcon sx={{color:'white'}} /></IconButton>
-  </Paper>
-  )
-}
+        if (currentSceneIndex) {
+          setCurrentSceneIndex(0);
+        } else {
+          updateAnimationState(0, 0, 0);
+        }
+      }}>
+        <RestartAltIcon sx={{ color: 'white' }} />
+      </IconButton>
+    </Paper>
+  );
+};
+
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
