@@ -1,4 +1,4 @@
-import { Grid2, Typography, TextField,CircularProgress,IconButton,useMediaQuery } from "@mui/material";
+import { Grid2, Typography, TextField,CircularProgress,IconButton,useMediaQuery, Button } from "@mui/material";
 import AvatarDisplay from"../canvas/AvatarDisplay";
 import {useState, useEffect, Suspense} from "react";
 import { AvatarCreator } from '@readyplayerme/react-avatar-creator';
@@ -103,7 +103,6 @@ const AvatarBox = ({index, speakerList, setSpeakerList, startAvatarCreation,disa
                   onChange={(e) => changeAvatarName(e.target.value)}
                   value={avatarName}
                   fullWidth 
-                  height={'80px'}
                   disabled={disabled}
                   margin='normal'/>
             <GenderTypeSelectBox index={index} speakerData={speakerList} setSpeakerData={setSpeakerList} disabled={disabled}/>
@@ -234,6 +233,15 @@ const AvatarSelector = ({speakerList,setSpeakerList, setIsOpen, disabled = false
                 ))
             )}
         </Grid2>
+        <div className="flex justify-end items-end w-[100%]">
+        <Button 
+            variant="contained" 
+            onClick={() =>setIsOpen(false)}
+            sx={{ backgroundColor: '#15191f', color: 'white',border: '1px solid white', '&:hover': { backgroundColor: '#04b39f' } } }
+            >
+            Done
+        </Button>
+        </div>
         </Grid2>
     )
 }

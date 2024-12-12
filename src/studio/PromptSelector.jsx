@@ -62,10 +62,10 @@ export const PromptSelector = ({setPrompt,setTone,setOpen}) => {
                                 <CheckCircleIcon 
                                     sx={{
                                     fontSize: {
-                                        xs: 20, 
-                                        sm: 25,
-                                        md: 30, 
-                                        lg: 35, 
+                                        xs: 30, 
+                                        sm: 30,
+                                        md: 35, 
+                                        lg: 40, 
                                     },
                                     color: 'white',
                                     }}

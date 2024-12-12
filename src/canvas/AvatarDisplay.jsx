@@ -45,7 +45,7 @@ const AvatarDisplay = ({ avatarUrl, avatarGender, speakerList }) => {
 
   return (
     <>
-      <div className="bg-gray" style={{ display: 'grid', height: '300px', margin: '5px', border: '1px solid grey' }}>
+      <div className="bg-gray h-[250px] md:h-[300px]"  style={{ display: 'grid', margin: '5px', border: '1px solid grey' }}>
         <Canvas shadows>
           <OrbitControls
             enableZoom={true}

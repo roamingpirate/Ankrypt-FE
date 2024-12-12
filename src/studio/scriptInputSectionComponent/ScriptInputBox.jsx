@@ -111,11 +111,11 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
         <Grid2 sx={{border:"1px solid white",borderRadius:'5px',marginTop:'10px'}}>
           {/* Heading and Edit Button*/}
           <Grid2 sx={{display:'flex', justifyContent:'space-between',padding:'10px'}}>
-          <Typography sx={{color:'white',fontSize:'14px',fontWeight:'80',paddingBottom:'3px'}}>Speakers</Typography>
+          <Typography sx={{color:'white',fontSize:'14px',fontWeight:'80',paddingBottom:'3px'}}>Edit Speakers Avatar</Typography>
           <Tooltip title="Customise Your Avatar" open={showTooltip} placement="right" arrow>
-          <IconButton className="relative" sx={{padding:'0px'}} onClick={() => setOpen(true)}>
+          <div className='rounded-full bg-[#04b39f] flex justify-center items-center p-1' onClick={() => setOpen(true)}>
           <EditIcon sx={{color:'white',width:'20px',height:'20px'}}/>
-          </IconButton>
+          </div>
           </Tooltip>
           </Grid2>
           {/* Speakers List */}
@@ -194,16 +194,16 @@ const ScriptInputBox = () => {
   return (
     <Box sx={styles.root}>
       <Box display= 'flex' flexDirection='column' alignItems='center' justifyContent='center'>
-      <p className='font-semibold pt-5 pb-3 font-mono text-center sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl text-gray-200'>Generate Script Using AI</p>
+      <p className='font-semibold sm:pt-5 sm:pb-3 font-mono text-center sm:text-xl md:text-2xl lg:text-2xl xl:text-3xl text-gray-200'>Generate Script Using AI</p>
       {/* <ScriptTypeSelectBox scriptType={scriptType} setScriptType={setScriptType} /> */}
       </Box>
       <div className="mx-[12px]">
-      <Tooltip title="Enter your prompt" open={showTooltip} placement="right" arrow>
+      <Tooltip title="Provide the topic or theme you would like the avatars in the video to talk about or explore." open={showTooltip} placement="right" arrow>
       <TextField variant='outlined' 
                   label="Prompt" 
                   onChange={(e) => setInputPrompt(e.target.value)}
                   value={inputPrompt}
-                  placeholder='Enter your prompt' 
+                  placeholder='Provide the topic or theme you would like the avatars in the video to talk about or explore.' 
                   fullWidth multiline 
                   
                   maxRows={8} 

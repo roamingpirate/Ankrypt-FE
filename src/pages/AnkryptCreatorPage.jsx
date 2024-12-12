@@ -17,7 +17,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
  
 
 const AnkryptCreatorPage = () => {
-  const {currentStage,alert,setAlert,alertMessage, isPageLoading, error,setShowTooltip,currentActive,setCurrentActive,handleNext} = useProjectInfo();
+  const {currentStage,alert,setAlert,alertMessage, isPageLoading, error,setShowTooltip,currentActive,setCurrentActive,handleNext,script} = useProjectInfo();
   const {isAuthenticated, loginWithPopup} = useAuth0();
   
   const navigate = useNavigate();
@@ -117,46 +117,46 @@ const AnkryptCreatorPage = () => {
           <Typography sx={{backgroundColor:'#3F3A39',color:'white',padding:'10px',borderRadius:'7px'}}>{alertMessage}</Typography>
           </Snackbar>
           
-        {currentActive === 1 && currentStage != 3 &&(
+        {currentActive === 1 && currentStage != 3 && (script.length != 0)&& (
           <>
-          <div onClick={handleLeftArrowClick} className='absolute bottom-[10%] right-4 md:invisible'>
-          <div className='flex justify-center items-center bg-[#51c4b7] p-1 rounded-lg md:invisible'>
+          <div onClick={handleLeftArrowClick} className='absolute bottom-[2%] left-4 md:invisible'>
+          <div className='flex justify-center items-center bg-[#51c4b7] p-[1px] px-1 rounded-lg md:invisible'>
           <ArrowBackIcon
-            className="bg-gray-800 rounded-[10px] p-2 border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible "
-            style={{ fontSize: "30px" }}
+            className="bg-gray-800 rounded-sm border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible "
+            style={{ fontSize: "20px" }}
           />
-          <p className='font-mono font-medium text-sm p-2'> {currentStage == 1? 'Generate Script' : 'Watch Video'}</p>
+          <p className='font-mono font-medium text-[12px] p-2'> {currentStage == 1? 'Generate Script' : 'Watch Video'}</p>
           </div>
           </div>
           <div
               onClick={() => {handleNext(currentStage + 1); setCurrentActive(0)}}
-              className="p-[2px] my-2  absolute bottom-[2%] right-4 rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] w-[70px]"
+              className="p-[2px]   absolute bottom-[2%] right-4 rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] w-[100px] md:invisible"
             >
               <div className="text-center w-[100%]">
-                <button className="bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold m-[1px] py-2 px-4 rounded-3xl">
-                  Next
+                <button className="bg-gray-900 hover:bg-gray-800 text-white text-[12px] font-bold m-[1px] py-2 px-4 rounded-3xl">
+                  Next Stage
                 </button>
               </div>
             </div> 
             </>
         )}
 
-        {currentActive === 0 && currentStage !=3 &&(
+        {currentActive === 0 && currentStage !=3 && (script.length != 0) &&(
           <>
-          <div onClick={handleRightArrowClick} className='absolute bottom-[10%] left-4 flex justify-center items-center bg-[#51c4b7] p-1 rounded-lg md:invisible'>
-          <p className='font-mono text-sm font-medium p-2'> {currentStage == 1? 'View Script' : 'View Animation Script'} </p>
+          <div onClick={handleRightArrowClick} className='absolute bottom-[2%] left-4 flex justify-center items-center bg-[#51c4b7]  p-[1px] px-1 rounded-lg md:invisible'>
+          <p className='font-mono text-[12px] font-medium p-2'> {currentStage == 1? 'View Script' : 'Edit Animation Script'} </p>
           <ArrowForwardIcon
-            className="bg-gray-800 rounded-[10px] p-2 border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible"
-            style={{ fontSize: "30px" }}
+            className="bg-gray-800 rounded-sm border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible"
+            style={{ fontSize: "20px" }}
           />
           </div>
           <div
               onClick={() => {handleNext(currentStage + 1); setCurrentActive(0)}}
-              className="p-[2px] my-2  absolute bottom-[2%] right-4 rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] w-[70px]"
+              className="p-[2px]  absolute bottom-[2%] right-4 rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] w-[100px] md:invisible"
             >
               <div className="text-center w-[100%]">
-                <button className="bg-gray-900 hover:bg-gray-800 text-white text-sm font-bold m-[1px] py-2 px-4 rounded-3xl">
-                  Next
+                <button className="bg-gray-900 hover:bg-gray-800 text-white text-[12px] font-bold m-[1px] py-2 px-4 rounded-3xl">
+                  Next Stage
                 </button>
               </div>
             </div> 
