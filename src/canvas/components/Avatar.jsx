@@ -312,7 +312,10 @@ export function Avatar(props) {
           return;
       }
       //audio.current = new Audio(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
-      audio.current = new Audio("data:audio/mp3;base64," + audioSource);
+      if (!audio.current) {
+        audio.current = new Audio();
+      }
+      audio.current.src = "data:audio/mp3;base64," + audioSource;
       // if(currentStage == 3)
       // {
       //   if(audioContextRef.current == undefined )

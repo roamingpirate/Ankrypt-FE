@@ -99,7 +99,7 @@ const  exampleData = [
     {
       "heading": "Share Your Travel Experiences",
       "subheading": "Share your stories about your travel experiences to any destination, and watch as 3D avatars bring your adventures to life in captivating dialogues, all set against stunning AI-generated backgrounds!",
-      "videoSrc": "WpxVy08a7fk",
+      "videoSrc": "gVDIHtVD70g",
       "placeHolder":"exampleVid/Trip.png"
     },
     {
@@ -111,19 +111,19 @@ const  exampleData = [
     {
       "heading": "Effortless Explainer Videos",
       "subheading": "Simplify complex topics with a single prompt! Our 3D avatars will create interactive dialogues, complemented by AI-generated backgrounds, making learning engaging and fun.",
-      "videoSrc": "aWAk9GN2X5o",
+      "videoSrc": "chS8HC88eYc",
       "placeHolder":"exampleVid/explainV.png"
     },
     {
       "heading": "Create Social Media Content",
       "subheading": "Generate eye-catching social media videos in seconds! Provide a text prompt, and 3D avatars will create dynamic interactions, perfectly suited for your audience.",
-      "videoSrc": "67SO5wTOF64",
+      "videoSrc": "icj-Ja6Or-U",
       "placeHolder":"exampleVid/social.png"
     },
     {
       "heading": "Engaging Storytelling Experiences",
       "subheading": "Bring your stories to life with just a text prompt! Our 3D avatars will engage in conversations, creating a vivid narrative enhanced by beautiful AI-generated scenes.",
-      "videoSrc": "MtfOtpLxJEo",
+      "videoSrc": "46WYBnzPF7I",
       "placeHolder":"exampleVid/story.png"
     }
   ]

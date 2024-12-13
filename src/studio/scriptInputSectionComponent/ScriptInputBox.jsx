@@ -171,7 +171,7 @@ const ScriptInputBox = () => {
   // const [speakersList, setSpeakerList] = useState(speakersListD);
    const [speakerList, setSpeakerList] = useState(speakersListD)
    const [inputPrompt,setInputPrompt] = useState('');
-   const [tone,setTone] = useState('Funny');
+   const [tone,setTone] = useState('Informative');
    const {generateScript, setSpeakerList : setProjectSpeakerList, speakerList: projectSpeakerList,projectId,showTooltip,setCurrentActive} = useProjectInfo();
    const [openPrompt,setOpenPrompt] = useState(false);
 
@@ -242,7 +242,7 @@ const ScriptInputBox = () => {
             label="Tone"
             defaultValue="Informative"
             margin='dense'
-            onChange={(e)=> setTone(e.target.value)}
+            onChange={(e)=> {setTone(e.target.value);console.log(tone)}}
             sx={{
               '& .MuiInputBase-input': {
                 color: 'white', // Input text color

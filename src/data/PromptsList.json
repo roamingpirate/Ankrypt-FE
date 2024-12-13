@@ -30,96 +30,141 @@
         ]
     },
     {
-        "topic" : "Fun Facts & Trivia",       
-        "topics": [
-              {
-                "topic": "Weird Animal Behaviors",
-                "prompt": "Generate a fun conversation where characters share bizarre animal facts, like why octopuses have three hearts.",
-                "tone": "Funny"
-              },
-              {
-                "topic": "Unbelievable Historical Events",
-                "prompt": "Create a script where two characters talk about strange historical events that sound too weird to be true, like the dancing plague.",
-                "tone": "Entertaining"
-              },
-              {
-                "topic": "Space Mysteries",
-                "prompt": "Write a dialogue where two characters are fascinated by mysterious phenomena in space, such as black holes and dark matter.",
-                "tone": "Mysterious"
-              },
-              {
-                "topic": "Human Body Wonders",
-                "prompt": "Develop a script where characters reveal surprising facts about the human body, like why humans get goosebumps.",
-                "tone": "Lighthearted"
-              },
-              {
-                "topic": "Origins of Everyday Objects",
-                "prompt": "Create a discussion about the unexpected origins of common items like coffee, toilet paper, and sunglasses.",
-                "tone": "Informative"
-              }
-            ]
-                    
-    },   
-    {
-        "topic" : "Travel & Exploration",
-        "topics": [
-            {
-                "topic": "Travel Stories from Remote Places",
-                "prompt": "Write a conversation where a character narrates an adventure in the Amazon Rainforest, encountering wildlife and local tribes.",
-                "tone": "Engaging"
-              },
-              {
-                "topic": "Exploring Hidden European Cities",
-                "prompt": "Develop a script where characters chat about the best hidden gems in Europe, like Slovenia’s Lake Bled and Portugal’s Sintra.",
-                "tone": "Exciting"
-              },
-              {
-                "topic": "Solo Travel Tips",
-                "prompt": "Create a dialogue where two characters share advice on solo travel, overcoming fears, and the best destinations for beginners.",
-                "tone": "Encouraging"
-              },
-              {
-                "topic": "The Best Beaches Around the World",
-                "prompt": "Write a fun conversation about the world’s most breathtaking beaches, from the Maldives to the hidden gems of Thailand.",
-                "tone": "Interesting"
-              },
-              {
-                "topic": "Mystical Places on Earth",
-                "prompt": "Generate a script where two friends discuss mystical places like Stonehenge, Machu Picchu, and the Bermuda Triangle.",
-                "tone": "Intriguing"
-              }
-        ]
-    },  
-    {
-        "topic" : "Storytelling & Imaginary Worlds",
-        "topics": [
-            {
-                "topic": "A Day in the Life of a Time Traveler",
-                "prompt": "Create a fictional script where characters talk about their experiences time-traveling to ancient Rome and the future.",
-                "tone": "Adventurous"
-              },
-              {
-                "topic": "Fantasy Creatures & Their Lore",
-                "prompt": "Write a conversation where characters discuss the origin and traits of dragons, elves, and other fantasy creatures.",
-                "tone": "Entertaining"
-              },
-              {
-                "topic": "A Pirate’s Adventure",
-                "prompt": "Generate a dialogue about two pirates reminiscing about their treasure hunts, sea battles, and lost islands.",
-                "tone": "Playful"
-              },
-              {
-                "topic": "The Secret Life of Superheroes",
-                "prompt": "Develop a conversation where two superheroes discuss their daily struggles, secret identities, and hidden fears.",
-                "tone": "Humorous"
-              },
-              {
-                "topic": "Life on an Alien Planet",
-                "prompt": "Create a script where characters describe their experiences living on a distant alien planet with unique landscapes and creatures.",
-                "tone": "Intriguing"
-              }
-        ]
-    },  
+      "topic": "Fun Facts & Trivia",
+      "topics": [
+          {
+              "topic": "Mind-Blowing Animal Superpowers",
+              "prompt": "Write a lively dialogue where two characters uncover fascinating animal abilities, like how mantis shrimps punch with the force of a bullet, or how tardigrades can survive in space. Include fun banter and reactions to these extraordinary traits.",
+              "tone": "Exciting and Funny"
+          },
+          {
+              "topic": "Bizarre Historical Oddities",
+              "prompt": "Create an entertaining script where two characters share shocking and hilarious historical events, such as Napoleon being attacked by a horde of bunnies or the Great Emu War in Australia. Add witty commentary and humorous takes on these strange events.",
+              "tone": "Amusing and Quirky"
+          },
+          {
+              "topic": "The Enigma of Space Phenomena",
+              "prompt": "Develop a script in which two curious characters delve into mind-boggling space mysteries, like why Voyager 1 keeps sending back strange signals or how neutron stars are so dense that a teaspoon weighs billions of tons. Add an air of suspense and wonder.",
+              "tone": "Mysterious and Intriguing"
+          },
+          {
+              "topic": "Hidden Wonders of the Human Body",
+              "prompt": "Write a dialogue where two characters reveal astonishing facts about the human body, like how your stomach gets a new lining every few days to avoid digesting itself or how the human brain generates enough electricity to power a lightbulb. Use a lighthearted tone with playful banter.",
+              "tone": "Lighthearted and Surprising"
+          },
+          {
+              "topic": "The Unbelievable Origins of Everyday Things",
+              "prompt": "Craft a conversation where two characters explore the surprising backstories of everyday objects, like how bubble wrap was originally intended as wallpaper or how tea bags were invented by accident. Include fun exchanges and moments of astonishment.",
+              "tone": "Informative and Engaging"
+          },
+          {
+              "topic": "Unsolved Mysteries of the World",
+              "prompt": "Create a dialogue where two characters discuss baffling unsolved mysteries, like the disappearance of the Roanoke Colony or the purpose of Stonehenge. Add a sense of intrigue and playful theorizing.",
+              "tone": "Captivating and Thought-Provoking"
+          },
+          {
+              "topic": "Food Facts That Will Blow Your Mind",
+              "prompt": "Write a fun and engaging script where characters talk about astonishing food facts, like how honey never spoils, or why pineapples were once a symbol of wealth. Add humorous reactions and relatable commentary.",
+              "tone": "Fun and Relatable"
+          },
+          {
+              "topic": "Technology Ahead of Its Time",
+              "prompt": "Develop a conversation where two characters marvel at inventions that seemed way ahead of their time, like the Antikythera mechanism (an ancient Greek computer) or Nikola Tesla's wireless power experiments. Use a mix of amazement and curiosity.",
+              "tone": "Fascinating and Inspirational"
+          }
+      ]
+  },  
+  {
+    "topic": "Travel & Exploration",
+    "topics": [
+        {
+            "topic": "Epic Adventures in the Amazon",
+            "prompt": "Write a thrilling script where one character recounts an unforgettable journey through the Amazon Rainforest, featuring encounters with elusive wildlife like jaguars and pink dolphins, navigating hidden trails, and learning ancient traditions from local tribes. Include vivid descriptions and moments of awe.",
+            "tone": "Adventurous and Captivating"
+        },
+        {
+            "topic": "Hidden European Treasures",
+            "prompt": "Develop a lively dialogue where two travelers swap stories about lesser-known European destinations, such as the fairy-tale castles of Sintra, Portugal, the serene beauty of Lake Bled, Slovenia, and the medieval charm of Český Krumlov, Czech Republic. Add excitement as they discuss unique food, culture, and activities in these spots.",
+            "tone": "Enchanting and Inspiring"
+        },
+        {
+            "topic": "Solo Travel Hacks and Stories",
+            "prompt": "Create a relatable conversation where two characters share practical tips and personal stories about solo travel. They talk about overcoming initial fears, making friends on the road, and recommend destinations like Kyoto, Japan, and Reykjavik, Iceland for beginners. Add moments of humor and encouragement.",
+            "tone": "Empowering and Uplifting"
+        },
+        {
+            "topic": "Paradise Beaches You Must Visit",
+            "prompt": "Write an enthusiastic conversation where characters gush over the world's most stunning beaches, from the turquoise waters of the Maldives to the hidden bays of Thailand's Koh Lipe. They also discuss unique beach activities like swimming with bioluminescent plankton and finding seashells on remote islands.",
+            "tone": "Dreamy and Exciting"
+        },
+        {
+            "topic": "Earth’s Mystical Wonders",
+            "prompt": "Generate a script where two friends explore the allure of mystical places on Earth, such as the energy vortexes of Sedona, Arizona, the ancient mysteries of Stonehenge, and the legend of lost ships in the Bermuda Triangle. Include moments of wonder and speculation about these enigmatic destinations.",
+            "tone": "Intriguing and Mysterious"
+        },
+        {
+            "topic": "Journeys Through Time in Ancient Cities",
+            "prompt": "Create a dialogue where characters dive into the wonders of ancient cities, like the lost city of Petra in Jordan, the ruins of Pompeii, and the mystical temples of Angkor Wat in Cambodia. They discuss the history, culture, and hidden secrets that make these places timeless.",
+            "tone": "Historical and Engaging"
+        },
+        {
+            "topic": "Extreme Travel Experiences",
+            "prompt": "Write a script where adventurers share jaw-dropping travel stories, like hiking Mount Everest's base camp, swimming with sharks in Fiji, or camping under the Northern Lights in Iceland. Include thrilling details and moments of awe.",
+            "tone": "Exhilarating and Bold"
+        },
+        {
+            "topic": "Cultural Festivals Around the World",
+            "prompt": "Generate a conversation about the vibrant and colorful festivals across the globe, like India’s Holi Festival, Brazil’s Carnival, and Japan’s Cherry Blossom Festival. Include personal experiences, tips for participating, and vivid descriptions of the celebrations.",
+            "tone": "Festive and Vibrant"
+        }
+    ]
+},
+{
+  "topic": "Storytelling & Imaginary Worlds",
+  "topics": [
+      {
+          "topic": "Chronicles of a Time Traveler",
+          "prompt": "Write a vivid script where a time traveler shares thrilling stories of ancient Rome's bustling markets, gladiator battles, and their futuristic visit to a city in 3024 where flying cars and AI rule. Include the challenges they face while adapting to different eras.",
+          "tone": "Adventurous and Immersive"
+      },
+      {
+          "topic": "Legends of Fantasy Creatures",
+          "prompt": "Create an engaging dialogue where characters explore the rich lore of fantasy creatures, debating whether dragons are guardians of treasure or symbols of wisdom, and discussing the mysterious origins of elves and their magical powers.",
+          "tone": "Enchanting and Entertaining"
+      },
+      {
+          "topic": "Tales of Swashbuckling Pirates",
+          "prompt": "Generate a playful conversation between two pirates reminiscing about their greatest adventures—unearthing cursed treasures, surviving treacherous storms, and battling rival crews. Include humorous banter and thrilling sea escapades.",
+          "tone": "Playful and Thrilling"
+      },
+      {
+          "topic": "Behind the Mask: Superheroes’ Secrets",
+          "prompt": "Write a humorous script where two superheroes talk about their hilarious daily struggles, like managing superhero costumes in laundromats, juggling mundane jobs, and the awkwardness of running into villains at the grocery store.",
+          "tone": "Humorous and Relatable"
+      },
+      {
+          "topic": "Adventures on an Alien World",
+          "prompt": "Develop a script where explorers describe life on a breathtaking alien planet with floating mountains, glowing rivers, and sentient plants. Include their encounters with intelligent alien species and the challenges of adapting to a new ecosystem.",
+          "tone": "Intriguing and Awe-Inspiring"
+      },
+      {
+          "topic": "The Haunted Tales of Ghostly Realms",
+          "prompt": "Write a chilling dialogue where two characters recount eerie experiences from ghostly dimensions, including haunted mansions, phantom whispers, and mysterious portals to the spirit world.",
+          "tone": "Spine-Chilling and Suspenseful"
+      },
+      {
+          "topic": "The Realm of Forgotten Kingdoms",
+          "prompt": "Create a conversation where characters piece together the myths and legends of lost kingdoms, like Atlantis or Shangri-La, blending history, fantasy, and speculation about their secrets.",
+          "tone": "Intriguing and Magical"
+      },
+      {
+          "topic": "Invention Diaries of Mad Scientists",
+          "prompt": "Generate a quirky script where two eccentric inventors discuss their wildest creations, like a tea-making robot that recites poetry or a teleportation device that only works half the time.",
+          "tone": "Whimsical and Hilarious"
+      }
+  ]
+}
+,
     {
         "topic" : "Personal Development & Self-Growth",
         "topics": [
@@ -151,30 +196,36 @@
         ]
     },  
     {
-        "topic" : "Business & Professional Communication",
-        "topics": [
-            {
-                "topic": "Greeting a Client",
-                "prompt": "Create a script where characters are greeting a new client whose name is Albert and introducing them to the company which creates video games, highlighting its services and expertise.",
-                "tone": "Professional"
-              },
-              {
-                "topic": "Pitching a New Idea to Your Boss",
-                "prompt": "Generate a conversation where employees pitch a new project idea to their boss, focusing on how it can boost company revenue.",
-                "tone": "Persuasive"
-              },
-              {
-                "topic": "Networking at a Business Conference",
-                "prompt": "Write a dialogue between two professionals meeting at a conference and discussing potential collaboration opportunities.",
-                "tone": "Engaging"
-              },
-              {
-                "topic": "Handling Difficult Customer Feedback",
-                "prompt": "Develop a script where a customer service representative addresses a client's negative feedback and offers solutions to resolve the issue.",
-                "tone": "Empathetic"
-              }
-        ]
-    },  
+      "topic": "Business & Professional Communication",
+      "topics": [
+          {
+              "topic": "Presenting a Revenue-Boosting Idea to Your Boss",
+              "prompt": "Generate a conversation where two employees present a new project idea to their boss. One employee explains the idea in detail while the other supports with additional insights, emphasizing how it can significantly increase revenue. Ensure the dialogue is clear and strategic.",
+              "tone": "Confident and Persuasive"
+          },
+          {
+              "topic": "Collaborating at a Business Conference",
+              "prompt": "Write a dialogue where two professionals meet at a business conference, introduce their roles, and explore potential collaboration opportunities. They discuss shared interests, mutual goals, and outline the next steps for working together.",
+              "tone": "Friendly and Professional"
+          },
+          {
+              "topic": "Resolving Customer Concerns with Empathy",
+              "prompt": "Develop a script where a customer service representative and their manager address a client's concerns about a product. The representative listens actively and proposes solutions, while the manager reassures the client by highlighting additional steps for resolution.",
+              "tone": "Empathetic and Reassuring"
+          },
+          {
+              "topic": "Delivering a Team Presentation Effectively",
+              "prompt": "Create a script where two team members present a project update to their colleagues. One focuses on explaining key metrics and achievements, while the other shares future plans and goals. The conversation should demonstrate teamwork and effective communication.",
+              "tone": "Confident and Informative"
+          },
+          {
+              "topic": "Negotiating a Business Deal",
+              "prompt": "Generate a conversation where two colleagues negotiate a business deal with a client. One leads the discussion about pricing and deliverables, while the other ensures timelines and expectations are clear. The script should reflect assertiveness and professionalism.",
+              "tone": "Assertive and Diplomatic"
+          }
+      ]
+  }
+,  
     {
         "topic" : "Leadership & Team Management",
         "topics": [
