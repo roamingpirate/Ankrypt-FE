@@ -350,7 +350,14 @@ export function Avatar(props) {
     
         audio.current.play();
         }
-        audio.current.onended = next;
+        //audio.current.onended = next;
+        audio.current.onended = () => {
+          audio.current.pause(); // Pause the audio to keep the context alive
+          audio.current.currentTime = 0; // Reset the playback position (optional)
+        
+          next(); // Move to the next audio
+        };
+        
         setLipsync(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex]?.lipsync);
     }
     else{

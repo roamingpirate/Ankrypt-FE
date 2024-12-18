@@ -114,7 +114,7 @@ const AnkryptCreatorPage = () => {
           </div>
           <div
               onClick={() => {handleNext(currentStage + 1); setCurrentActive(0)}}
-              className="p-[2px]   absolute bottom-[2%] right-4 rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] w-[100px] md:invisible"
+              className="p-[2px] absolute bottom-[10%] right-4 rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] w-[100px] md:invisible"
             >
               <div className="text-center w-[100%]">
                 <button className="bg-gray-900 hover:bg-gray-800 text-white text-[12px] font-bold m-[1px] py-2 px-4 rounded-3xl">
@@ -136,7 +136,7 @@ const AnkryptCreatorPage = () => {
           </div>
           <div
               onClick={() => {handleNext(currentStage + 1); setCurrentActive(0)}}
-              className="p-[2px]  absolute bottom-[2%] right-4 rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] w-[100px] md:invisible"
+              className="p-[2px]  absolute bottom-[10%] right-4 rounded-3xl bg-gradient-to-r from-[#2b5876] to-[#4e4376] w-[100px] md:invisible"
             >
               <div className="text-center w-[100%]">
                 <button className="bg-gray-900 hover:bg-gray-800 text-white text-[12px] font-bold m-[1px] py-2 px-4 rounded-3xl">
