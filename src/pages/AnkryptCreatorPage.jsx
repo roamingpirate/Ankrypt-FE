@@ -103,7 +103,7 @@ const AnkryptCreatorPage = () => {
           
         {currentActive === 1 && currentStage != 3 && (script.length != 0)&& (
           <>
-          <div onClick={handleLeftArrowClick} className='absolute bottom-[2%] left-4 md:invisible'>
+          <div onClick={handleLeftArrowClick} className='absolute bottom-[10%] left-4 md:invisible'>
           <div className='flex justify-center items-center bg-[#51c4b7] p-[1px] px-1 rounded-lg md:invisible'>
           <ArrowBackIcon
             className="bg-gray-800 rounded-sm border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible "
@@ -127,7 +127,7 @@ const AnkryptCreatorPage = () => {
 
         {currentActive === 0 && currentStage !=3 && (script.length != 0) &&(
           <>
-          <div onClick={handleRightArrowClick} className='absolute bottom-[2%] left-4 flex justify-center items-center bg-[#51c4b7]  p-[1px] px-1 rounded-lg md:invisible'>
+          <div onClick={handleRightArrowClick} className='absolute bottom-[10%] left-4 flex justify-center items-center bg-[#51c4b7]  p-[1px] px-1 rounded-lg md:invisible'>
           <p className='font-mono text-[12px] font-medium p-2'> {currentStage == 1? 'View Script' : 'Edit Animation Script'} </p>
           <ArrowForwardIcon
             className="bg-gray-800 rounded-sm border-white border-[1px] shadow-lg text-white cursor-pointer md:invisible"

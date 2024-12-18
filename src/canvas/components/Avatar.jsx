@@ -246,123 +246,80 @@ export function Avatar(props) {
 
 
    useEffect(()=> {
-
     const nextAnimation = () => {
-    console.log(animationState);
-    console.log('animation Statee');
+        console.log(animationState);
+        console.log('animation Statee');
 
-    if(animationState === undefined)
-    {
-       return;
-    }
-
-    if(!((animationState.currentSpeakers).toLowerCase() == avatarName.toLowerCase()))
-    {
-      console.log("returning for "+avatarName);
-      if(currentAnimation == 'Idle')
-      {
-        setPreviousAnimation('Idle');
-      }
-      setCurrentAnimation('Idle');
-      setNextAnimation('Idle');
-      setAnimationNumber(animationNumber+1);
-      setLipsync(undefined);
-      audio.current = undefined;
-      setCurrentFaceExpression('Smile');
-      return;
-    }
-
-    if(animationState.currentDialogIndex == 0 && currentSceneIndex == 0)
-    {
-
-    }
-
-    const animationToPlay = animationState.currentDialogs[animationState.currentDialogIndex].Animation;
-    var nextAnimationToPlay = 'Idle';
-    if(animationState.currentDialogsLength > (animationState.currentDialogIndex + 1)){
-       nextAnimationToPlay = animationState.currentDialogs[animationState.currentDialogIndex + 1].Animation;
-    }
-
-    // console.log('Speaker Script Animation ' + avatarName);
-    // console.log('animationToPlay');
-    // console.log(animationToPlay);
-    // console.log('NextAnimationToPlay');
-    // console.log(nextAnimationToPlay);
-    // console.log('currentFaceExpression');
-    // console.log(avatarFaceExpression);
-
-    setPreviousAnimation(currentAnimation);
-    setCurrentAnimation(animationToPlay);
-    setNextAnimation(nextAnimationToPlay);
-    setAnimationNumber(animationNumber + 1);
-    //console.log("aaeyoo");
-    const currentAudioDataItem = currentAudioData[currentSceneIndex]?.[animationState.currentSpeechIndex]?.[animationState.currentDialogIndex];
-    
-    avatarFaceExpression.current = animationState.currentDialogs[animationState.currentDialogIndex].FaceExpression;
-    setCurrentFaceExpression("");
-
-    if (currentAudioDataItem) {
-      console.log(currentAudioDataItem?.lipsync);
-
-      const audioSource = audioMap.get(`${currentSceneIndex}_${animationState.currentSpeechIndex}_${animationState.currentDialogIndex}`);
-        
-      if (!audioSource) {
-          console.error("Audio source not found");
-          next();  // Skip to the next action if no audio found
+        if(animationState === undefined)
+        {
           return;
-      }
-      //audio.current = new Audio(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex].audio);
-      if (!audio.current) {
-        audio.current = new Audio("data:audio/mp3;base64," + audioSource);
-      }
-
-      audio.current.src = "data:audio/mp3;base64," + audioSource;
-
-      // if(currentStage == 3)
-      // {
-      //   if(audioContextRef.current == undefined )
-      //   {
-      //     audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)();
-      //   }
-        
-      //   const source = audioContextRef.current.createMediaElementSource(audio.current);
-      //   source.connect(mediaStreamAudioDestinationRef.current);
-      // }
-
-      if(audio.current == undefined)
-      {
-        console.log("beba");
-         next();
-         return;
-      }
-
-      if(isRecording)
-      {
-        if (!audio.current.sourceNode) {
-          const source = audioContextRef.current.createMediaElementSource(audio.current);
-          source.connect(mediaStreamAudioDestinationRef.current);
-          audio.current.sourceNode = source;
         }
-      }
 
-
-      if(videoState === "Playing"){
-    
-        audio.current.play();
+        if(!((animationState.currentSpeakers).toLowerCase() == avatarName.toLowerCase()))
+        {
+          console.log("returning for "+avatarName);
+          if(currentAnimation == 'Idle')
+          {
+            setPreviousAnimation('Idle');
+          }
+          setCurrentAnimation('Idle');
+          setNextAnimation('Idle');
+          setAnimationNumber(animationNumber+1);
+          setLipsync(undefined);
+          audio.current = undefined;
+          setCurrentFaceExpression('Smile');
+          return;
         }
-        //audio.current.onended = next;
-        audio.current.onended = () => {
-          audio.current.pause(); // Pause the audio to keep the context alive
-          audio.current.currentTime = 0; // Reset the playback position (optional)
+
+        const animationToPlay = animationState.currentDialogs[animationState.currentDialogIndex].Animation;
+        var nextAnimationToPlay = 'Idle';
+        if(animationState.currentDialogsLength > (animationState.currentDialogIndex + 1)){
+          nextAnimationToPlay = animationState.currentDialogs[animationState.currentDialogIndex + 1].Animation;
+        }
+
+        setPreviousAnimation(currentAnimation);
+        setCurrentAnimation(animationToPlay);
+        setNextAnimation(nextAnimationToPlay);
+        setAnimationNumber(animationNumber + 1);
+
+        const currentAudioDataItem = currentAudioData[currentSceneIndex]?.[animationState.currentSpeechIndex]?.[animationState.currentDialogIndex];
         
-          next(); // Move to the next audio
-        };
-        
-        setLipsync(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex]?.lipsync);
-    }
-    else{
-        next();
-    }
+        avatarFaceExpression.current = animationState.currentDialogs[animationState.currentDialogIndex].FaceExpression;
+        setCurrentFaceExpression("");
+
+        if (currentAudioDataItem) 
+        {  
+          const audioSource = audioMap.get(`${currentSceneIndex}_${animationState.currentSpeechIndex}_${animationState.currentDialogIndex}`);
+            
+          if (!audioSource) {
+              console.error("Audio source not found");
+              next();  
+              return;
+          }
+
+          audio.current = new Audio("data:audio/mp3;base64," + audioSource);
+
+          if(isRecording)
+          {
+            if (!audio.current.sourceNode) {
+              const source = audioContextRef.current.createMediaElementSource(audio.current);
+              source.connect(mediaStreamAudioDestinationRef.current);
+              audio.current.sourceNode = source;
+            }
+          }
+
+          if(videoState === "Playing")
+          {
+            audio.current.play();
+          }
+
+          audio.current.onended = next;
+          setLipsync(currentAudioData[currentSceneIndex][animationState.currentSpeechIndex][animationState.currentDialogIndex]?.lipsync);
+        }
+        else
+        {
+            next();
+        }
     }
 
       if(isStart.current)
@@ -374,16 +331,11 @@ export function Avatar(props) {
           mixer.timeScale = 0;
           nextAnimation();
         },[1000])
-        console.log("keto")
       }
       else{
         nextAnimation();
       }
 
-    // return () => {
-    //   setCurrentAnimation(undefined);
-    //   setPreviousAnimation(undefined);
-    // }
   },[animationState]);
 
 
