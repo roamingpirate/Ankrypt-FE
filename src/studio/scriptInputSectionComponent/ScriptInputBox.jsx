@@ -112,11 +112,11 @@ const ScriptTypeSelectBox = ({scriptType,setScriptType}) => {
           {/* Heading and Edit Button*/}
           <Grid2 sx={{display:'flex', justifyContent:'space-between',padding:'10px'}}>
           <Typography sx={{color:'white',fontSize:'14px',fontWeight:'80',paddingBottom:'3px'}}>Edit Speakers Avatar</Typography>
-          <Tooltip title="Customise Your Avatar" open={showTooltip} placement="right" arrow>
+          {/* <Tooltip title="Customise Your Avatar" open={showTooltip} placement="right" arrow> */}
           <div className='rounded-full bg-[#04b39f] flex justify-center items-center p-1' onClick={() => setOpen(true)}>
           <EditIcon sx={{color:'white',width:'20px',height:'20px'}}/>
           </div>
-          </Tooltip>
+          {/* </Tooltip> */}
           </Grid2>
           {/* Speakers List */}
           <Grid2 sx={{display:'flex', flexWrap:'wrap',padding:'10px', gap:'10px'}}>
@@ -198,7 +198,7 @@ const ScriptInputBox = () => {
       {/* <ScriptTypeSelectBox scriptType={scriptType} setScriptType={setScriptType} /> */}
       </Box>
       <div className="mx-[12px]">
-      <Tooltip title="Provide the topic or theme you would like the avatars in the video to talk about or explore." open={showTooltip} placement="right" arrow>
+      {/* <Tooltip title="Provide the topic or theme you would like the avatars in the video to talk about or explore." open={showTooltip} placement="right" arrow> */}
       <TextField variant='outlined' 
                   label="Prompt" 
                   onChange={(e) => setInputPrompt(e.target.value)}
@@ -235,7 +235,7 @@ const ScriptInputBox = () => {
                       },
                     },
                   }}/>
-      </Tooltip>
+      {/* </Tooltip> */}
       <div style={styles.row}>
           <TextField
             select

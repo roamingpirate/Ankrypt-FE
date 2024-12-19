@@ -51,12 +51,12 @@ const ProgressBox = ({currentStage,handleNext}) => {
 
   return(
     <Grid container spacing={2} >
-        <Tooltip title="Click to go Back" open={showTooltip && (currentStage > 1)} placement="left" arrow>
+        {/* <Tooltip title="Click to go Back" open={showTooltip && (currentStage > 1)} placement="left" arrow> */}
         <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 1)?'#51c4b7':'white'}}
              onClick={()=>{(currentStage>=1) && handleNext(1)}}>
           <EditNoteOutlinedIcon sx={{ fontSize: 25, color:'black' }} />
         </Paper>
-        </Tooltip>
+        {/* </Tooltip> */}
         <Grid size={4}>
           <Paper elevation={3} sx={{...style.ProgressIcon, backgroundColor:(currentStage >= 2)?'#51c4b7':'white'}}
                onClick={()=>{(currentStage>=2) && handleNext(2)}}>
